@@ -20,7 +20,11 @@ def render(ctx):
             continue
         n = _count(ctx, s["slug"])
         noun = s.get("noun")
-        note = (f"{n} {noun}" + ("" if n == 1 else "s") if noun else count_label(n)) if n else EMPTY_TEXT
+        custom = getattr(load(s["slug"]), "home_note", None)
+        if custom:
+            note = custom(ctx)
+        else:
+            note = (f"{n} {noun}" + ("" if n == 1 else "s") if noun else count_label(n)) if n else EMPTY_TEXT
         cards.append(
             '<article class="card" data-kind="section">\n'
             f'<h2 class="card-title">{link("page", s["slug"] + ".html", s["label"])}</h2>\n'

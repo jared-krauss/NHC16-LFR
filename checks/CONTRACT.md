@@ -80,3 +80,7 @@ Order inside a card is fixed: `.card-title`, then `.card-meta` with `.source`, `
 - Relative paths resolve against the project root. Path comparison with `licence_map` / `photos_cleared` is after normalising slashes and case.
 - Config overlay: dicts deep-merge, lists (e.g. `splat_scenes`, `photos_cleared`) are replaced. The test overlay replaces `splat_scenes` with tiny fixture `.sog` files.
 - Sections marked `"prose": true` in site-config.json (the Paper page) are free text, not card pages: B12 and B14 skip their card requirements; their own checks are in `checks/check_paper.py`.
+
+## B11 prose exception
+
+The Paper article body (`.paper`) is long-form reading at 18px on a short measure and uses line-height 1.7 (verifier ruling, 2026-11-11). B11 skips `.paper` for the 1.4-1.6 line-height test only; every other B11 limit still applies to it, and all other pages keep 1.4-1.6.

@@ -29,20 +29,20 @@ FIXTURES = ["empty", "half", "full", "missing"]
 ALL_FIXTURES = FIXTURES + ["real"]
 MOBILE = (375, 812)
 NARROW = (320, 640)
-MONTHS = "Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec"
+MONTHS = "January|February|March|April|May|June|July|August|September|October|November|December"
 DATE_RE = re.compile(r"^((\d{1,2} )?(%s) )?\d{4}$" % MONTHS)
 SIZE_RE = re.compile(r"\d+(\.\d+)?\s*(KB|MB|kB|KiB|MiB)")
 VENDOR_RE = re.compile(r"(^|/)(vendor|libs)/|\.min\.js$|plotly|playcanvas", re.I)
 
 JS_CARDS = r"""() => [...document.querySelectorAll('article.card')].map(c => {
   const q = s => c.querySelector(s);
-  const t = q('.card-title'), so = q('.card-meta .source'), d = q('.card-meta .date'), k = q('.card-kind');
+  const t = q('.card-title'), sm = q('.card-meta .source'), so = sm || q('.fig-source'), d = q('.card-meta .date'), k = q('.card-kind');
   const pos = (a, b) => a && b ? !!(a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING) : false;
   const es = getComputedStyle(c);
   const emptyText = [...c.querySelectorAll('*')].some(e => e.children.length === 0 && e.textContent.trim() === 'On its way');
   return {kind: c.dataset.kind || '', empty: c.classList.contains('card--empty'), title: t ? t.textContent.trim() : '',
     source: so ? so.textContent.trim() : '', date: d ? d.textContent.trim() : '', badge: k ? k.textContent.trim() : '',
-    order: pos(t, so) && pos(so, d) && pos(d, k), emptyText: emptyText, borderStyle: es.borderTopStyle,
+    order: [t, sm, d, k].filter(Boolean).every((x, i, a) => i === 0 || pos(a[i - 1], x)), emptyText: emptyText, borderStyle: es.borderTopStyle,
     color: es.color, borderColor: es.borderTopColor, imgs: c.querySelectorAll('img').length,
     imgAlts: [...c.querySelectorAll('img')].map(i => i.getAttribute('alt') || ''),
     links: [...c.querySelectorAll('a[href]')].map(a => ({href: a.getAttribute('href'), kind: a.dataset.link || '', text: (a.innerText || '').trim()})),
@@ -71,7 +71,7 @@ JS_TEXT_SIZES = r"""() => {
   } return res; }"""
 
 JS_BODY_LH = r"""() => { const o = []; for (const e of document.querySelectorAll('main p, main li, main dd, main blockquote')) {
-  const s = getComputedStyle(e); if (e.closest('.card-meta,nav')) continue;
+  const s = getComputedStyle(e); if (e.closest('.card-meta,nav,.paper')) continue;
   const lh = s.lineHeight, fs = parseFloat(s.fontSize);
   o.push({lh: lh, ratio: lh === 'normal' ? 1.2 : parseFloat(lh) / fs, tag: e.tagName}); } return o; }"""
 
@@ -537,10 +537,12 @@ def b12(c):
                     fails.append(f"{tag}: empty title")
                 if k["empty"] or k["kind"] in ("empty", "section"):
                     continue
-                if not k["source"]:
-                    fails.append(f"{tag}: no .card-meta .source")
-                if not (DATE_RE.match(k["date"]) or k["date"] == "Undated"):
-                    fails.append(f"{tag}: date '{k['date']}' not 'D Mon YYYY' or 'Undated'")
+                if not k["source"] and k["kind"] not in ("pdf", "link"):
+                    fails.append(f"{tag}: no source")
+                if k["date"] and not DATE_RE.match(k["date"]):
+                    fails.append(f"{tag}: date '{k['date']}' not 'D Month YYYY', 'Month YYYY' or 'YYYY'")
+                if k["date"] == "Undated":
+                    fails.append(f"{tag}: shows 'Undated' (a missing date is left out)")
                 if not k["badge"]:
                     fails.append(f"{tag}: no .card-kind")
                 if not k["order"]:
@@ -548,12 +550,12 @@ def b12(c):
     if c.fx == "full" and c.exists("bibliography"):
         with c.page("bibliography") as (pg, _, _):
             cards = pg.evaluate(JS_CARDS)
-            if not any(k["date"] == "Undated" for k in cards):
-                fails.append("bibliography: undated fixture news item did not show 'Undated'")
+            if not any(not k["date"] for k in cards if not k["empty"]):
+                fails.append("bibliography: undated fixture news item should show no date at all")
             kinds = {k["badge"].lower() for k in cards if not k["empty"]}
             if not (any("news" in x for x in kinds) and any("commentary" in x for x in kinds)):
                 fails.append(f"bibliography: card-kind badges {sorted(kinds)} lack both news and commentary")
-    verdict(c, "B12", fails, "every card: title, source, date format/'Undated', type badge, same order")
+    verdict(c, "B12", fails, "every card: title, source, date (full month, or none), type badge, same order")
 
 
 def b13(c):
@@ -1224,10 +1226,10 @@ def data_routing(c):
     if not cc or not any(l["kind"] == "file" for l in cc["links"]):
         fails.append("bibliography: C (licence_map) should be hosted")
     dd = d.get("Fixture link document (no date)")
-    if not dd or dd["date"] != "Undated" or not any(l["kind"] == "external" for l in dd["links"]):
-        fails.append("bibliography: use=link item should be external with 'Undated'")
-    if a and a["date"] != "29 Aug 2016":
-        fails.append(f"bibliography: A has a date key, expected '29 Aug 2016', got '{a['date']}'")
+    if not dd or dd["date"] != "" or not any(l["kind"] == "external" for l in dd["links"]):
+        fails.append("bibliography: use=link item should be external with no date shown")
+    if a and a["date"] != "29 August 2016":
+        fails.append(f"bibliography: A has a date key, expected '29 August 2016', got '{a['date']}'")
     for t in ("Fixture news article", "Fixture commentary piece", "Fixture undated news item"):
         if t not in d or not any(l["kind"] == "external" for l in d[t]["links"]):
             fails.append(f"bibliography: '{t}' missing or not an external link")

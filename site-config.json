@@ -3,7 +3,7 @@
     "talk_title": "The London Met's First Live Facial Recognition Deployment: The Trial at Notting Hill Carnival, 2016",
     "speaker": "Jared Krauss",
     "event": "School of Architecture Research Conference",
-    "date": "12 Nov 2026",
+    "date": "12 November 2026",
     "public_url": "https://jared-krauss.github.io/NHC16-LFR/",
     "short_name": "Notting Hill Carnival 2016",
     "lang": "en-GB"
@@ -55,6 +55,10 @@
   ],
   "chart_gallery_dir": "D:/Dev/tools/dashboard/dataviz-gallery",
   "licence_map": {},
+  "dead_links": [
+    "https://www.applytosupply.digitalmarketplace.service.gov.uk/g-cloud/services/269734654369580",
+    "https://uk.nec.com/en_GB/global/solutions/safety/surveillance/index.html"
+  ],
   "photos_cleared": [],
   "slideshow": {
     "items": [],

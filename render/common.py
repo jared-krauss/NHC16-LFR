@@ -8,8 +8,9 @@ from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parent.parent
 EMPTY_TEXT = "On its way"
-PRINTED_TEXT = "Printed copy at the talk"
-MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
+          "November", "December"]
+MONTH_ABBR = {m[:3]: m for m in MONTHS}
 INTERNAL_URL = re.compile(
     r"(localhost|127\.\d+\.\d+\.\d+|\b10\.\d+\.\d+\.\d+|192\.168\.|\b100\.\d+\.\d+\.\d+|\.ts\.net|tailscale|\.local\b|\.internal\b|:878[78]\b)",
     re.I)
@@ -27,17 +28,17 @@ def text(item, key):
 
 
 def fmt_date(value):
-    """'2017-03-12' (or a datetime string) -> '12 Mar 2017'; anything unparseable -> 'Undated'."""
+    """'2017-03-12' (or a datetime string) -> '12 March 2017'; anything unparseable -> '' (no date is shown)."""
     v = value.strip() if isinstance(value, str) else ""
     if not v:
-        return "Undated"
+        return ""
     for fmt, cand in (("%Y-%m-%d", v[:10]), ("%d/%m/%Y", v), ("%d %b %Y", v), ("%d %B %Y", v)):
         try:
             d = datetime.strptime(cand, fmt)
             return f"{d.day} {MONTHS[d.month - 1]} {d.year}"
         except ValueError:
             continue
-    return "Undated"
+    return ""
 
 
 _FULL_DATE = re.compile(r"\b(\d{1,2}) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]* (\d{4})\b")
@@ -56,23 +57,23 @@ def date_from_facts(value):
         return fmt_date(m.group(0))
     m = _FULL_DATE.search(v)
     if m:
-        return f"{int(m.group(1))} {m.group(2)} {m.group(3)}"
+        return f"{int(m.group(1))} {MONTH_ABBR[m.group(2)]} {m.group(3)}"
     m = _MONTH_YEAR.match(v)
     if m:
-        return f"{m.group(1)} {m.group(2)}"
+        return f"{MONTH_ABBR[m.group(1)]} {m.group(2)}"
     m = _YEAR_LEAD.match(v)
     return m.group(1) if m else ""
 
 
 def item_date(item):
-    """Date label for a card: top-level date, else the date in mla_facts, else 'Undated'."""
-    d = fmt_date(item.get("date")) if isinstance(item, dict) else "Undated"
-    if d != "Undated":
+    """Date label for a card: top-level date, else the date in mla_facts, else '' (no date is shown)."""
+    d = fmt_date(item.get("date")) if isinstance(item, dict) else ""
+    if d:
         return d
     facts = item.get("mla_facts") if isinstance(item, dict) else None
     if isinstance(facts, dict):
         facts = facts.get("date")
-    return date_from_facts(facts) or "Undated"
+    return date_from_facts(facts)
 
 
 def licence_line(*notes):
@@ -105,9 +106,9 @@ def poster_facts(ctx, p):
     """(source, date, licence html) for a poster, from its own fields and the whole_files row of the same PDF."""
     row = whole_file_for(ctx, item_path(p)) or {}
     source = (text(row, "title") or host_of(safe_external(text(p, "source_url")))
-              or host_of(safe_external(text(row, "source_url"))) or "Printed copy")
+              or host_of(safe_external(text(row, "source_url"))))
     d = item_date(p)
-    if d == "Undated" and row:
+    if not d and row:
         d = item_date(row)
     return source, d, licence_html(text(p, "licence_note"), text(row, "licence_note"))
 
@@ -293,11 +294,12 @@ def card(kind, title, source, date, badge, body="", level=2, attrs=""):
     """The one card pattern: title, then meta (source, date, badge), then body html."""
     h = f"h{level}"
     extra = (" " + attrs) if attrs else ""
+    parts = "".join(f'<span class="{c}">{esc(v)}</span>' for c, v in
+                    (("source", source), ("date", date), ("card-kind", badge)) if v)
+    meta = f'<p class="card-meta">{parts}</p>\n' if parts else ""
     return (f'<article class="card" data-kind="{esc(kind)}"{extra}>\n'
             f'<{h} class="card-title">{esc(title)}</{h}>\n'
-            f'<p class="card-meta"><span class="source">{esc(source)}</span>'
-            f'<span class="date">{esc(date)}</span><span class="card-kind">{esc(badge)}</span></p>\n'
-            f'{body}</article>')
+            f'{meta}{body}</article>')
 
 
 def empty_card(title, level=2, attrs=""):
@@ -312,10 +314,6 @@ def empty_card(title, level=2, attrs=""):
 def empty_state(label):
     """A whole section's empty state: one 'On its way' card titled with the section label."""
     return cards_wrap([empty_card(label)])
-
-
-def printed_note():
-    return f'<p class="card-note">{PRINTED_TEXT}</p>\n'
 
 
 def actions(*links):
@@ -333,7 +331,7 @@ def whole_file_card(ctx, item, level=2):
     path = item_path(item)
     url = safe_external(text(item, "source_url"))
     use = text(item, "use")
-    src = text(item, "outlet") or host_of(url) or "Printed copy"
+    src = text(item, "outlet") or host_of(url)
     date = item_date(item)
     kind = "pdf" if path.lower().endswith(".pdf") else "link"
     badge = "PDF" if kind == "pdf" else "Link"
@@ -344,8 +342,7 @@ def whole_file_card(ctx, item, level=2):
             links.append(file_link(rel, ctx["out"] / rel))
     if url:
         links.append(external_link(url, host_of(url) or src))
-    body = actions(*links) if links else printed_note()
-    return card(kind, title, src, date, badge, body, level)
+    return card(kind, title, src, date, badge, actions(*links), level)
 
 
 def sel_items(ctx, key):

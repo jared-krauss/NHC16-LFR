@@ -15,12 +15,37 @@ import sys
 from pathlib import Path
 
 from render import Page
-from render.common import (MONTHS, actions, empty_state, esc, file_size_label, fmt_date, host_file, host_of, item_date,
+from render.common import (MONTHS, actions, date_from_facts, empty_state, esc, file_size_label, fmt_date, host_file, host_of, item_date,
                            item_path, label, licence_for, licence_html, link, norm_path, project_path, safe_external,
                            text)
 
-THUMB_MAX_W = 240
+THUMB_MAX_W = 180
 SKIP_WORDS = {"the", "of", "and", "a", "an", "for", "on", "in"}
+
+
+def typo(s):
+    """Display-only typography: curly quotes, spaced en dash, no space before a full stop. Never used on URLs or citations."""
+    s = re.sub(r"(?<![\w’])'(?=\w)", "‘", s)
+    s = s.replace("'", "’")
+    s = re.sub(r'(?<![\w”])"(?=\w)', "“", s)
+    s = s.replace('"', "”")
+    s = s.replace(" - ", " – ")
+    return re.sub(r" \.(?= |$)", ".", s)
+
+
+def _breakable(html_text):
+    """Let long addresses in a citation wrap after each slash instead of in the middle of a word."""
+    def part(m):
+        t = m.group(0)
+        if t.startswith("<"):
+            return t
+        return re.sub(r"(\S*/\S*)", lambda w: w.group(1).replace("/", "/<wbr>"), t)
+    return re.sub(r"<[^>]+>|[^<]+", part, html_text)
+
+
+def _live(ctx, url):
+    """The address, or '' when site-config dead_links lists it (checked 404; the entry stays, only the link goes)."""
+    return "" if url in (ctx["config"].get("dead_links") or []) else url
 
 
 def _read(path):
@@ -97,7 +122,7 @@ def _date_parts(iso):
     """(sort key, display) for a citation date 'YYYY[-MM[-DD]]'."""
     m = re.match(r"^(\d{4})(?:-(\d{2}))?(?:-(\d{2}))?", iso or "")
     if not m:
-        return "9999", "Undated"
+        return "9999", ""
     y, mo, d = m.groups()
     key = y + "-" + (mo or "00") + "-" + (d or "00")
     if d:
@@ -170,6 +195,8 @@ def _entry(ctx, base, cit, ov, tools_cfg):
     title = _override_for(ov, base.get("path"), base.get("url")) or (cit or {}).get("title") or base["title"]
     cit_date = (cit or {}).get("date") or base.get("iso_date") or ""
     key, disp = _date_parts(cit_date)
+    if not disp:
+        disp = date_from_facts(base.get("facts_date"))
     outlet = base.get("outlet") or host_of(base.get("url") or "")
     cont = (cit or {}).get("container") or ""
     publisher = (cit or {}).get("publisher") or ""
@@ -179,7 +206,7 @@ def _entry(ctx, base, cit, ov, tools_cfg):
         if cand and cand.lower() not in author.lower() and author.lower() not in cand.lower():
             pub = cand
             break
-    base.update(title=title, author=author or "Author not stated", pub=pub, date_key=key, date_disp=disp,
+    base.update(title=title, title_disp=typo(title), author=author or "Author not stated", pub=pub, date_key=key, date_disp=disp,
                 type=(cit or {}).get("type") or base.get("type") or "")
     base["cit"] = cit
     return base
@@ -207,7 +234,7 @@ def _mla_html(ctx, entries):
         t = by.get(e["id"], "")
         t = re.sub(r"</?a\b[^>]*>", "", t)
         if t and "[MISSING" not in t and "None" not in t:
-            e["mla_html"] = t
+            e["mla_html"] = _breakable(t)
 
 
 def _load(ctx):
@@ -240,15 +267,18 @@ def _load(ctx):
     for w in ctx["sel"].get("whole_files", []):
         if text(w, "use") not in ("host", "link"):
             continue
-        url = safe_external(text(w, "source_url"))
+        url0 = safe_external(text(w, "source_url"))
+        url = _live(ctx, url0)
         path = item_path(w)
+        mf = w.get("mla_facts")
         base = {"title": text(w, "title"), "path": path, "url": url, "outlet": text(w, "outlet"),
-                "iso_date": text(w, "date"), "source_lists": {"whole_files"},
+                "iso_date": text(w, "date"), "facts_date": mf.get("date") if isinstance(mf, dict) else "",
+                "source_lists": {"whole_files"},
                 "selection_group": text(w, "group"), "use": text(w, "use"), "licence_note": text(w, "licence_note"),
                 "thumb_keys": [path], "id": slug(text(w, "title"))}
-        add(base, match(url, text(w, "title")))
+        add(base, match(url0, text(w, "title")))
     for n in ctx["sel"].get("news", []):
-        url = safe_external(text(n, "url"))
+        url = _live(ctx, safe_external(text(n, "url")))
         base = {"title": text(n, "title"), "path": "", "url": url, "outlet": text(n, "outlet"),
                 "iso_date": text(n, "date"), "source_lists": {"news"}, "selection_group": "", "use": "link",
                 "licence_note": "", "thumb_keys": [url], "id": slug(text(n, "title")),
@@ -295,12 +325,12 @@ def _load(ctx):
 def entry_title(ctx, source_id, fallback=""):
     """The one display title for a source id (used by Media and the Slideshow), else the fallback."""
     e = _load(ctx)["by_id"].get(source_id)
-    return e["title"] if e else fallback
+    return e["title_disp"] if e else fallback
 
 
 def entry_date(ctx, source_id):
     e = _load(ctx)["by_id"].get(source_id)
-    return e["date_disp"] if e else "Undated"
+    return e["date_disp"] if e else ""
 
 
 def has_entry(ctx, source_id):
@@ -344,8 +374,8 @@ def _ext_label(e, host):
 
 
 def _entry_html(ctx, e):
-    title = e["title"]
-    href, kind, aria, acts, note = "", "", "", [], ""
+    title = e["title_disp"]
+    href, kind, aria, acts = "", "", "", []
     if e["hosted"]:
         size = file_size_label(ctx["out"] / e["hosted"])
         ext = Path(e["hosted"]).suffix.lstrip(".").upper() or "File"
@@ -360,8 +390,6 @@ def _entry_html(ctx, e):
         lab = _ext_label(e, host_of(e["url"]))
         aria = f"{title} ({lab[0].lower() + lab[1:]})"
         acts.append(link("external", e["url"], lab, f"{lab}: {title}"))
-    else:
-        note = '<p class="card-note">Printed copy at the talk</p>\n'
     if href:
         ext_attr = ' rel="noopener"' if kind == "external" else ""
         h = (f'<a data-link="{kind}" href="{esc(href)}"{ext_attr} aria-label="{esc(aria)}">{esc(title)}</a>')
@@ -378,12 +406,13 @@ def _entry_html(ctx, e):
         xrefs += '<p class="bib-pages"><small>Figures from this document: ' + " ".join(bits) + "</small></p>\n"
     cite = f'<p class="bib-cite"><small>{e["mla_html"]}</small></p>\n' if e.get("mla_html") else ""
     pub = f'<span class="bib-pub">{esc(e["pub"])}</span>' if e["pub"] else ""
+    date = f'<span class="date">{esc(e["date_disp"])}</span>' if e["date_disp"] else ""
     return (f'<article class="card bib-entry" id="{esc(e["id"])}" data-kind="{"pdf" if e["hosted"] else "link"}">\n'
             + _thumb_html(e, href, aria, kind) + '\n<div class="bib-body">\n'
             f'<h3 class="card-title bib-title">{h}</h3>\n'
-            f'<p class="card-meta"><span class="source"><strong class="bib-author">{esc(e["author"])}</strong>{pub}</span>'
-            f'<span class="date">{esc(e["date_disp"])}</span><span class="card-kind">{esc(e["badge"])}</span></p>\n'
-            + cite + xrefs + (f'<div class="card-actions">{"".join(acts)}</div>\n' if acts else "") + note
+            f'<p class="card-meta"><strong class="bib-author source">{esc(e["author"])}</strong>{pub}{date}'
+            f'<span class="card-kind">{esc(e["badge"])}</span></p>\n'
+            + cite + xrefs + (f'<div class="card-actions">{"".join(acts)}</div>\n' if acts else "")
             + licence_html(e.get("licence_note", "")) + '</div>\n</article>')
 
 
@@ -399,7 +428,7 @@ def render(ctx):
         rows = data["groups"].get(g["id"], [])
         if not rows:
             continue
-        jump.append(f'<li>{link("page", "#" + g["id"], g["label"] + " (" + str(len(rows)) + ")")}</li>')
+        jump.append(f'<li>{link("anchor", "#" + g["id"], g["label"] + " (" + str(len(rows)) + ")")}</li>')
         sections.append(
             f'<section class="card-group bib-group" id="{esc(g["id"])}" aria-labelledby="h-{esc(g["id"])}">\n'
             f'<h2 id="h-{esc(g["id"])}" class="group-title">{esc(g["label"])}</h2>\n<div class="bib-list">\n'

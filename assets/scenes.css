@@ -51,7 +51,7 @@ html.sv-open, html.sv-open body { overflow: hidden; }
 .sv-when { margin: 0.1rem 0 0; font-size: 0.9rem; color: var(--sv-label); }
 .sv-figs { grid-area: figs; margin: 0; display: flex; gap: 1.4rem; flex-wrap: wrap; }
 .sv-fig { margin: 0; }
-.sv-fig dt { font-size: 0.7rem; line-height: 1.2; letter-spacing: 0.07em; text-transform: uppercase; font-weight: 500; color: var(--sv-label); }
+.sv-fig dt { font-size: var(--sv-fs-s, 0.875rem); line-height: 1.2; letter-spacing: 0.07em; text-transform: uppercase; font-weight: 500; color: var(--sv-label); }
 .sv-fig dd { margin: 0; font-size: clamp(1.25rem, 4.6vw, 1.7rem); font-weight: 800; line-height: 1.15; font-variant-numeric: tabular-nums; color: var(--sv-text); }
 @media (min-width: 760px) {
   .sv-top { grid-template-columns: auto 1fr auto; grid-template-areas: "title figs burger"; column-gap: 2.2rem; }
@@ -95,17 +95,17 @@ html.sv-open, html.sv-open body { overflow: hidden; }
 .sv-bottom {
   display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0 1.2rem; padding: 0.15rem 0.9rem 0.25rem;
 }
-.sv-source { display: inline-flex; align-items: center; min-height: 44px; flex: 1 1 18rem; min-width: 0; font-size: 0.82rem; line-height: 1.3; color: var(--sv-link); text-decoration: underline; text-underline-offset: 2px; }
+.sv-source { display: inline-flex; align-items: center; min-height: 44px; flex: 1 1 18rem; min-width: 0; font-size: 0.875rem; line-height: 1.3; color: var(--sv-link); text-decoration: underline; text-underline-offset: 2px; }
 .sv-bottom nav { flex: 0 1 auto; }
 .sv-nav { display: flex; flex-wrap: wrap; margin: 0; padding: 0; list-style: none; gap: 0 0.1rem; }
-.sv-nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 0.42rem; font-size: 0.82rem; font-weight: 600; color: var(--sv-text); text-decoration: none; border-radius: 6px; }
-@media (max-width: 30rem) { .sv-nav { gap: 0; } .sv-nav a { padding: 0 0.28rem; font-size: 0.78rem; } }
+.sv-nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 0.42rem; font-size: 0.875rem; font-weight: 600; color: var(--sv-text); text-decoration: none; border-radius: 6px; }
+@media (max-width: 30rem) { .sv-nav { gap: 0; } .sv-nav a { padding: 0 0.28rem; font-size: 0.8125rem; } }
 .sv-nav a:hover { background: rgba(255, 255, 255, 0.14); text-decoration: underline; }
 .sv-nav a.sv-other { color: var(--sv-green); }
 .sv a:focus-visible, .sv button:focus-visible { outline: 3px solid var(--sv-link); outline-offset: 1px; }
 
-.sv-gallery { position: absolute; inset: 0; z-index: 8; overflow: auto; background: rgba(8, 10, 12, 0.96); padding: 0 0.9rem 1.2rem; outline: none; }
-.sv-gal-bar { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; justify-content: space-between; padding: 0.4rem 0; background: rgba(8, 10, 12, 0.98); }
+.sv-gallery { position: absolute; inset: 0; z-index: 8; overflow: auto; background: #080a0c; padding: 0 0.9rem 1.2rem; outline: none; }
+.sv-gal-bar { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; justify-content: space-between; padding: 0.4rem 0; background: #080a0c; }
 .sv-gal-bar h3 { margin: 0; font-size: 1.1rem; }
 .sv-x { width: 44px; height: 44px; font-size: 1.9rem; line-height: 1; color: var(--sv-text); background: transparent; border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 8px; cursor: pointer; }
 .sv-grid { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(min(28vw, 170px), 1fr)); }
@@ -114,7 +114,7 @@ html.sv-open, html.sv-open body { overflow: hidden; }
 .sv-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .sv-thumb:hover { border-color: var(--sv-green); }
 
-.sv-lightbox { position: fixed; inset: 0; z-index: 9; display: grid; grid-template-rows: auto 1fr; background: rgba(4, 5, 6, 0.97); outline: none; }
+.sv-lightbox { position: fixed; inset: 0; z-index: 9; display: grid; grid-template-rows: auto 1fr; background: #040506; outline: none; }
 .sv-lb-bar { display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; padding: 0.4rem 0.9rem; }
 .sv-go { min-height: 44px; padding: 0.4rem 1rem; font: inherit; font-weight: 700; color: #06210f; background: var(--sv-green); border: 0; border-radius: 8px; cursor: pointer; margin-left: auto; }
 .sv-lb-main { position: relative; display: grid; grid-template-columns: 44px 1fr 44px; align-items: center; min-height: 0; padding: 0 0.3rem 0.8rem; }

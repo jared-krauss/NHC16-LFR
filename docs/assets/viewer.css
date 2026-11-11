@@ -1,5 +1,5 @@
 html.viewer-open, html.viewer-open body { overflow: hidden; }
-.viewer { position: fixed; inset: 0; z-index: 100; background: rgba(0, 0, 0, 0.96); color: #f2f2f2; display: flex; flex-direction: column; }
+.viewer { position: fixed; inset: 0; z-index: 100; background: #000; color: #f2f2f2; display: flex; flex-direction: column; }
 .viewer[hidden] { display: none; }
 .viewer-bar { flex: none; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.25rem 1rem; padding: 0.5rem var(--gutter); }
 .viewer-label { margin: 0; font-weight: 700; max-width: 100%; flex: 1 1 14rem; }

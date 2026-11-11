@@ -12,7 +12,7 @@ import re
 from pathlib import Path
 
 from render import Page
-from render.common import esc, label
+from render.common import EMPTY_TEXT, esc, label
 
 HEAD = '<link rel="stylesheet" href="assets/paper.css">\n<link rel="stylesheet" href="assets/viewer.css">'
 SCRIPTS = '<script src="assets/viewer.js" defer></script>\n<script src="assets/paper.js" defer></script>'
@@ -23,6 +23,22 @@ HEADING = re.compile(r"^(#{1,3})\s+(.*\S)\s*$")
 
 def count(ctx):
     return 0
+
+
+def has_body(ctx):
+    """True when the paper file holds at least one block of text below the page heading."""
+    p = source_path(ctx)
+    if not p.is_file():
+        return False
+    blocks = parse(p.read_text(encoding="utf-8-sig"))
+    if blocks and blocks[0][0] == "h" and blocks[0][1] == 1:
+        blocks = blocks[1:]
+    return bool(blocks)
+
+
+def home_note(ctx):
+    """The Home card line: the empty state while the paper has no text, else a neutral invitation."""
+    return "Read along with the talk" if has_body(ctx) else EMPTY_TEXT
 
 
 def source_path(ctx):
@@ -134,7 +150,7 @@ def menu_html(figs, heads):
 
 def figure_data(figs):
     """JSON the viewer needs per figure, keyed by number."""
-    return json.dumps({str(n): {"label": f"Fig. {n} {f['title']}", "alt": f["alt"], "web": f["web"], "full": f["full"],
+    return json.dumps({str(n): {"label": f"Fig. {n}: {f['title']}", "alt": f["alt"], "web": f["web"], "full": f["full"],
                                 "w": f["web_w"], "h": f["web_h"]} for n, f in figs.items()}, ensure_ascii=False)
 
 

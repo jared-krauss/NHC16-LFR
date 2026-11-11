@@ -204,6 +204,8 @@
     big.src = it.full || it.web;
   }
 
+  var pushed = false;
+
   function open(i, from) {
     if (!root) build();
     opener = from;
@@ -212,9 +214,25 @@
     document.documentElement.classList.add("viewer-open");
     show(i);
     btns.close.focus();
+    if (!pushed && location.hash !== "#viewer") {
+      pushed = true;
+      location.hash = "viewer";
+    }
   }
 
+  window.addEventListener("hashchange", function () {
+    if (root && !root.hidden && location.hash !== "#viewer") { pushed = false; hide(); }
+  });
+
   function close() {
+    if (!root || root.hidden) return;
+    var wasPushed = pushed;
+    pushed = false;
+    hide();
+    if (wasPushed) history.back();
+  }
+
+  function hide() {
     if (!root || root.hidden) return;
     root.hidden = true;
     document.documentElement.classList.remove("viewer-open");

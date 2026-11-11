@@ -210,7 +210,7 @@ def render(ctx):
         body = (f'<div class="scene-controls"><button type="button" class="scene-btn" data-action="load">'
                 f'Load 3D scene ({esc(fmt_mb(sog_bytes + eng))})</button></div>'
                 '<noscript><p class="scene-nojs">Needs JavaScript</p></noscript>\n')
-        cards.append(card("section", title, "Jared Krauss", facts.get("date_display", "") or "Undated", "3D scene",
+        cards.append(card("section", title, "Jared Krauss", facts.get("date_display", ""), "3D scene",
                           body, attrs=f'data-scene="{esc(sid)}"'))
     page = '<div class="scenes-grid">\n' + "\n".join(cards) + "\n</div>\n"
     page += '<p class="scenes-home">' + link("page", "index.html", "Home") + "</p>\n"

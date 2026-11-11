@@ -8,7 +8,7 @@
     var head = card ? card.querySelector(".card-title") : null;
     var alt = img ? img.alt : "";
     return {
-      label: head ? head.textContent.replace(/\s+/g, " ").trim() : alt,
+      label: head ? head.textContent.replace(/\s+/g, " ").trim().replace(/^(Fig\. \d+) /, "$1: ") : alt,
       alt: alt,
       web: a.dataset.web || (img ? img.src : ""),
       full: a.getAttribute("href"),

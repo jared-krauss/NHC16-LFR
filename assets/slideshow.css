@@ -66,3 +66,18 @@ html.slide-live, html.slide-live body { overflow: hidden; }
 }
 html:not(.slide-live) #slideshow .slide-bar { display: none; }
 .slide-live #slideshow:not(.is-live) .slide:not(:first-child) { display: none; }
+
+.slide-live #slideshow { padding-bottom: 1rem; }
+@media (max-width: 48rem) {
+  .slide-live #slideshow .card-title, .slide-live #slideshow .card-meta, .slide-live #slideshow .slide-caption { padding-right: 3.25rem; box-sizing: border-box; }
+}
+@media (max-width: 40rem) {
+  .slide-live #slideshow .card-title { font-size: var(--fs-l); line-height: 1.25; }
+}
+@media (max-width: 30rem) {
+  #slideshow .slide-bar button, #slideshow .slide-bar .slide-home { padding: 0 0.5rem; }
+  #slideshow .slide-counter { min-width: 3rem; }
+  #slideshow .slide-bar [data-action=pause] { min-width: 4rem; }
+  #slideshow .slide-bar [data-action=fullscreen] { margin-left: 0; }
+  .slide-live #slideshow .slide-bar { gap: 0.3rem; }
+}

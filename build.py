@@ -181,7 +181,7 @@ def wrap(page, config, template):
     head = page.head_extra
     if page.noindex:
         head = '<meta name="robots" content="noindex">\n' + head
-    title = page.title if page.slug == "index" else f"{page.title} | {short_name(config)}"
+    title = site["talk_title"] if page.slug == "paper" else page.title if page.slug == "index" else f"{page.title} | {short_name(config)}"
     egg = hidden.get("scenes", "3D scenes")
     subs = {"lang": esc(site.get("lang", "en")), "title": esc(title), "head_extra": head,
             "site_name": esc(short_name(config)), "nav": nav_html(config, page.slug), "h1": esc(page.h1),

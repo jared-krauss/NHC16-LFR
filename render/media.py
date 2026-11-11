@@ -32,6 +32,52 @@ def _dims(path):
         return None
 
 
+TRIM_LIMIT = 0.04
+TRIM_PAD = 0.015
+
+
+def _trim_box(path):
+    """Fractional crop box (l, t, r, b) that trims a figure's uneven white margin, or None when the margins are even enough."""
+    try:
+        import os
+        import stat
+        from PIL import Image, ImageChops
+        os.chmod(path, stat.S_IWRITE)
+        with Image.open(path) as im:
+            rgb = im.convert("RGB")
+            bb = ImageChops.difference(rgb, Image.new("RGB", rgb.size, (255, 255, 255))).point(lambda v: 255 if v > 12 else 0).getbbox()
+            w, h = rgb.size
+        if not bb:
+            return None
+        l, t, r, b = bb[0] / w, bb[1] / h, (w - bb[2]) / w, (h - bb[3]) / h
+        if max(l, t, r, b) <= TRIM_LIMIT:
+            return None
+        pad = TRIM_PAD * max(w, h)
+        return (max(0, bb[0] - pad) / w, max(0, bb[1] - pad) / h, min(w, bb[2] + pad) / w, min(h, bb[3] + pad) / h)
+    except Exception:
+        return None
+
+
+def _apply_trim(path, box):
+    """Crop a copied site image to a fractional box (never the original file)."""
+    try:
+        import os
+        import stat
+        from PIL import Image
+        os.chmod(path, stat.S_IWRITE)
+        with Image.open(path) as im:
+            im.load()
+            w, h = im.size
+            cropped = im.crop((round(box[0] * w), round(box[1] * h), round(box[2] * w), round(box[3] * h)))
+            fmt = im.format
+        if fmt == "WEBP":
+            cropped.save(path, "WEBP", quality=90, method=6)
+        else:
+            cropped.save(path, fmt)
+    except Exception:
+        pass
+
+
 def figures(ctx):
     """The figures from figures-config.json with their images copied into the site, sorted by number."""
     if "_figures" in ctx:
@@ -68,6 +114,11 @@ def figures(ctx):
             full_rel = ctx["copy_asset"](full, f"media/fig-{n}-full{Path(full).suffix.lower()}") or web_rel
         if not web_rel:
             continue
+        box = _trim_box(ctx["out"] / full_rel)
+        if box:
+            for rel in {web_rel, thumb_rel, full_rel} - {None}:
+                _apply_trim(ctx["out"] / rel, box)
+            ctx["log"](f"media: Fig. {n} white margin trimmed on the site copies")
         wd = _dims(ctx["out"] / web_rel) or (1600, 1000)
         td = _dims(ctx["out"] / thumb_rel) if thumb_rel else None
         out.append({"n": n, "id": text(r, "id"), "title": text(r, "title"), "kind": text(r, "kind") or "illustration",
@@ -96,7 +147,7 @@ def count(ctx):
 def _figure_card(ctx, f):
     from render import bibliography
     title = bibliography.entry_title(ctx, f["source_id"], f["source_title"])
-    date = bibliography.entry_date(ctx, f["source_id"]) if bibliography.has_entry(ctx, f["source_id"]) else "Undated"
+    date = bibliography.entry_date(ctx, f["source_id"]) if bibliography.has_entry(ctx, f["source_id"]) else ""
     named = f"{title}, p. {f['printed_page']}" if f["printed_page"] else title
     if bibliography.has_entry(ctx, f["source_id"]):
         src_name = link("page", f"bibliography.html#{f['source_id']}", named)
@@ -110,6 +161,7 @@ def _figure_card(ctx, f):
            f'data-w="{f["web_w"]}" data-h="{f["web_h"]}" aria-label="{esc(aria)}">'
            f'<img src="{esc(f["thumb"])}"{srcattr} width="{f["thumb_w"]}" height="{f["thumb_h"]}" loading="lazy" '
            f'alt="{esc(f["alt"])}"></a>\n')
+    date_span = f'<span class="date">{esc(date)}</span>' if date else ""
     links = []
     if f["kind"] == "chart":
         rec = chart_record(ctx, f["id"])
@@ -122,9 +174,8 @@ def _figure_card(ctx, f):
     return (f'<article class="card fig-card" id="fig-{f["n"]}" data-kind="figure">\n'
             f'<h2 class="card-title"><span class="fig-label">Fig. {f["n"]}</span> '
             f'<span class="fig-title">{esc(f["title"])}</span></h2>\n'
-            f'<p class="card-meta"><span class="source">Source: {src_name}</span>'
-            f'<span class="date">{esc(date)}</span><span class="card-kind">{badge}</span></p>\n'
-            + img + actions(*links) + '</article>')
+            f'<p class="card-meta">{date_span}<span class="card-kind">{badge}</span></p>\n'
+            + img + f'<p class="fig-source card-meta">Source: {src_name}</p>\n' + actions(*links) + '</article>')
 
 
 def _chart_card(rec):
@@ -138,7 +189,7 @@ def _chart_card(rec):
     src = f'<p class="chart-source-line">{esc(rec["source_line"])}</p>\n' if rec["source_line"] else ""
     lab = f'Open interactive chart (about {size_mb(rec["weight"])} download)'
     body = fig + src + actions(link("page", rec["page"], lab, f'{lab}: {rec["title"]}'))
-    return card("chart", rec["title"], "ALHFRS", rec.get("date", "Undated"), "Chart", body)
+    return card("chart", rec["title"], "ALHFRS", rec.get("date", ""), "Chart", body)
 
 
 def render(ctx):
@@ -157,7 +208,7 @@ def render(ctx):
         return Page("media", lab, lab, empty_state(lab), head_extra=HEAD)
     parts = []
     if len(figs) > 1:
-        jump = "".join(f'<li>{link("page", "#fig-" + str(f["n"]), "Fig. " + str(f["n"]))}</li>' for f in figs)
+        jump = "".join(f'<li>{link("anchor", "#fig-" + str(f["n"]), "Fig. " + str(f["n"]))}</li>' for f in figs)
         parts.append(f'<ul class="fig-jump" aria-label="Jump to a figure">{jump}</ul>')
     if figs:
         parts.append('<div class="fig-grid">\n' + "\n".join(_figure_card(ctx, f) for f in figs) + "\n</div>")

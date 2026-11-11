@@ -180,7 +180,7 @@ def _build_page(ctx, cid, path):
         page = re.sub(r"</body>", extra + "</body>", page, count=1, flags=re.I)
     page = re.sub(r"</body>", lambda m: "</main>\n" + _frame_bottom(ctx) + "</body>", page, count=1, flags=re.I)
     dm = re.search(r'<meta[^>]+name="(?:date|dcterms\.date)"[^>]+content="([^"]+)"', src, re.I)
-    return page, {"title": title, "source_line": source_line, "libs": libs, "date": fmt_date(dm.group(1)) if dm else "Undated"}
+    return page, {"title": title, "source_line": source_line, "libs": libs, "date": fmt_date(dm.group(1)) if dm else ""}
 
 
 def _frame_top(ctx):
@@ -305,7 +305,7 @@ def chart_record(ctx, cid):
         weight += f.stat().st_size if f.is_file() else 0
     rec = {"id": cid, "title": info["title"], "source_line": info["source_line"], "page": f"charts/{cid}.html",
            "thumb": thumb or large, "thumb_width": tw if thumb else lw, "thumb_height": th if thumb else lh,
-           "large": large or thumb, "width": lw, "height": lh, "weight": weight, "date": info.get("date", "Undated")}
+           "large": large or thumb, "width": lw, "height": lh, "weight": weight, "date": info.get("date", "")}
     cache[cid] = rec
     return rec
 
@@ -432,12 +432,12 @@ def doc_card(ctx, item, level=2):
     """
     from urllib.parse import urlparse
     from render.common import (actions, card, external_link, file_link, file_size_label, host_file, host_of, item_date,
-                               licence_html, link, printed_note, safe_external)
+                               licence_html, link, safe_external)
     title = text(item, "title")
     path = item_path(item)
     url = safe_external(text(item, "source_url"))
     use = text(item, "use")
-    src = text(item, "outlet") or host_of(url) or "Printed copy"
+    src = text(item, "outlet") or host_of(url)
     local = project_path(path) if path else None
     is_pdf = bool(path) and path.lower().endswith(".pdf")
     links = []
@@ -454,6 +454,6 @@ def doc_card(ctx, item, level=2):
             links.append(link("external", url, lab, f"{lab}: {title}"))
         else:
             links.append(link("external", url, f"Opens {where}", f"Opens {where}: {title}"))
-    body = actions(*links) if links else printed_note()
+    body = actions(*links)
     body += licence_html(text(item, "licence_note"))
     return card("pdf" if is_pdf else "link", title, src, item_date(item), "PDF" if is_pdf else "Link", body, level)

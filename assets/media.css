@@ -1,5 +1,3 @@
-.fig-jump, .bib-jump { list-style: none; margin: 0 0 1rem; padding: 0; display: flex; flex-wrap: wrap; gap: 0 0.5rem; }
-.fig-jump a, .bib-jump a { padding: 0 0.5rem; }
 .fig-grid { display: grid; gap: var(--gap); grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr)); align-items: start; }
 .fig-card { scroll-margin-top: 1rem; }
 .fig-card .card-title { display: flex; flex-direction: column; gap: 0.1rem; font-weight: 700; }
@@ -7,6 +5,8 @@
 .fig-title { font-size: var(--fs-l); line-height: 1.3; }
 main .fig-card a.fig-image { display: block; min-height: 44px; margin: 0.25rem 0 0.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: 4px; }
 main .fig-card a.fig-image::before, main .fig-card a.fig-image::after { content: none; }
-main .fig-card .card-meta .source a { display: inline-block; min-height: 44px; padding: 0.65rem 0; }
+main .fig-card .fig-source a { display: inline-block; min-height: 44px; padding: 0.65rem 0; }
+.fig-source { font-size: var(--fs-s); color: var(--muted); margin: 0 0 0.25rem; overflow-wrap: anywhere; }
 .fig-image img { display: block; width: 100%; height: auto; object-fit: contain; }
 .media-note { margin: 1.5rem 0; padding: 0.5rem 0.75rem; border: 1px dashed var(--border-strong); border-radius: 6px; color: var(--muted); max-width: 36rem; }
+main .fig-card .fig-source a[data-link="page"]::after { margin-left: 0.4em; }

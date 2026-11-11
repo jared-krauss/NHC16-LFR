@@ -97,7 +97,7 @@ def run_view(p, base, tag, w, h, shots):
     pg.wait_for_selector(".viewer:not([hidden])")
     label = pg.inner_text(".viewer-label")
     ok(label.startswith("Fig. 3"), f"{tag}: tapping Figure 3 opens Fig. 3 in the viewer ('{label[:30]}')")
-    ok(pg.url.split("/")[-1] == "paper.html", f"{tag}: stayed on the Paper page")
+    ok(pg.url.split("/")[-1].split("#")[0] == "paper.html", f"{tag}: stayed on the Paper page")
     pg.wait_for_timeout(600)
     pg.screenshot(path=str(shots / f"paper-{tag}-viewer.png"))
     pg.keyboard.press("ArrowRight")

@@ -21,7 +21,16 @@
 .chart-page .js-plotly-plot, .chart-page .js-plotly-plot .plotly, .chart-page .js-plotly-plot svg,
 .chart-page .js-plotly-plot .nsewdrag, .chart-page .js-plotly-plot .drag { touch-action: pan-y !important; }
 .chart-page svg { max-width: 100%; touch-action: pan-y; }
-.card-actions a[data-link] { max-width: 100%; overflow-wrap: anywhere; word-break: break-word; }
+main .card-actions a[data-link] { display: inline-block; min-height: 44px; padding: 0.6rem 0; max-width: 100%; overflow-wrap: anywhere; }
+main .card-actions a[data-link="page"]::after, main .card-actions a[data-link="external"]::after { margin-left: 0.35em; }
+main .card-actions a[data-link="file"]::before { margin-right: 0.35em; }
+.fig-jump, .bib-jump { list-style: none; margin: 0 0 1.25rem; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+main .fig-jump a, main .bib-jump a {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 0.9rem;
+  color: var(--text); font-weight: 700; text-decoration: none;
+  background: var(--surface); border: 1px solid var(--border-strong); border-radius: 22px;
+}
+main .fig-jump a:hover, main .bib-jump a:hover { text-decoration: underline; text-underline-offset: 0.2em; }
 .card-licence { font-size: var(--fs-s); color: var(--muted); margin: 0.25rem 0 0; overflow-wrap: anywhere; }
 .card-group { margin: 0 0 2rem; }
 .group-title { margin: 1.5rem 0 0.75rem; }
@@ -31,6 +40,7 @@
 @media (min-width: 64rem) { .bib-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (min-width: 100rem) { .bib-list { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .bib-entry { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); column-gap: 0.75rem; align-items: start; scroll-margin-top: 1rem; padding: 1rem; }
+@media (max-width: 30rem) { .bib-entry { grid-template-columns: 4rem minmax(0, 1fr); column-gap: 0.6rem; padding: 0.75rem; } }
 @media (min-width: 40rem) { .bib-entry { column-gap: 1rem; } }
 .bib-thumb { display: block; width: 100%; aspect-ratio: 3 / 4; overflow: hidden; border: 1px solid var(--border); border-radius: 3px; background: var(--bg); text-decoration: none; }
 main .bib-entry a.bib-thumb { min-height: 0; display: block; }
@@ -44,17 +54,16 @@ main .bib-entry a.bib-thumb::before, main .bib-entry a.bib-thumb::after { conten
 @media (prefers-color-scheme: dark) { .bib-tile { background: hsl(var(--hue) 22% 22%); color: hsl(var(--hue) 50% 88%); } }
 .bib-body { min-width: 0; }
 .bib-title { margin-bottom: 0.35rem; }
-.bib-title a { display: inline; min-height: 0; }
+.bib-title a { display: inline; min-height: 0; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
 main .bib-title a[data-link]::before, main .bib-title a[data-link]::after { content: none; }
 .bib-entry .card-meta { display: flex; flex-wrap: wrap; align-items: baseline; margin-bottom: 0.5rem; }
-.bib-entry .card-meta .source { display: contents; }
-.bib-entry .bib-author { flex: 0 0 100%; font-size: var(--fs-m); font-weight: 700; color: var(--text); }
-.bib-entry .bib-pub { font-style: normal; }
-.bib-entry .bib-pub + .date::before, .bib-entry .date::before { content: "\00b7"; margin: 0 0.5em; }
-.bib-entry .bib-author + .date::before { content: none; }
-.bib-entry .bib-author + .date { margin-right: 0; }
-.bib-cite { font-size: var(--fs-s); color: var(--muted); margin: 0 0 0.5rem; overflow-wrap: anywhere; }
+.bib-entry .bib-author { flex: 0 0 100%; font-size: var(--fs-m); font-weight: 400; color: var(--text); }
+.bib-entry .bib-pub, .bib-entry .date { font-style: normal; font-weight: 400; color: var(--muted); }
+.bib-cite { font-size: var(--fs-s); color: var(--muted); margin: 0 0 0.5rem; overflow-wrap: break-word; }
 .bib-cite a { color: var(--muted); }
 .bib-pages { font-size: var(--fs-s); color: var(--muted); margin: 0 0 0.5rem; }
 .bib-cite small, .bib-pages small { font-size: inherit; }
 .bib-entry .card-licence { font-size: var(--fs-m); }
+.bib-entry .card-meta .date::before { content: none; margin: 0; }
+.bib-entry .card-meta .bib-pub:has(+ .date)::after { content: "\00b7"; margin: 0 0.5em; }
+.bib-entry .card-meta .date { white-space: nowrap; }

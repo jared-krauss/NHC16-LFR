@@ -50,7 +50,7 @@ def _resolve(ctx, it):
             print(f"slideshow: skipped chart {ref} (no image)")
             return None
         return dict(kind="chart", badge="Chart", title=img.get("title") or ref,
-                    source=img.get("source_line") or "Chart", date="Undated", caption="", img=img)
+                    source=img.get("source_line") or "Chart", date="", caption="", img=img)
     if kind == "figure":
         from render.media import figures, source_line
         f = next((x for x in figures(ctx) if str(x["n"]) == str(ref)), None)
@@ -58,10 +58,10 @@ def _resolve(ctx, it):
             print(f"slideshow: skipped Fig. {ref} (not found)")
             return None
         from render import bibliography
-        date = bibliography.entry_date(ctx, f["source_id"]) if bibliography.has_entry(ctx, f["source_id"]) else "Undated"
+        date = bibliography.entry_date(ctx, f["source_id"]) if bibliography.has_entry(ctx, f["source_id"]) else ""
         img = {"src": f["web"], "thumb": f["thumb"], "width": f["web_w"], "height": f["web_h"], "alt": f["alt"]}
         return dict(kind="figure", badge="Illustration" if f["kind"] != "chart" else "Chart",
-                    title=f"Fig. {f['n']} - {f['title']}", source=source_line(ctx, f), date=date, caption="", img=img)
+                    title=f"Fig. {f['n']}: {f['title']}", source=source_line(ctx, f), date=date, caption="", img=img)
     if kind == "poster":
         row = _find(ctx, "posters_a3", ref, it.get("page"))
         img = _call("poster_image", ctx, row) if row else None
@@ -90,7 +90,7 @@ def _resolve(ctx, it):
         if not rel:
             print(f"slideshow: skipped video {ref}")
             return None
-        return dict(kind="video", badge="Video", title=text(row, "title"), source="Video", date="Undated",
+        return dict(kind="video", badge="Video", title=text(row, "title"), source="Video", date="",
                     caption="", img={"src": rel, "width": 1280, "height": 720})
     print(f"slideshow: skipped {kind} {ref} (kind not supported)")
     return None
