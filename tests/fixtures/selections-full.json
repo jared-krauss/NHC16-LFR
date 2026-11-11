@@ -1,0 +1,35 @@
+{
+  "updated": "2026-11-11T12:00:00",
+  "whole_files": [
+    {"title": "Fixture document A", "path": "tests/fixtures/assets/doc-licensed-print.pdf", "use": "print", "licence_note": "Fixture Open Government Licence v3.0", "source_url": "https://example.org/fixture/doc-a", "outlet": "Fixture Outlet One", "date": "2016-08-29", "pages": 1},
+    {"title": "Fixture document B (no licence)", "path": "tests/fixtures/assets/doc-unlicensed.pdf", "use": "host", "licence_note": "", "source_url": "https://example.org/fixture/doc-b"},
+    {"title": "Fixture document C (licence by map)", "path": "tests/fixtures/assets/doc-licence-map.pdf", "use": "host", "licence_note": "", "source_url": "https://example.org/fixture/doc-c"},
+    {"title": "Fixture link document (no date)", "path": "", "use": "link", "licence_note": "", "source_url": "https://example.org/fixture/doc-d"},
+    {"title": "Fixture print item without URL or licence", "path": "tests/fixtures/assets/doc-unlicensed.pdf", "use": "print", "licence_note": "", "source_url": ""}
+  ],
+  "posters_a3": [
+    {"title": "Fixture poster A", "source_path": "tests/fixtures/assets/poster-licensed.pdf", "page": 1, "why": "Fixture why-text in the owner's words."},
+    {"title": "Fixture poster B (no licence)", "source_path": "tests/fixtures/assets/poster-unlicensed.pdf", "page": 1, "why": ""}
+  ],
+  "charts_ready": [
+    {"id": "dv-003", "url": "http://jareds-pc.tailnet.ts.net:8787/dataviz-gallery/dv-003.html"},
+    {"id": "dv-005", "url": "http://jareds-pc.tailnet.ts.net:8787/dataviz-gallery/dv-005.html"}
+  ],
+  "charts_tweak": [
+    {"id": "dv-006", "url": "http://jareds-pc.tailnet.ts.net:8787/dataviz-gallery/dv-006.html", "tweaks": "Fixture tweak note"}
+  ],
+  "news": [
+    {"title": "Fixture news article", "outlet": "Fixture Gazette", "date": "2016-08-30", "url": "https://example.org/fixture/news-1", "kind": "news"},
+    {"title": "Fixture commentary piece", "outlet": "Fixture Review", "date": "2017-02-14", "url": "https://example.org/fixture/commentary-1", "kind": "commentary"},
+    {"title": "Fixture second news article", "outlet": "Fixture Times", "date": "2016-09-02", "url": "https://example.org/fixture/news-2", "kind": "news"},
+    {"title": "Fixture second commentary piece", "outlet": "Fixture Journal", "date": "2018-05-21", "url": "https://example.org/fixture/commentary-2", "kind": "commentary"},
+    {"title": "Fixture undated news item", "outlet": "Fixture Daily", "date": "", "url": "https://example.org/fixture/news-undated", "kind": "news"}
+  ],
+  "photos": [
+    {"title": "Fixture photo title (cleared)", "path": "tests/fixtures/assets/photo-cleared.png", "caption": "Fixture caption (cleared)"},
+    {"title": "Fixture photo title (NOT cleared)", "path": "tests/fixtures/assets/photo-uncleared.png", "caption": "Fixture caption (NOT cleared)"}
+  ],
+  "splats": [
+    {"title": "Fixture render still", "url_or_path": "tests/fixtures/assets/renders/walworth-still.png"}
+  ]
+}

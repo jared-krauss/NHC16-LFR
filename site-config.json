@@ -1,0 +1,45 @@
+{
+  "site": {
+    "talk_title": "Live Facial Recognition at Notting Hill Carnival: The Met's First London Deployment, 2016",
+    "speaker": "Jared Krauss",
+    "event": "School of Architecture Research Conference",
+    "date": "12 Nov 2026",
+    "public_url": "https://jared-krauss.github.io/NHC16-LFR/",
+    "lang": "en-GB"
+  },
+  "selections_path": "E:/Outputs/phd-conference-2026-11-12/selections.json",
+  "sections": [
+    {"slug": "index", "label": "Home"},
+    {"slug": "charts", "label": "Charts"},
+    {"slug": "posters", "label": "Posters"},
+    {"slug": "handouts", "label": "Handouts"},
+    {"slug": "documents", "label": "Documents"},
+    {"slug": "news", "label": "News"},
+    {"slug": "slideshow", "label": "Slideshow"}
+  ],
+  "hidden_pages": [
+    {"slug": "scenes", "label": "3D scenes"}
+  ],
+  "splat_scenes": [
+    {
+      "id": "walworth",
+      "title": "Walworth",
+      "source": "D:/Dev/tools/dashboard/splat-ranking-data/2026-10-26_r3v9c-solve_15k-steps_best-longer-training_seed42.sog"
+    },
+    {
+      "id": "stratford",
+      "title": "Stratford",
+      "source": "D:/Dev/tools/dashboard/splat-ranking-data/2026-10-23_S41_3k-steps_full-res_seed7.sog"
+    }
+  ],
+  "chart_gallery_dir": "D:/Dev/tools/dashboard/dataviz-gallery",
+  "poster_png_dir": "E:/Outputs/phd-conference-2026-11-12/_work/posters",
+  "licence_map": {},
+  "photos_cleared": [],
+  "slideshow": {
+    "items": [],
+    "dwell_seconds": {"image": 7, "chart": 8, "text_heavy": 11},
+    "autoplay_default": true,
+    "paused_param": "auto=0"
+  }
+}

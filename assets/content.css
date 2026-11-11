@@ -1,0 +1,24 @@
+.card .card-title { overflow-wrap: anywhere; }
+.card-meta { overflow-wrap: anywhere; }
+.card-figure, .card-figure-link { position: relative; display: block; width: 100%; margin: 0 0 0.5rem; min-height: 44px; }
+.card-figure img, .card-figure-link img {
+  position: absolute; inset: 0; display: block; width: 100%; height: 100%;
+  object-fit: contain; background: var(--surface); border: 1px solid var(--border);
+}
+.chart-source-line { font-size: var(--fs-m); color: var(--muted); margin: 0 0 0.5rem; overflow-wrap: anywhere; }
+
+.chart-page main { width: 100%; display: flex; flex-direction: column; align-items: center; }
+.chart-page .cp-header { width: 100%; max-width: 980px; display: flex; flex-wrap: wrap; align-items: center; gap: 0 0.5rem; margin-bottom: 1rem; font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
+.chart-page .cp-nav { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; }
+.chart-page .cp-name, .chart-page .cp-nav a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; min-width: 44px; padding: 0 0.6rem; color: #9fd0e6; }
+.chart-page .cp-name { font-weight: 700; }
+.chart-page .cp-footer { width: 100%; max-width: 980px; margin-top: 1rem; }
+.chart-page .egg { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; color: #b4c0cb; opacity: 0.7; }
+.chart-page .skip-link { position: absolute; left: 0.5rem; top: -5rem; padding: 0.75rem 1rem; background: #fff; color: #111; z-index: 10; }
+.chart-page .skip-link:focus { top: 0.5rem; }
+.chart-page a:focus-visible { outline: 3px solid #9fd0e6; outline-offset: 2px; }
+.chart-page .chart-source { font-size: 0.875rem; padding: 0.5rem 1rem 1.5rem; max-width: 980px; margin-inline: auto; color: #b4c0cb; }
+.chart-page .js-plotly-plot, .chart-page .js-plotly-plot .plotly, .chart-page .js-plotly-plot svg,
+.chart-page .js-plotly-plot .nsewdrag, .chart-page .js-plotly-plot .drag { touch-action: pan-y !important; }
+.chart-page svg { max-width: 100%; touch-action: pan-y; }
+.card-actions a[data-link] { max-width: 100%; overflow-wrap: anywhere; word-break: break-word; }

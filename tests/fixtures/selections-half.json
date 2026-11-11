@@ -1,0 +1,15 @@
+{
+  "whole_files": [
+    {"title": "Fixture half document", "use": "link", "source_url": "https://example.org/fixture/half-doc"},
+    {"use": "host"}
+  ],
+  "posters_a3": [],
+  "charts_ready": [
+    {"id": "dv-003", "url": "http://jareds-pc.tailnet.ts.net:8787/dataviz-gallery/dv-003.html"},
+    {"id": "dv-999-does-not-exist"}
+  ],
+  "news": [
+    {"title": "Fixture half news item", "outlet": "Fixture Gazette"}
+  ],
+  "photos": []
+}

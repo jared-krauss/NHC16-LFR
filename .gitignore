@@ -1,0 +1,4 @@
+.cache/
+checks/_out/
+__pycache__/
+*.pyc

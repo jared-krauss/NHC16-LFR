@@ -1,0 +1,16 @@
+{
+  "licence_map": {
+    "tests/fixtures/assets/doc-licence-map.pdf": "Fixture licence-map entry (Open Government Licence v3.0)",
+    "tests/fixtures/assets/poster-licensed.pdf": "Fixture licence-map entry (Open Government Licence v3.0)"
+  },
+  "photos_cleared": [
+    "tests/fixtures/assets/photo-cleared.png"
+  ],
+  "splat_scenes": [
+    {"id": "walworth", "title": "Walworth", "source": "tests/fixtures/assets/scene-walworth.sog"},
+    {"id": "stratford", "title": "Stratford", "source": "tests/fixtures/assets/scene-stratford.sog"}
+  ],
+  "slideshow": {
+    "items": []
+  }
+}

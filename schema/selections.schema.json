@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "selections.schema.json",
+  "title": "PhD conference selections (print-pack session -> audience site)",
+  "description": "Single source of truth for the hand-off file E:/Outputs/phd-conference-2026-11-12/selections.json. Owner: the site orchestrator. The build, fixtures and checks all validate against this file. Extra keys are allowed; listed keys keep these names.",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "updated": {"type": "string"},
+    "whole_files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["title", "path", "use"],
+        "properties": {
+          "title": {"type": "string", "minLength": 1},
+          "path": {"type": ["string", "null"]},
+          "use": {"enum": ["print", "host", "link"]},
+          "licence_note": {"type": "string"},
+          "source_url": {"type": "string"},
+          "outlet": {"type": "string"},
+          "date": {"type": "string"},
+          "pages": {"type": "integer"}
+        }
+      }
+    },
+    "posters_a3": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["title", "source_path", "page"],
+        "properties": {
+          "title": {"type": "string", "minLength": 1},
+          "source_path": {"type": "string"},
+          "page": {"type": "integer", "minimum": 0},
+          "why": {"type": "string"},
+          "licence_note": {"type": "string"}
+        }
+      }
+    },
+    "charts_ready": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^dv-[0-9]{3}$"},
+          "url": {"type": "string"}
+        }
+      }
+    },
+    "charts_tweak": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^dv-[0-9]{3}$"},
+          "url": {"type": "string"},
+          "tweaks": {"type": "string"}
+        }
+      }
+    },
+    "news": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["title", "outlet", "url", "kind"],
+        "properties": {
+          "title": {"type": "string", "minLength": 1},
+          "outlet": {"type": "string"},
+          "date": {"type": "string"},
+          "url": {"type": "string"},
+          "kind": {"enum": ["news", "commentary"]}
+        }
+      }
+    },
+    "photos": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["title", "path"],
+        "properties": {
+          "title": {"type": "string", "minLength": 1},
+          "path": {"type": "string"},
+          "caption": {"type": "string"},
+          "date": {"type": "string"}
+        }
+      }
+    },
+    "splats": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["title", "url_or_path"],
+        "properties": {
+          "title": {"type": "string", "minLength": 1},
+          "url_or_path": {"type": "string"}
+        }
+      }
+    }
+  }
+}

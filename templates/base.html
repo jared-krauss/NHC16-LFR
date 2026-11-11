@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="{{lang}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{title}}</title>
+{{head_extra}}
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+<div class="wrap">
+<a class="site-name" data-link="page" href="index.html">{{site_name}}</a>
+<nav aria-label="Sections">
+<ul class="nav-list">
+{{nav}}
+</ul>
+</nav>
+</div>
+</header>
+<main id="main">
+<div class="wrap">
+<h1>{{h1}}</h1>
+{{body}}
+</div>
+</main>
+<footer class="site-footer">
+<div class="wrap">
+<ul class="footer-links">
+{{footer_links}}
+</ul>
+<a class="egg" href="scenes.html" aria-label="{{egg_label}}"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="4.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
+</div>
+</footer>
+{{scripts_extra}}
+</body>
+</html>
