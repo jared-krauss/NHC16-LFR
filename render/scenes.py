@@ -123,9 +123,8 @@ def viewer_html(ctx, scene, other, gallery, start_rel, start_size=(0, 0)):
     title = facts.get("place") or sid.title()
     nav = "".join(f'<li><a data-link="page" href="{esc(s["slug"])}.html">{esc(s["label"])}</a></li>'
                   for s in ctx["config"].get("sections", []))
-    if other:
-        nav += (f'<li><a class="sv-other" href="scenes.html#{esc(other["id"])}" data-scene-link="{esc(other["id"])}">'
-                f'{esc(other["title"])}</a></li>')
+    switch = (f'<a class="sv-other" href="scenes.html#{esc(other["id"])}" data-scene-link="{esc(other["id"])}">'
+              f'Change to: {esc(other["title"])}</a>') if other else ""
     src_text, src_url = facts.get("source_entry_text", ""), facts.get("source_url", "")
     source = ""
     if src_text and src_url:
@@ -142,6 +141,8 @@ def viewer_html(ctx, scene, other, gallery, start_rel, start_size=(0, 0)):
     return f"""<div class="sv" data-viewer="{esc(sid)}" role="dialog" aria-label="{esc(title)} 3D scene" tabindex="-1" hidden>
 <div class="sv-stage" data-role="stage"{poster}></div>
 <header class="sv-top">
+<nav class="sv-navbar" aria-label="Pages"><ul class="sv-nav">{nav}</ul>{switch}</nav>
+<div class="sv-block">
 <div class="sv-head">
 <div class="sv-title"><h2 class="sv-place">{esc(title)}</h2><p class="sv-when">{esc(when_text(facts))}</p></div>
 <button type="button" class="sv-burger" data-role="burger" aria-haspopup="true" aria-expanded="false" aria-controls="sv-menu-{esc(sid)}" aria-label="Menu"><span aria-hidden="true"></span></button>
@@ -153,6 +154,7 @@ def viewer_html(ctx, scene, other, gallery, start_rel, start_size=(0, 0)):
 <li><button type="button" data-act="next">Next view</button></li>
 <li><button type="button" data-act="gallery">Gallery</button></li>
 </ul>
+</div>
 </header>
 <div class="sv-center" data-role="center">
 <p class="sv-hint" data-role="hint" hidden></p>
@@ -162,7 +164,6 @@ def viewer_html(ctx, scene, other, gallery, start_rel, start_size=(0, 0)):
 </div>
 <footer class="sv-bottom">
 {source}
-<nav aria-label="Pages"><ul class="sv-nav">{nav}</ul></nav>
 </footer>
 <div class="sv-gallery" data-role="gallery" role="dialog" aria-label="Gallery" tabindex="-1" hidden>
 <div class="sv-gal-bar"><h3>Gallery</h3><button type="button" class="sv-x" data-act="gallery-close" aria-label="Close gallery">&times;</button></div>

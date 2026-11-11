@@ -23,6 +23,7 @@ from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parent.parent
 VIEWPORTS = [("390", 390, 844), ("1440", 1440, 900)]
+BIG = [("1920", 1920, 1080), ("3840", 3840, 2160)]
 LABELS = ["Faces Scanned", "Arrests", "False Alerts"]
 MENU_ITEMS = ["Reset view", "Previous view", "Next view", "Gallery"]
 GL_ARGS = ["--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist", "--use-gl=angle"]
@@ -108,14 +109,24 @@ def check_scene(page, base, scene, vp, shots, wait_ready):
         ok(text.startswith("Source: ") and len(text) > 12, f"{tag} Source text starts 'Source: ' ({text[:48]}...)")
         ok(href.startswith("https://") and "#page=" in href, f"{tag} Source href has #page= ({href[-60:]})")
         ok(src.bounding_box()["height"] >= 44, f"{tag} Source tap height >= 44px")
-    nav = page.eval_on_selector_all(f"{sv} .sv-nav a", "els => els.map(e => [e.textContent.trim(), e.getAttribute('href'), e.getBoundingClientRect().height])")
-    ok(len(nav) >= 3 and all(n[2] >= 43.5 for n in nav), f"{tag} nav links {[n[0] for n in nav]} all >= 44px tall")
-    ok(any(n[1].startswith("scenes.html#") for n in nav), f"{tag} link to the other scene present")
+    nav = page.eval_on_selector_all(f"{sv} .sv-nav a", "els => els.map(e => { const r = e.getBoundingClientRect(); return [e.textContent.trim(), e.getAttribute('href'), r.height, r.top, r.left, r.width]; })")
+    ok(len(nav) >= 3 and len({round(n[3]) for n in nav}) == 1, f"{tag} nav links {[n[0] for n in nav]} on one row")
+    hit = page.evaluate("""sv => { const a = document.querySelector(sv + ' .sv-nav a'); const r = a.getBoundingClientRect();
+      const at = (dy) => document.elementFromPoint(r.left + r.width / 2, dy); return [r.height, true, at(r.bottom - 2) === a]; }""", sv)
+    ok(hit[0] + 0.5 >= 44 and hit[1] and hit[2], f"{tag} nav tap area >= 44px ({hit[0]:.0f}px link + hit padding)")
+    other = page.query_selector(f"{sv} .sv-other")
+    ok(other is not None and other.inner_text().strip().startswith("Change to: ") and other.get_attribute("href").startswith("scenes.html#"), f"{tag} 'Change to: <scene>' link present")
+    order = page.evaluate("sv => [document.querySelector(sv + ' .sv-navbar').getBoundingClientRect().bottom, document.querySelector(sv + ' .sv-place').getBoundingClientRect().top, document.querySelector(sv + ' .sv-navbar').getBoundingClientRect().top]", sv)
+    ok(order[2] <= 1 and order[0] <= order[1], f"{tag} nav bar is at the very top, above the title block")
     top_h, bot_h = page.evaluate("[document.querySelector('%s .sv-top').offsetHeight, document.querySelector('%s .sv-bottom').offsetHeight]" % (sv, sv))
+    if vp[1] == 390:
+        ok(top_h <= 104, f"{tag} nav + title block {top_h}px <= 104px (old title block alone was 104px)")
+    ok(top_h < vp[2] * 0.2, f"{tag} top overlay {top_h}px is under 20% of the viewport height")
     ok(bot_h <= top_h + 2, f"{tag} bottom band not taller than top ({bot_h} vs {top_h})")
     burger = page.query_selector(f"{sv} .sv-burger")
     bb = burger.bounding_box()
-    ok(bb["width"] >= 44 and bb["height"] >= 44, f"{tag} hamburger >= 44px")
+    bhit = page.evaluate("sv => { const b = document.querySelector(sv + ' .sv-burger'); const r = b.getBoundingClientRect(); return [document.elementFromPoint(r.left - 5, r.top + 10) === b, document.elementFromPoint(r.right + 5, r.bottom - 10) === b, document.elementFromPoint(r.left + 10, r.bottom + 5) === b]; }", sv)
+    ok(bb["width"] >= 43.5 and bb["height"] >= 43.5, f"{tag} hamburger {bb['width']:.0f}px >= 44px")
     if shots:
         page.screenshot(path=str(shots / f"viewer-{scene['id']}-{vp[0]}.png"))
     page.evaluate("window.__scenes && window.__scenes.viewer.pause()")
@@ -184,6 +195,19 @@ def main():
             for vp in VIEWPORTS:
                 try:
                     check_scene(page, base, scene, vp, shots, not a.no_wait_ready)
+                except Exception as e:
+                    ok(False, f"{scene['id']}@{vp[0]} raised {type(e).__name__}: {str(e)[:200]}")
+        for scene in cfg:
+            for vp in BIG:
+                try:
+                    page.set_viewport_size({"width": vp[1], "height": vp[2]})
+                    page.goto(base + "/scenes.html#" + scene["id"])
+                    page.wait_for_selector(f".sv[data-viewer={scene['id']}]:not([hidden])", timeout=20000)
+                    m = page.evaluate("sv => [document.documentElement.scrollWidth, innerWidth, document.querySelector(sv + ' .sv-top').offsetHeight, parseFloat(getComputedStyle(document.querySelector(sv + ' .sv-place')).fontSize)]", f".sv[data-viewer={scene['id']}]")
+                    ok(m[0] <= m[1] and 0.04 * vp[2] <= m[2] <= 0.2 * vp[2] and m[3] >= 0.016 * vp[2], f"{scene['id']}@{vp[0]} no overflow; overlay {m[2]}px and title {m[3]:.0f}px scale with the screen")
+                    if shots:
+                        page.screenshot(path=str(shots / f"viewer-{scene['id']}-{vp[0]}.png"))
+                    page.keyboard.press("Escape")
                 except Exception as e:
                     ok(False, f"{scene['id']}@{vp[0]} raised {type(e).__name__}: {str(e)[:200]}")
         ok(not errors, f"no uncaught page errors {errors[:2]}")
