@@ -11,8 +11,9 @@ Audience site for the talk "The London Met's First Live Facial Recognition Deplo
 
 ## Updating the paper
 
-- Edit `paper\paper.md` (plain text: a blank line between paragraphs, `#` for the title, `##` for section headings). "Fig. 3", "Figure 3" and "Figs. 2-3" become tappable and open that figure on the Paper page.
-- Then run the two commands under "Rebuild and publish" below; the build prints a warning for any figure number that is not in `figures-config.json`.
+- Write on the Command Centre page **PhD > Writing room > Conference paper** (it autosaves).
+- To put it on the site: double-click `publish-paper.bat` here. It copies the page text into `paper\paper.md` (title line, then your text), rebuilds `docs\`, commits and pushes. `--dry-run` (run `tools\publish_paper.py --dry-run`) shows what would change without touching anything.
+- `paper\paper.md` is plain text: a blank line between paragraphs, `#` and `##` for headings. "Fig. 3", "Figure 3" and "Figs. 2-3" become tappable and open that figure on the Paper page; the build warns about a figure number not in `figures-config.json`.
 - To try a different file without touching the real one, set `NHC_PAPER_SOURCE` to its path before building.
 
 ## Rebuild and publish

@@ -45,7 +45,9 @@ Order inside a card is fixed: `.card-title`, then `.card-meta` with `.source`, `
 - Charts: no Plotly on this page; a chart card (unnumbered, from charts_ready) has a static `<img>` and `a[data-link=page]` to `charts/<id>.html`; that page keeps `.js-plotly-plot` (`scrollZoom:false, displayModeBar:false, responsive:true`) and `.chart-source`. Charts still being tweaked: one `.media-note` line ("More charts on their way"), not cards.
 
 ## Bibliography (`bibliography.html`)
-- Groups: `section.bib-group#<group id>` with an `h2`; entries `article.card.bib-entry#<source id>` (`data-kind` pdf|link) with `.bib-thumb` (image or typographic `.bib-tile`), `h3.card-title` (title, links to the document), `.card-meta` (`.source` = `strong.bib-author` + `.bib-pub`, `.date`, `.card-kind`), `p.bib-cite` MLA text (`small`, URLs plain text), optional Fig. cross-links, `.card-actions`.
+- An alphabetical MLA list, not cards: `ul.bib-list > li.bib-entry#<source id>[data-group][data-cited]` holding `p.bib-line` (the MLA 9 citation, hanging indent, URL as plain text; the first-page thumbnail `.bib-thumb` is floated right at the END of the line) and `p.bib-links > small` (PDF / Opens links, "Fig. N, p. N" cross-links, licence line). Sorted by `mla.py` (author or organisation, else title, ignoring A/An/The).
+- Secondary bar `ul.bib-tabs`: "Works Cited" (first, emphasised) and "Bibliography"; tertiary bar `ul.bib-filters` (All + one per group, Bibliography tab only). Both are `data-link=anchor` links (`#works-cited`, `#bibliography`, `#<group id>`), scroll sideways inside the bar when needed. `assets/bib.js` sets `html[data-bib-view=works|all]` and `[data-bib-group]` from the hash; `#<entry id>` selects the tab that shows the entry (Works Cited if cited). Without JS every entry is shown.
+- Works Cited = ids in `site-config.json` `bibliography.works_cited`. Retired anchors (`#news` etc.) are group filters.
 - One title per document across Media, Bibliography and Slideshow (`title-overrides.json` by file name or URL, else the MLA record's title).
 
 ## Slideshow (`slideshow.html`)

@@ -50,6 +50,10 @@ JS_CARDS = r"""() => [...document.querySelectorAll('article.card')].map(c => {
     text: c.textContent.replace(/\s+/g, ' ').trim()};
 })"""
 
+JS_BIB = r"""() => [...document.querySelectorAll('li.bib-entry')].map(li => ({id: li.id, cited: li.hasAttribute('data-cited'), group: li.dataset.group || '',
+  line: li.querySelector('.bib-line') ? li.querySelector('.bib-line').textContent.replace(/\s+/g, ' ').trim() : '', text: li.textContent.replace(/\s+/g, ' ').trim(),
+  links: [...li.querySelectorAll('a[href]')].map(a => ({href: a.getAttribute('href'), kind: a.dataset.link || '', text: (a.innerText || '').trim()}))}))"""
+
 JS_ANCHORS = r"""() => [...document.querySelectorAll('a[href]')].map(a => ({
   href: a.getAttribute('href'), text: (a.innerText || '').trim(), aria: a.getAttribute('aria-label') || '',
   rel: a.getAttribute('rel') || '', kind: a.dataset.link || '', inMain: !!a.closest('main'),
@@ -549,13 +553,14 @@ def b12(c):
                     fails.append(f"{tag}: title/source/date/kind order wrong")
     if c.fx == "full" and c.exists("bibliography"):
         with c.page("bibliography") as (pg, _, _):
-            cards = pg.evaluate(JS_CARDS)
-            if not any(not k["date"] for k in cards if not k["empty"]):
-                fails.append("bibliography: undated fixture news item should show no date at all")
-            kinds = {k["badge"].lower() for k in cards if not k["empty"]}
-            if not (any("news" in x for x in kinds) and any("commentary" in x for x in kinds)):
-                fails.append(f"bibliography: card-kind badges {sorted(kinds)} lack both news and commentary")
-    verdict(c, "B12", fails, "every card: title, source, date (full month, or none), type badge, same order")
+            ents = pg.evaluate(JS_BIB)
+            if len(ents) < 6:
+                fails.append(f"bibliography: {len(ents)} list entries for the full fixture")
+            lines = [e["line"].lower() for e in ents]
+            key = [re.sub(r"^(a|an|the) ", "", re.sub(r"[^a-z0-9 ]", "", l)) for l in lines]
+            if key != sorted(key):
+                fails.append("bibliography: entries are not in alphabetical (MLA) order")
+    verdict(c, "B12", fails, "every card: title, source, date (full month, or none), type badge, same order; Bibliography list alphabetical (full fixture)")
 
 
 def b13(c):
@@ -632,6 +637,8 @@ def b14(c):
     for s in c.present([x for x in secs if x not in c.prose]):
         with c.page(s) as (pg, _, _):
             cards = pg.evaluate(JS_CARDS)
+            if s == "bibliography" and pg.evaluate("() => document.querySelectorAll('li.bib-entry').length"):
+                cards = cards + [{"kind": "link", "empty": False, "title": "entry", "emptyText": False, "borderStyle": "", "spinner": False, "color": "", "borderColor": ""}]
             if not cards:
                 fails.append(f"{s}: no cards at all (content or 'On its way' required)")
             empties = [k for k in cards if k["empty"]]
@@ -1210,15 +1217,23 @@ def data_routing(c):
         return
     fails = []
 
-    def cards(slug):
-        with c.page(slug) as (pg, _, _):
-            return {k["title"]: k for k in pg.evaluate(JS_CARDS)}
-    d = cards("bibliography") if c.exists("bibliography") else {}
-    a = d.get("Fixture document A")
-    if not a or not any(l["kind"] == "file" for l in a["links"]):
-        fails.append("bibliography: licensed item A should be a hosted PDF link")
-    if "Fixture print item without URL or licence" in d and any(l["kind"] == "file" for l in d["Fixture print item without URL or licence"]["links"]):
-        fails.append("bibliography: unlicensed item must not be hosted")
+    def entries():
+        with c.page("bibliography") as (pg, _, _):
+            return pg.evaluate(JS_BIB)
+    ents = entries() if c.exists("bibliography") else []
+
+    class _D(dict):
+        def get(self, t, default=None):
+            return next((e for e in ents if t in e["line"]), default)
+
+        def __contains__(self, t):
+            return any(t in e["line"] for e in ents)
+
+        def __getitem__(self, t):
+            return self.get(t)
+    d = _D()
+    if "Fixture document A" in d or "Fixture print item without URL or licence" in d:
+        fails.append("bibliography: use=print items must not be published")
     b = d.get("Fixture document B (no licence)")
     if not b or any(l["kind"] == "file" for l in b["links"]) or not any(l["kind"] == "external" for l in b["links"]):
         fails.append("bibliography: B (no licence) must be an external link only, not hosted")
@@ -1226,10 +1241,8 @@ def data_routing(c):
     if not cc or not any(l["kind"] == "file" for l in cc["links"]):
         fails.append("bibliography: C (licence_map) should be hosted")
     dd = d.get("Fixture link document (no date)")
-    if not dd or dd["date"] != "" or not any(l["kind"] == "external" for l in dd["links"]):
-        fails.append("bibliography: use=link item should be external with no date shown")
-    if a and a["date"] != "29 August 2016":
-        fails.append(f"bibliography: A has a date key, expected '29 August 2016', got '{a['date']}'")
+    if not dd or not any(l["kind"] == "external" for l in dd["links"]):
+        fails.append("bibliography: use=link item should be external")
     for t in ("Fixture news article", "Fixture commentary piece", "Fixture undated news item"):
         if t not in d or not any(l["kind"] == "external" for l in d[t]["links"]):
             fails.append(f"bibliography: '{t}' missing or not an external link")

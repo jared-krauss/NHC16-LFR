@@ -194,6 +194,12 @@
       "stock_photo": "Photo",
       "web_page": "Web page"
     },
-    "chart_note": "More charts on their way"
+    "chart_note": "More charts on their way",
+    "works_cited": [
+      "npl-met-lfr-trials-2020",
+      "sato-2005",
+      "imaoka-2021",
+      "hansard-1998-11-03"
+    ]
   }
 }

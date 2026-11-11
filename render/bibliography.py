@@ -1,4 +1,4 @@
-"""Bibliography page: one skimmable entry per public source (hosted or linked), with its MLA citation.
+"""Bibliography page: an alphabetical MLA list, one entry per public source (hosted or linked), with its MLA citation.
 
 Entries come from selections whole_files (use host/link) and news, matched to the shared MLA records
 (config citations_path, formatted by tools/mla-citations/mla.py), plus the Met deployment records used by the
@@ -16,10 +16,10 @@ from pathlib import Path
 
 from render import Page
 from render.common import (MONTHS, actions, date_from_facts, empty_state, esc, file_size_label, fmt_date, host_file, host_of, item_date,
-                           item_path, label, licence_for, licence_html, link, norm_path, project_path, safe_external,
+                           item_path, label, licence_for, licence_line, link, norm_path, project_path, safe_external,
                            text)
 
-THUMB_MAX_W = 180
+THUMB_MAX_W = 126
 SKIP_WORDS = {"the", "of", "and", "a", "an", "for", "on", "in"}
 
 
@@ -212,29 +212,48 @@ def _entry(ctx, base, cit, ov, tools_cfg):
     return base
 
 
+def _synth_record(e):
+    """A minimal MLA record for an entry that has none in the shared list, built only from the selection's own facts."""
+    kind = e.get("type") or ("report_gov" if e.get("path", "").lower().endswith(".pdf") and not e.get("url") else "web_page")
+    rec = {"id": e["id"], "type": kind, "title": e["title"]}
+    if e.get("outlet"):
+        rec["container" if kind != "report_gov" else "publisher"] = e["outlet"]
+    if e.get("iso_date"):
+        rec["date"] = e["iso_date"]
+    if e.get("url"):
+        rec["url"] = e["url"]
+    return rec
+
+
 def _mla_html(ctx, entries):
-    """Fill mla_html on entries that have a citation record; never shows missing-field markers."""
+    """Fill mla_html (never with missing-field markers) and return the entries in MLA Works Cited order."""
     stc, mla, cfg = _tools(ctx)
+    plain = sorted(entries, key=lambda e: re.sub(r"^(a|an|the) ", "", e["title"].lower()))
     if not mla:
-        return
+        for e in entries:
+            e["mla_html"] = esc(e["title"]) + "."
+        return plain
     items = []
     for e in entries:
-        if e.get("cit"):
-            rec = dict(e["cit"])
-            rec["title"] = e["title"]
-            rec["id"] = e["id"]
-            items.append(rec)
+        rec = dict(e["cit"]) if e.get("cit") else _synth_record(e)
+        rec["title"] = e["title"]
+        rec["id"] = e["id"]
+        items.append(rec)
     try:
         built = mla.build_entries(items, cfg, "html", False)
     except Exception as ex:
         ctx["log"](f"bibliography: citation formatting failed ({type(ex).__name__}: {ex})")
-        return
-    by = {it["id"]: txt for it, txt, _p in built}
-    for e in entries:
-        t = by.get(e["id"], "")
-        t = re.sub(r"</?a\b[^>]*>", "", t)
-        if t and "[MISSING" not in t and "None" not in t:
-            e["mla_html"] = _breakable(t)
+        for e in entries:
+            e["mla_html"] = esc(e["title"]) + "."
+        return plain
+    by = {e["id"]: e for e in entries}
+    ordered = []
+    for it, txt, _p in built:
+        e = by[it["id"]]
+        t = re.sub(r"</?a\b[^>]*>", "", txt)
+        e["mla_html"] = _breakable(t) if t and "[MISSING" not in t and "None" not in t else esc(e["title"]) + "."
+        ordered.append(e)
+    return ordered
 
 
 def _load(ctx):
@@ -282,8 +301,7 @@ def _load(ctx):
         base = {"title": text(n, "title"), "path": "", "url": url, "outlet": text(n, "outlet"),
                 "iso_date": text(n, "date"), "source_lists": {"news"}, "selection_group": "", "use": "link",
                 "licence_note": "", "thumb_keys": [url], "id": slug(text(n, "title")),
-                "type": "web_page" if text(n, "kind").lower() == "commentary" else "news_article",
-                "kind_label": "Commentary" if text(n, "kind").lower() == "commentary" else ""}
+                "type": "web_page" if text(n, "kind").lower() == "commentary" else "news_article"}
         add(base, match(url, text(n, "title")))
 
     facts = _read(ctx["config"].get("scene_facts_path") or "") if ctx["config"].get("scene_facts_path") else None
@@ -303,22 +321,19 @@ def _load(ctx):
         by_id[eid] = e
         order.append(eid)
 
-    entries = [by_id[i] for i in order]
-    _mla_html(ctx, entries)
-    labels = cfg.get("type_labels") or {}
-    groups = {g["id"]: [] for g in cfg.get("groups", [])}
+    entries = _mla_html(ctx, [by_id[i] for i in order])
+    cited = set(cfg.get("works_cited") or [])
+    for want in cited - set(by_id):
+        ctx["log"](f"bibliography: works_cited id {want} has no entry")
     for e in entries:
         e["group"] = e.pop("group_forced", None) or _group_for(cfg, e)
-        e["badge"] = e.get("kind_label") or labels.get(e["type"], "Source")
+        e["cited"] = e["id"] in cited
         e["hosted"] = None
         if e["use"] == "host" and e["path"] and project_path(e["path"]).is_file() and \
                 licence_for(ctx, e["path"], e.get("licence_note", "")):
             e["hosted"] = host_file(ctx, e["path"])
         e["thumb"] = _thumb(ctx, e["thumb_keys"], re.sub(r"[^a-z0-9-]", "-", e["id"].lower())) if e["thumb_keys"] else None
-        groups.setdefault(e["group"], []).append(e)
-    for g in groups.values():
-        g.sort(key=lambda e: (e["date_key"], e["title"].lower()))
-    ctx["_bib"] = {"entries": entries, "groups": groups, "by_id": by_id}
+    ctx["_bib"] = {"entries": entries, "by_id": by_id}
     return ctx["_bib"]
 
 
@@ -355,9 +370,9 @@ def _thumb_html(e, href, aria, kind):
         inner = f'<img src="{esc(rel)}" width="{w}" height="{h}" alt="" loading="lazy">'
     else:
         name = e["pub"] or e["author"]
-        inner = (f'<span class="bib-tile" style="--hue:{_hue(name)}" aria-hidden="true">{esc(_initials(name))}</span>')
+        inner = f'<span class="bib-tile" style="--hue:{_hue(name)}" aria-hidden="true">{esc(_initials(name))}</span>'
     if not href:
-        return f'<div class="bib-thumb">{inner}</div>'
+        return f'<span class="bib-thumb">{inner}</span>'
     ext = ' rel="noopener"' if kind == "external" else ""
     return (f'<a class="bib-thumb" data-link="{kind}" href="{esc(href)}"{ext} aria-label="{esc(aria)}" '
             f'tabindex="-1">{inner}</a>')
@@ -390,30 +405,19 @@ def _entry_html(ctx, e):
         lab = _ext_label(e, host_of(e["url"]))
         aria = f"{title} ({lab[0].lower() + lab[1:]})"
         acts.append(link("external", e["url"], lab, f"{lab}: {title}"))
-    if href:
-        ext_attr = ' rel="noopener"' if kind == "external" else ""
-        h = (f'<a data-link="{kind}" href="{esc(href)}"{ext_attr} aria-label="{esc(aria)}">{esc(title)}</a>')
     else:
-        h = esc(title)
-    xrefs = ""
-    figs = _media_pages(ctx, e["id"])
-    bits = []
-    if figs:
-        bits = [link("page", f"media.html#fig-{n}", f"Fig. {n}, p. {p}") for n, p in figs]
+        acts.append('<span class="bib-note">Printed copy at the talk</span>')
+    for n, p in _media_pages(ctx, e["id"]):
+        acts.append(link("page", f"media.html#fig-{n}", f"Fig. {n}, p. {p}"))
     for pg in e.get("pages") or []:
-        xrefs += f'<p class="bib-pages"><small>Entry on p. {esc(pg)}</small></p>\n'
-    if bits:
-        xrefs += '<p class="bib-pages"><small>Figures from this document: ' + " ".join(bits) + "</small></p>\n"
-    cite = f'<p class="bib-cite"><small>{e["mla_html"]}</small></p>\n' if e.get("mla_html") else ""
-    pub = f'<span class="bib-pub">{esc(e["pub"])}</span>' if e["pub"] else ""
-    date = f'<span class="date">{esc(e["date_disp"])}</span>' if e["date_disp"] else ""
-    return (f'<article class="card bib-entry" id="{esc(e["id"])}" data-kind="{"pdf" if e["hosted"] else "link"}">\n'
-            + _thumb_html(e, href, aria, kind) + '\n<div class="bib-body">\n'
-            f'<h3 class="card-title bib-title">{h}</h3>\n'
-            f'<p class="card-meta"><strong class="bib-author source">{esc(e["author"])}</strong>{pub}{date}'
-            f'<span class="card-kind">{esc(e["badge"])}</span></p>\n'
-            + cite + xrefs + (f'<div class="card-actions">{"".join(acts)}</div>\n' if acts else "")
-            + licence_html(e.get("licence_note", "")) + '</div>\n</article>')
+        acts.append(f'<span class="bib-note">Entry on p. {esc(pg)}</span>')
+    lic = licence_line(e.get("licence_note", ""))
+    if lic:
+        acts.append(f'<span class="bib-note">{esc(lic)}</span>')
+    cited = " data-cited" if e["cited"] else ""
+    return (f'<li class="bib-entry" id="{esc(e["id"])}" data-group="{esc(e["group"])}"{cited}>\n'
+            f'<p class="bib-line">{e["mla_html"]}{_thumb_html(e, href, aria, kind)}</p>\n'
+            f'<p class="bib-links"><small>{"".join(acts)}</small></p>\n</li>')
 
 
 def render(ctx):
@@ -423,15 +427,22 @@ def render(ctx):
     head = '<link rel="stylesheet" href="assets/content.css">'
     if not data["entries"]:
         return Page("bibliography", lab, lab, empty_state(lab), head_extra=head)
-    jump, sections = [], []
-    for g in cfg.get("groups", []):
-        rows = data["groups"].get(g["id"], [])
-        if not rows:
-            continue
-        jump.append(f'<li>{link("anchor", "#" + g["id"], g["label"] + " (" + str(len(rows)) + ")")}</li>')
-        sections.append(
-            f'<section class="card-group bib-group" id="{esc(g["id"])}" aria-labelledby="h-{esc(g["id"])}">\n'
-            f'<h2 id="h-{esc(g["id"])}" class="group-title">{esc(g["label"])}</h2>\n<div class="bib-list">\n'
-            + "\n".join(_entry_html(ctx, e) for e in rows) + "\n</div>\n</section>")
-    body = '<ul class="bib-jump" aria-label="Jump to a group">' + "".join(jump) + "</ul>\n" + "\n".join(sections)
+    groups = [g for g in cfg.get("groups", []) if any(e["group"] == g["id"] for e in data["entries"])]
+    state = {"cited": [e["id"] for e in data["entries"] if e["cited"]], "ids": [e["id"] for e in data["entries"]],
+             "groups": [g["id"] for g in groups]}
+    rules = "".join(f'html[data-bib-group="{esc(g["id"])}"] .bib-entry:not([data-group="{esc(g["id"])}"]) {{ display: none; }}\n'
+                    for g in groups)
+    head += ('\n<style>' + rules + '</style>\n<script>window.BIB=' + json.dumps(state).replace("</", "<\\/")
+             + ';</script>\n<script src="assets/bib.js"></script>\n<noscript><style>.bib-tabs, .bib-filters, .bib-count '
+             '{ display: none; }</style></noscript>')
+    tabs = ('<ul class="bib-tabs" aria-label="Bibliography views">'
+            f'<li>{link("anchor", "#works-cited", "Works Cited")}</li>'
+            f'<li>{link("anchor", "#bibliography", "Bibliography")}</li></ul>')
+    filt = ['<li>' + link("anchor", "#bibliography", f"All ({len(data['entries'])})") + '</li>']
+    for g in groups:
+        n = sum(1 for e in data["entries"] if e["group"] == g["id"])
+        filt.append("<li>" + link("anchor", "#" + g["id"], f"{g['label']} ({n})") + "</li>")
+    body = (tabs + '\n<ul class="bib-filters" aria-label="Filter by type">' + "".join(filt) + "</ul>\n"
+            '<p class="bib-count" role="status" aria-live="polite"></p>\n'
+            '<ul class="bib-list">\n' + "\n".join(_entry_html(ctx, e) for e in data["entries"]) + "\n</ul>")
     return Page("bibliography", lab, lab, body, head_extra=head)
