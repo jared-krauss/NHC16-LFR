@@ -2,6 +2,8 @@
 
 Owner: checks-writer. Builders may not edit `checks/` or `tests/fixtures/`.
 
+Change 2026-11-11 (Media/Bibliography restructure, edited by the site builder as checks owner for this change): sections are Home, Media, Bibliography, Slideshow; the old charts/posters/handouts/documents/news pages are gone (meta-refresh stubs only, config `redirects`). Card `data-kind` gains `figure`. B18 = Media page (was Charts), B19 = figure viewer (was Posters), `DATA` routes into the Bibliography. Fixtures set `figures_config`, `scene_facts_path`, `citations_path` and `thumbs_index` to empty, so fixture Media is the empty state; figures and the viewer are exercised on `--fixture real`.
+
 ## Page shell (every page)
 - `<a class="skip-link" href="#main">` is the first focusable element; `<main id="main">`.
 - `header`, `nav[aria-label]` (the section links, config order, labels from config), `main`, `footer`.
@@ -18,7 +20,7 @@ Owner: checks-writer. Builders may not edit `checks/` or `tests/fixtures/`.
 
 ## Cards (one pattern for every item type)
 ```html
-<article class="card" data-kind="chart|poster|pdf|link|news|section|empty">
+<article class="card" data-kind="chart|poster|pdf|link|news|figure|section|empty">
   <h3 class="card-title">..</h3>              <!-- non-empty; level follows page headings -->
   <p class="card-meta">
     <span class="source">outlet/source</span>  <!-- non-empty -->
@@ -33,13 +35,18 @@ Order inside a card is fixed: `.card-title`, then `.card-meta` with `.source`, `
 - Empty state: `<article class="card card--empty" data-kind="empty">` with a `.card-title` (section label or item title) and
   an element whose whole text is exactly `On its way` (class `card-empty-text`). Dashed border, no spinner, no red.
 - A card with nothing hosted and no URL shows the text `Printed copy at the talk`.
-- Hosted poster/page images: `<img alt="non-empty">` linking to the full-size image (`a[data-link=file]`); poster card text says "A3 poster" or "page N" and a file size.
+- Hosted images: `<img alt="non-empty">` inside `a[data-link=file]` to the full-size image (Media figures state the size in the link's `aria-label`).
 - Meta text (`.card-meta`, `.card-kind`, `small`, `footer *`, `.slide-counter`) may be 13-15px; everything else >= 16px.
 
-## Charts
-- Charts page: static `<img>` per chart (non-empty alt), `a[data-link=page]` to an on-site interactive chart page. NO Plotly there.
-- Interactive chart page: a `.js-plotly-plot` element (Plotly's own class), config `scrollZoom:false, displayModeBar:false, responsive:true`;
-  data source line in `.chart-source` (non-empty, text from the chart file). Plotly script loaded only here.
+## Media (`media.html`)
+- Figure cards: `<article class="card fig-card" id="fig-N" data-kind="figure">`; `.card-title` starts with a `.fig-label` "Fig. N" then the title; `.card-meta .source` reads "Source: <a data-link=page href="bibliography.html#<source_id>">title, p. N</a>"; `.date` is the source's date; badge Illustration or Chart.
+- Image: `a.fig-image[data-link=file]` -> full-size PNG, containing a webp `<img>` (non-empty alt, width/height, srcset with sizes). JS (`assets/media.js`) opens a `.viewer[role=dialog]`: dark backdrop, image fitted to the stage, wheel/pinch/drag zoom, buttons >= 44px (prev, next, zoom out/in, Fit, Close), Esc closes, no pushState. Without JS the link opens the PNG.
+- Numbers come only from `figures-config.json` (`n`); never printed from the source document's own numbering.
+- Charts: no Plotly on this page; a chart card (unnumbered, from charts_ready) has a static `<img>` and `a[data-link=page]` to `charts/<id>.html`; that page keeps `.js-plotly-plot` (`scrollZoom:false, displayModeBar:false, responsive:true`) and `.chart-source`. Charts still being tweaked: one `.media-note` line ("More charts on their way"), not cards.
+
+## Bibliography (`bibliography.html`)
+- Groups: `section.bib-group#<group id>` with an `h2`; entries `article.card.bib-entry#<source id>` (`data-kind` pdf|link) with `.bib-thumb` (image or typographic `.bib-tile`), `h3.card-title` (title, links to the document), `.card-meta` (`.source` = `strong.bib-author` + `.bib-pub`, `.date`, `.card-kind`), `p.bib-cite` MLA text (`small`, URLs plain text), optional Fig. cross-links, `.card-actions`.
+- One title per document across Media, Bibliography and Slideshow (`title-overrides.json` by file name or URL, else the MLA record's title).
 
 ## Slideshow (`slideshow.html`)
 ```
@@ -57,6 +64,8 @@ Order inside a card is fixed: `.card-title`, then `.card-meta` with `.source`, `
 - Without JS: a plain `ul`/`ol` list of the items inside `#slideshow` (or `main`). No items: one `.card--empty`.
 
 ## Scenes (`scenes.html`, hidden)
+- B20 is retired in `run_checks.py` (records MANUAL): the scenes page, full-screen viewer and footer egg (`a.egg` -> `scenes.html#stratford`) are covered by `checks/check_scenes.py`. The old in-card DOM below is superseded; B21 still checks the egg is in every footer, >= 44px, focusable, not in nav.
+
 - `<meta name="robots" content="noindex">`; not in any nav; plain `a` to `index.html` (Home).
 - Each scene `[data-scene="<id>"]` (`walworth`, `stratford`) with `button[data-action=load]` whose text includes the size in MB ("Load 3D scene (9.0 MB)"),
   `[data-action=reset]` (>= 44px once loaded), a progress element (`progress`, `[role=progressbar]` or `.scene-progress`) while loading.

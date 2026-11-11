@@ -1,0 +1,2301 @@
+{
+ "note": "Scene facts are copied from scene-facts.json (helper A). Views are COLMAP-frame cameras from the sidecars; vfov in degrees.",
+ "scenes": [
+  {
+   "id": "stratford",
+   "sog": "D:/Dev/tools/dashboard/splat-ranking-data/2026-10-23_S41_3k-steps_full-res_seed7.sog",
+   "photos_dir": "E:/Splat-Work/spirula-stratford/images",
+   "start_view": 22,
+   "world_scale": 11.19046257757024,
+   "facts": {
+    "place": "Stratford",
+    "date_display": "22 March 2025",
+    "faces_scanned": 32835,
+    "arrests": 9,
+    "false_alerts": 1,
+    "time_display": "2:39 pm",
+    "filmed_by_jared_on": "2025-03-22",
+    "source_entry_text": "Stratford Westfield 22/03/25 4h 15m Crime Hotspot 15858 0.64 13 12 0 1 0 0.003% 9 0 3 32835",
+    "source_url": "https://www.met.police.uk/SysSiteAssets/media/downloads/force-content/met/advice/lfr/deployment-records/live-facial-recognition-deployment-record-2025.pdf#page=3",
+    "source_doc_title": "MPS LFR DEPLOYMENTS 2025"
+   },
+   "fov_note": "vertical FOV from COLMAP OPENCV intrinsics fy=1653.44, frame 1080x1920",
+   "views": [
+    {
+     "i": 0,
+     "file": "00029.jpg",
+     "p": [
+      5.5042,
+      0.3246,
+      -2.1299
+     ],
+     "f": [
+      -0.8623,
+      0.0011,
+      0.5064
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 756.0
+    },
+    {
+     "i": 1,
+     "file": "00057.jpg",
+     "p": [
+      5.307,
+      0.284,
+      -1.9017
+     ],
+     "f": [
+      -0.875,
+      0.0101,
+      0.484
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 796.6
+    },
+    {
+     "i": 2,
+     "file": "00085.jpg",
+     "p": [
+      5.0358,
+      0.2804,
+      -1.7156
+     ],
+     "f": [
+      -0.8897,
+      0.0045,
+      0.4566
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 889.5
+    },
+    {
+     "i": 3,
+     "file": "00101.jpg",
+     "p": [
+      4.8701,
+      0.2704,
+      -1.6164
+     ],
+     "f": [
+      -0.8961,
+      0.0069,
+      0.4438
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 1230.7
+    },
+    {
+     "i": 4,
+     "file": "00121.jpg",
+     "p": [
+      4.6338,
+      0.2628,
+      -1.5212
+     ],
+     "f": [
+      -0.8944,
+      0.0143,
+      0.447
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 1022.7
+    },
+    {
+     "i": 5,
+     "file": "00200.jpg",
+     "p": [
+      3.7072,
+      0.2393,
+      -1.4501
+     ],
+     "f": [
+      -0.8878,
+      -0.1685,
+      0.4282
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 476.8
+    },
+    {
+     "i": 6,
+     "file": "00224.jpg",
+     "p": [
+      3.4392,
+      0.2125,
+      -1.4295
+     ],
+     "f": [
+      -0.6881,
+      -0.2599,
+      0.6775
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 499.0
+    },
+    {
+     "i": 7,
+     "file": "00268.jpg",
+     "p": [
+      2.8894,
+      0.2516,
+      -1.503
+     ],
+     "f": [
+      -0.7453,
+      -0.0409,
+      0.6655
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 697.7
+    },
+    {
+     "i": 8,
+     "file": "00284.jpg",
+     "p": [
+      2.6771,
+      0.2535,
+      -1.5109
+     ],
+     "f": [
+      -0.7245,
+      -0.0278,
+      0.6887
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 767.7
+    },
+    {
+     "i": 9,
+     "file": "00308.jpg",
+     "p": [
+      2.4094,
+      0.2563,
+      -1.5198
+     ],
+     "f": [
+      -0.68,
+      -0.0373,
+      0.7323
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 818.8
+    },
+    {
+     "i": 10,
+     "file": "00360.jpg",
+     "p": [
+      1.7863,
+      0.2165,
+      -1.4927
+     ],
+     "f": [
+      -0.6438,
+      -0.1273,
+      0.7546
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 556.1
+    },
+    {
+     "i": 11,
+     "file": "00364.jpg",
+     "p": [
+      1.7438,
+      0.2206,
+      -1.5047
+     ],
+     "f": [
+      -0.6422,
+      -0.1306,
+      0.7553
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 632.2
+    },
+    {
+     "i": 12,
+     "file": "00404.jpg",
+     "p": [
+      1.4999,
+      0.2345,
+      -1.5747
+     ],
+     "f": [
+      -0.7664,
+      -0.0896,
+      0.6361
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 789.7
+    },
+    {
+     "i": 13,
+     "file": "00421.jpg",
+     "p": [
+      1.5208,
+      0.2293,
+      -1.6115
+     ],
+     "f": [
+      -0.7069,
+      -0.1021,
+      0.6999
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 644.2
+    },
+    {
+     "i": 14,
+     "file": "00464.jpg",
+     "p": [
+      1.4848,
+      0.1692,
+      -1.6797
+     ],
+     "f": [
+      -0.6017,
+      -0.1078,
+      0.7914
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 652.6
+    },
+    {
+     "i": 15,
+     "file": "00488.jpg",
+     "p": [
+      1.3679,
+      0.1765,
+      -1.6705
+     ],
+     "f": [
+      -0.5611,
+      -0.0942,
+      0.8224
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 644.2
+    },
+    {
+     "i": 16,
+     "file": "00532.jpg",
+     "p": [
+      1.2156,
+      0.1767,
+      -1.7402
+     ],
+     "f": [
+      -0.4897,
+      -0.0874,
+      0.8675
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 829.9
+    },
+    {
+     "i": 17,
+     "file": "00548.jpg",
+     "p": [
+      1.2233,
+      0.1795,
+      -1.7191
+     ],
+     "f": [
+      -0.4744,
+      -0.0814,
+      0.8765
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 774.8
+    },
+    {
+     "i": 18,
+     "file": "00596.jpg",
+     "p": [
+      1.1758,
+      0.1937,
+      -1.6629
+     ],
+     "f": [
+      -0.4419,
+      -0.0608,
+      0.895
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 947.0
+    },
+    {
+     "i": 19,
+     "file": "00628.jpg",
+     "p": [
+      0.9194,
+      0.2094,
+      -1.6432
+     ],
+     "f": [
+      -0.4091,
+      -0.0608,
+      0.9105
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 989.1
+    },
+    {
+     "i": 20,
+     "file": "00632.jpg",
+     "p": [
+      0.8801,
+      0.2032,
+      -1.6308
+     ],
+     "f": [
+      -0.4036,
+      -0.0604,
+      0.9129
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 980.9
+    },
+    {
+     "i": 21,
+     "file": "00676.jpg",
+     "p": [
+      0.3392,
+      0.1913,
+      -1.5673
+     ],
+     "f": [
+      -0.2732,
+      -0.0495,
+      0.9607
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 957.7
+    },
+    {
+     "i": 22,
+     "file": "00720.jpg",
+     "p": [
+      -0.2268,
+      0.195,
+      -1.59
+     ],
+     "f": [
+      -0.0281,
+      -0.0359,
+      0.999
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 1067.3
+    },
+    {
+     "i": 23,
+     "file": "00721.jpg",
+     "p": [
+      -0.2412,
+      0.1926,
+      -1.5876
+     ],
+     "f": [
+      -0.0219,
+      -0.0348,
+      0.9992
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 923.3
+    },
+    {
+     "i": 24,
+     "file": "00752.jpg",
+     "p": [
+      -0.6573,
+      0.1876,
+      -1.5215
+     ],
+     "f": [
+      0.1828,
+      -0.0179,
+      0.983
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 595.5
+    },
+    {
+     "i": 25,
+     "file": "00782.jpg",
+     "p": [
+      -1.0266,
+      0.1722,
+      -1.3739
+     ],
+     "f": [
+      0.361,
+      -0.0079,
+      0.9325
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 512.5
+    },
+    {
+     "i": 26,
+     "file": "00836.jpg",
+     "p": [
+      -1.6318,
+      0.1047,
+      -0.9697
+     ],
+     "f": [
+      0.5035,
+      -0.056,
+      0.8622
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 584.8
+    },
+    {
+     "i": 27,
+     "file": "00856.jpg",
+     "p": [
+      -1.8525,
+      0.083,
+      -0.8019
+     ],
+     "f": [
+      0.5399,
+      -0.0539,
+      0.84
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 620.4
+    },
+    {
+     "i": 28,
+     "file": "00900.jpg",
+     "p": [
+      -2.3494,
+      0.0267,
+      -0.4381
+     ],
+     "f": [
+      0.6746,
+      -0.0226,
+      0.7378
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 605.5
+    },
+    {
+     "i": 29,
+     "file": "00904.jpg",
+     "p": [
+      -2.3897,
+      0.024,
+      -0.4024
+     ],
+     "f": [
+      0.6901,
+      -0.0201,
+      0.7235
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 703.5
+    },
+    {
+     "i": 30,
+     "file": "00940.jpg",
+     "p": [
+      -2.7173,
+      -0.022,
+      -0.0724
+     ],
+     "f": [
+      0.8712,
+      0.0156,
+      0.4907
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 683.1
+    },
+    {
+     "i": 31,
+     "file": "00990.jpg",
+     "p": [
+      -3.1965,
+      -0.086,
+      0.4677
+     ],
+     "f": [
+      0.8808,
+      0.0193,
+      0.473
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 648.8
+    },
+    {
+     "i": 32,
+     "file": "00992.jpg",
+     "p": [
+      -3.2155,
+      -0.0861,
+      0.4882
+     ],
+     "f": [
+      0.8855,
+      0.0205,
+      0.4642
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 649.3
+    },
+    {
+     "i": 33,
+     "file": "01024.jpg",
+     "p": [
+      -3.3607,
+      -0.1371,
+      0.8461
+     ],
+     "f": [
+      0.9526,
+      0.018,
+      0.3036
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 512.2
+    },
+    {
+     "i": 34,
+     "file": "01053.jpg",
+     "p": [
+      -3.359,
+      -0.1968,
+      1.2359
+     ],
+     "f": [
+      0.9947,
+      -0.0323,
+      0.0978
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 389.0
+    },
+    {
+     "i": 35,
+     "file": "01092.jpg",
+     "p": [
+      -3.2648,
+      -0.2716,
+      1.7343
+     ],
+     "f": [
+      0.9272,
+      0.0442,
+      -0.372
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 418.0
+    },
+    {
+     "i": 36,
+     "file": "01138.jpg",
+     "p": [
+      -2.9803,
+      -0.4174,
+      2.3869
+     ],
+     "f": [
+      0.9807,
+      -0.0064,
+      -0.1956
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 284.2
+    },
+    {
+     "i": 37,
+     "file": "01155.jpg",
+     "p": [
+      -2.8452,
+      -0.3812,
+      2.61
+     ],
+     "f": [
+      0.9748,
+      0.012,
+      -0.2227
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 406.1
+    },
+    {
+     "i": 38,
+     "file": "01184.jpg",
+     "p": [
+      -2.6609,
+      -0.3562,
+      2.9708
+     ],
+     "f": [
+      0.8919,
+      0.1091,
+      -0.4389
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 479.4
+    },
+    {
+     "i": 39,
+     "file": "01220.jpg",
+     "p": [
+      -2.4057,
+      -0.412,
+      3.3844
+     ],
+     "f": [
+      0.7202,
+      0.155,
+      -0.6763
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 578.9
+    },
+    {
+     "i": 40,
+     "file": "01248.jpg",
+     "p": [
+      -2.1492,
+      -0.4548,
+      3.7014
+     ],
+     "f": [
+      0.6654,
+      0.1383,
+      -0.7336
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 715.6
+    },
+    {
+     "i": 41,
+     "file": "01268.jpg",
+     "p": [
+      -1.9307,
+      -0.4892,
+      3.9261
+     ],
+     "f": [
+      0.6375,
+      0.1458,
+      -0.7565
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 765.0
+    },
+    {
+     "i": 42,
+     "file": "01316.jpg",
+     "p": [
+      -1.4106,
+      -0.5259,
+      4.4187
+     ],
+     "f": [
+      0.4676,
+      0.1797,
+      -0.8655
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 1020.7
+    },
+    {
+     "i": 43,
+     "file": "01324.jpg",
+     "p": [
+      -1.3077,
+      -0.5353,
+      4.4755
+     ],
+     "f": [
+      0.4279,
+      0.1858,
+      -0.8845
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 1012.2
+    },
+    {
+     "i": 44,
+     "file": "01372.jpg",
+     "p": [
+      -0.6537,
+      -0.5392,
+      4.6446
+     ],
+     "f": [
+      0.1556,
+      0.1984,
+      -0.9677
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 803.2
+    },
+    {
+     "i": 45,
+     "file": "01409.jpg",
+     "p": [
+      -0.1788,
+      -0.5302,
+      4.5419
+     ],
+     "f": [
+      0.0042,
+      0.17,
+      -0.9854
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 782.1
+    },
+    {
+     "i": 46,
+     "file": "01412.jpg",
+     "p": [
+      -0.1475,
+      -0.5265,
+      4.5304
+     ],
+     "f": [
+      -0.0036,
+      0.1677,
+      -0.9858
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 860.1
+    },
+    {
+     "i": 47,
+     "file": "01440.jpg",
+     "p": [
+      0.046,
+      -0.5164,
+      4.4376
+     ],
+     "f": [
+      -0.0427,
+      0.1594,
+      -0.9863
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 865.9
+    },
+    {
+     "i": 48,
+     "file": "01472.jpg",
+     "p": [
+      0.0003,
+      -0.5096,
+      4.4541
+     ],
+     "f": [
+      -0.1965,
+      0.1767,
+      -0.9645
+     ],
+     "vfov": 60.28,
+     "aspect": 0.5625,
+     "sharp": 833.7
+    }
+   ],
+   "gallery": [
+    {
+     "view": 0,
+     "file": "00029.jpg",
+     "reason": "coverage pick 1 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 756.0",
+     "alt_side": ""
+    },
+    {
+     "view": 3,
+     "file": "00101.jpg",
+     "reason": "coverage pick 2 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 1230.7",
+     "alt_side": ""
+    },
+    {
+     "view": 7,
+     "file": "00268.jpg",
+     "reason": "coverage pick 3 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 697.7",
+     "alt_side": ""
+    },
+    {
+     "view": 9,
+     "file": "00308.jpg",
+     "reason": "coverage pick 4 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 818.8",
+     "alt_side": ""
+    },
+    {
+     "view": 12,
+     "file": "00404.jpg",
+     "reason": "coverage pick 5 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 789.7",
+     "alt_side": ""
+    },
+    {
+     "view": 13,
+     "file": "00421.jpg",
+     "reason": "coverage pick 6 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 644.2",
+     "alt_side": ""
+    },
+    {
+     "view": 14,
+     "file": "00464.jpg",
+     "reason": "coverage pick 7 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 652.6",
+     "alt_side": ""
+    },
+    {
+     "view": 16,
+     "file": "00532.jpg",
+     "reason": "coverage pick 8 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 829.9",
+     "alt_side": ""
+    },
+    {
+     "view": 20,
+     "file": "00632.jpg",
+     "reason": "coverage pick 9 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 980.9",
+     "alt_side": ""
+    },
+    {
+     "view": 21,
+     "file": "00676.jpg",
+     "reason": "coverage pick 10 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 957.7",
+     "alt_side": ""
+    },
+    {
+     "view": 23,
+     "file": "00721.jpg",
+     "reason": "coverage pick 11 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 923.3",
+     "alt_side": ""
+    },
+    {
+     "view": 29,
+     "file": "00904.jpg",
+     "reason": "coverage pick 12 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 703.5",
+     "alt_side": ""
+    },
+    {
+     "view": 30,
+     "file": "00940.jpg",
+     "reason": "coverage pick 13 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 683.1",
+     "alt_side": ""
+    },
+    {
+     "view": 32,
+     "file": "00992.jpg",
+     "reason": "coverage pick 14 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 649.3",
+     "alt_side": ""
+    },
+    {
+     "view": 40,
+     "file": "01248.jpg",
+     "reason": "coverage pick 15 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 715.6",
+     "alt_side": ""
+    },
+    {
+     "view": 41,
+     "file": "01268.jpg",
+     "reason": "coverage pick 16 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 765.0",
+     "alt_side": ""
+    },
+    {
+     "view": 42,
+     "file": "01316.jpg",
+     "reason": "coverage pick 17 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 1020.7",
+     "alt_side": ""
+    },
+    {
+     "view": 44,
+     "file": "01372.jpg",
+     "reason": "coverage pick 18 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 803.2",
+     "alt_side": ""
+    },
+    {
+     "view": 46,
+     "file": "01412.jpg",
+     "reason": "coverage pick 19 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 860.1",
+     "alt_side": ""
+    },
+    {
+     "view": 48,
+     "file": "01472.jpg",
+     "reason": "coverage pick 20 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 833.7",
+     "alt_side": ""
+    }
+   ],
+   "alt_subject": "the facial recognition van and cameras"
+  },
+  {
+   "id": "walworth",
+   "sog": "D:/Dev/tools/dashboard/splat-ranking-data/2026-10-26_r3v9c-solve_15k-steps_best-longer-training_seed42.sog",
+   "photos_dir": "E:/Splat-Sync/splat-hub/walworth-label-pack/photos-2048",
+   "start_view": 27,
+   "world_scale": 12.825401222184045,
+   "facts": {
+    "place": "Walworth",
+    "date_display": "1 November 2024",
+    "faces_scanned": 10510,
+    "arrests": 3,
+    "false_alerts": 0,
+    "time_display": "5:08 pm",
+    "source_entry_text": "Peckham, O/S 224 Walworth Rd 01/11/24 6h 21m Crime Hotspot 13419 0.64 10 10 0 0 0 0% 3 0 8 10510",
+    "source_url": "https://www.met.police.uk/SysSiteAssets/media/downloads/force-content/met/advice/lfr/deployment-records/lfr-deployment-grid-2023-to-2024.pdf#page=10",
+    "source_doc_title": "MPS LFR DEPLOYMENTS 2023 - 31/12/2024",
+    "time_note": "median capture time of the 69 training photos (EXIF)"
+   },
+   "fov_note": "vertical FOV from EXIF focal length (full-frame 36x24 mm); the r3v9c intrinsics are not on this PC",
+   "views": [
+    {
+     "i": 0,
+     "file": "20241101-165653-NIKON Z 8-24-4-London-Walworth-Road-Facial-Recognition-Software-001.JPG",
+     "p": [
+      2.1793,
+      0.0231,
+      -1.4473
+     ],
+     "f": [
+      0.0249,
+      0.0018,
+      0.9997
+     ],
+     "vfov": 53.13,
+     "aspect": 1.5004,
+     "sharp": 241.8
+    },
+    {
+     "i": 1,
+     "file": "20241101-165706-NIKON Z 8-33.5-4-London-Walworth-Road-Facial-Recognition-Software-003.JPG",
+     "p": [
+      2.1861,
+      -0.0327,
+      -1.4845
+     ],
+     "f": [
+      0.0095,
+      -0.0023,
+      1.0
+     ],
+     "vfov": 39.42,
+     "aspect": 1.5004,
+     "sharp": 177.5
+    },
+    {
+     "i": 2,
+     "file": "20241101-165707-NIKON Z 8-33.5-4-London-Walworth-Road-Facial-Recognition-Software-005.JPG",
+     "p": [
+      2.1814,
+      -0.0326,
+      -1.4848
+     ],
+     "f": [
+      0.0105,
+      -0.0021,
+      0.9999
+     ],
+     "vfov": 39.42,
+     "aspect": 1.5004,
+     "sharp": 182.5
+    },
+    {
+     "i": 3,
+     "file": "20241101-165709-NIKON Z 8-33.5-4-London-Walworth-Road-Facial-Recognition-Software-010.JPG",
+     "p": [
+      2.1896,
+      -0.0324,
+      -1.4642
+     ],
+     "f": [
+      0.0028,
+      -0.0013,
+      1.0
+     ],
+     "vfov": 39.42,
+     "aspect": 1.5004,
+     "sharp": 306.0
+    },
+    {
+     "i": 4,
+     "file": "20241101-165710-NIKON Z 8-33.5-4-London-Walworth-Road-Facial-Recognition-Software-012.JPG",
+     "p": [
+      2.1796,
+      -0.031,
+      -1.4764
+     ],
+     "f": [
+      0.0027,
+      -0.0022,
+      1.0
+     ],
+     "vfov": 39.42,
+     "aspect": 1.5004,
+     "sharp": 309.5
+    },
+    {
+     "i": 5,
+     "file": "20241101-165711-NIKON Z 8-33.5-4-London-Walworth-Road-Facial-Recognition-Software-014.JPG",
+     "p": [
+      2.1796,
+      -0.031,
+      -1.4764
+     ],
+     "f": [
+      0.0027,
+      -0.0036,
+      1.0
+     ],
+     "vfov": 39.42,
+     "aspect": 1.5004,
+     "sharp": 381.5
+    },
+    {
+     "i": 6,
+     "file": "20241101-165711-NIKON Z 8-33.5-4-London-Walworth-Road-Facial-Recognition-Software-016.JPG",
+     "p": [
+      2.1782,
+      -0.0311,
+      -1.4751
+     ],
+     "f": [
+      0.004,
+      -0.0064,
+      1.0
+     ],
+     "vfov": 39.42,
+     "aspect": 1.5004,
+     "sharp": 356.7
+    },
+    {
+     "i": 7,
+     "file": "20241101-165712-NIKON Z 8-33.5-4-London-Walworth-Road-Facial-Recognition-Software-019.JPG",
+     "p": [
+      2.1816,
+      -0.0307,
+      -1.4767
+     ],
+     "f": [
+      0.0034,
+      -0.0077,
+      1.0
+     ],
+     "vfov": 39.42,
+     "aspect": 1.5004,
+     "sharp": 277.6
+    },
+    {
+     "i": 8,
+     "file": "20241101-165713-NIKON Z 8-33.5-4-London-Walworth-Road-Facial-Recognition-Software-021.JPG",
+     "p": [
+      2.1787,
+      -0.0297,
+      -1.4685
+     ],
+     "f": [
+      0.006,
+      -0.0088,
+      0.9999
+     ],
+     "vfov": 39.42,
+     "aspect": 1.5004,
+     "sharp": 374.1
+    },
+    {
+     "i": 9,
+     "file": "20241101-165719-NIKON Z 8-24-4-London-Walworth-Road-Facial-Recognition-Software-023.JPG",
+     "p": [
+      2.1866,
+      -0.0295,
+      -1.4825
+     ],
+     "f": [
+      -0.0159,
+      -0.0051,
+      0.9999
+     ],
+     "vfov": 53.13,
+     "aspect": 1.5004,
+     "sharp": 250.5
+    },
+    {
+     "i": 10,
+     "file": "20241101-165735-NIKON Z 8-24-4-London-Walworth-Road-Facial-Recognition-Software-025.JPG",
+     "p": [
+      4.0483,
+      0.3029,
+      -1.1688
+     ],
+     "f": [
+      -0.4176,
+      -0.2615,
+      0.8702
+     ],
+     "vfov": 53.13,
+     "aspect": 1.5004,
+     "sharp": 296.3
+    },
+    {
+     "i": 11,
+     "file": "20241101-165743-NIKON Z 8-24-4-London-Walworth-Road-Facial-Recognition-Software-027.JPG",
+     "p": [
+      4.0424,
+      0.3056,
+      -1.1606
+     ],
+     "f": [
+      -0.421,
+      -0.255,
+      0.8705
+     ],
+     "vfov": 53.13,
+     "aspect": 1.5004,
+     "sharp": 276.1
+    },
+    {
+     "i": 12,
+     "file": "20241101-165744-NIKON Z 8-24-4-London-Walworth-Road-Facial-Recognition-Software-030.JPG",
+     "p": [
+      4.0414,
+      0.3059,
+      -1.1623
+     ],
+     "f": [
+      -0.4223,
+      -0.261,
+      0.868
+     ],
+     "vfov": 53.13,
+     "aspect": 1.5004,
+     "sharp": 213.9
+    },
+    {
+     "i": 13,
+     "file": "20241101-165810-NIKON Z 8-24-4-London-Walworth-Road-Facial-Recognition-Software-032.JPG",
+     "p": [
+      4.5167,
+      0.2452,
+      -0.922
+     ],
+     "f": [
+      -0.0306,
+      -0.0141,
+      0.9994
+     ],
+     "vfov": 53.13,
+     "aspect": 1.5004,
+     "sharp": 56.4
+    },
+    {
+     "i": 14,
+     "file": "20241101-165812-NIKON Z 8-24-4-London-Walworth-Road-Facial-Recognition-Software-036.JPG",
+     "p": [
+      4.3895,
+      0.1174,
+      -0.8539
+     ],
+     "f": [
+      -0.4387,
+      -0.1198,
+      0.8906
+     ],
+     "vfov": 53.13,
+     "aspect": 1.5004,
+     "sharp": 152.1
+    },
+    {
+     "i": 15,
+     "file": "20241101-165839-NIKON Z 8-24-4-London-Walworth-Road-Facial-Recognition-Software-040.JPG",
+     "p": [
+      7.17,
+      0.3072,
+      -1.0551
+     ],
+     "f": [
+      -0.8815,
+      -0.1113,
+      0.4589
+     ],
+     "vfov": 53.13,
+     "aspect": 1.5004,
+     "sharp": 140.6
+    },
+    {
+     "i": 16,
+     "file": "20241101-165841-NIKON Z 8-24-4-London-Walworth-Road-Facial-Recognition-Software-042.JPG",
+     "p": [
+      7.1561,
+      0.3125,
+      -1.0404
+     ],
+     "f": [
+      -0.8902,
+      -0.0901,
+      0.4466
+     ],
+     "vfov": 53.13,
+     "aspect": 1.5004,
+     "sharp": 131.3
+    },
+    {
+     "i": 17,
+     "file": "20241101-165842-NIKON Z 8-24-4-London-Walworth-Road-Facial-Recognition-Software-044.JPG",
+     "p": [
+      7.1447,
+      0.3117,
+      -1.0348
+     ],
+     "f": [
+      -0.896,
+      -0.0831,
+      0.4361
+     ],
+     "vfov": 53.13,
+     "aspect": 1.5004,
+     "sharp": 170.5
+    },
+    {
+     "i": 18,
+     "file": "20241101-165844-NIKON Z 8-38-4-London-Walworth-Road-Facial-Recognition-Software-046.JPG",
+     "p": [
+      7.1604,
+      0.3142,
+      -1.0404
+     ],
+     "f": [
+      -0.8682,
+      -0.0791,
+      0.4899
+     ],
+     "vfov": 35.05,
+     "aspect": 1.5004,
+     "sharp": 167.1
+    },
+    {
+     "i": 19,
+     "file": "20241101-170624-NIKON Z 8-39-4-London-Walworth-Road-Facial-Recognition-Software-051.JPG",
+     "p": [
+      3.8983,
+      0.3252,
+      3.2999
+     ],
+     "f": [
+      -0.6082,
+      0.5738,
+      -0.5485
+     ],
+     "vfov": 34.21,
+     "aspect": 1.5004,
+     "sharp": 54.9
+    },
+    {
+     "i": 20,
+     "file": "20241101-170644-NIKON Z 8-24-4-London-Walworth-Road-Facial-Recognition-Software-054.JPG",
+     "p": [
+      5.0753,
+      -0.0597,
+      3.5369
+     ],
+     "f": [
+      -0.999,
+      -0.0044,
+      -0.044
+     ],
+     "vfov": 73.74,
+     "aspect": 0.6665,
+     "sharp": 86.9
+    },
+    {
+     "i": 21,
+     "file": "20241101-170716-NIKON Z 8-24-4-London-Walworth-Road-Facial-Recognition-Software-064.JPG",
+     "p": [
+      -3.4568,
+      0.0213,
+      3.7031
+     ],
+     "f": [
+      0.9972,
+      -0.0215,
+      -0.0713
+     ],
+     "vfov": 73.74,
+     "aspect": 0.6665,
+     "sharp": 218.0
+    },
+    {
+     "i": 22,
+     "file": "20241101-170719-NIKON Z 8-56-4-London-Walworth-Road-Facial-Recognition-Software-066.JPG",
+     "p": [
+      -3.4504,
+      0.0218,
+      3.7012
+     ],
+     "f": [
+      0.9946,
+      -0.0485,
+      -0.0912
+     ],
+     "vfov": 35.64,
+     "aspect": 0.6665,
+     "sharp": 63.6
+    },
+    {
+     "i": 23,
+     "file": "20241101-170722-NIKON Z 8-100-4-London-Walworth-Road-Facial-Recognition-Software-068.JPG",
+     "p": [
+      -3.4404,
+      0.0232,
+      3.7102
+     ],
+     "f": [
+      0.9997,
+      -0.0052,
+      -0.025
+     ],
+     "vfov": 20.41,
+     "aspect": 0.6665,
+     "sharp": 42.0
+    },
+    {
+     "i": 24,
+     "file": "20241101-170727-NIKON Z 8-56-4-London-Walworth-Road-Facial-Recognition-Software-071.JPG",
+     "p": [
+      -3.6006,
+      0.0095,
+      3.7146
+     ],
+     "f": [
+      0.9983,
+      -0.0132,
+      -0.0573
+     ],
+     "vfov": 35.64,
+     "aspect": 0.6665,
+     "sharp": 50.4
+    },
+    {
+     "i": 25,
+     "file": "20241101-170729-NIKON Z 8-35-4-London-Walworth-Road-Facial-Recognition-Software-073.JPG",
+     "p": [
+      -3.4594,
+      0.0227,
+      3.69
+     ],
+     "f": [
+      0.9986,
+      -0.0072,
+      -0.0518
+     ],
+     "vfov": 54.43,
+     "aspect": 0.6665,
+     "sharp": 106.8
+    },
+    {
+     "i": 26,
+     "file": "20241101-170730-NIKON Z 8-24-4-London-Walworth-Road-Facial-Recognition-Software-075.JPG",
+     "p": [
+      -3.4723,
+      0.024,
+      3.6716
+     ],
+     "f": [
+      0.9972,
+      -0.0182,
+      -0.0719
+     ],
+     "vfov": 73.74,
+     "aspect": 0.6665,
+     "sharp": 172.5
+    },
+    {
+     "i": 27,
+     "file": "20241101-170752-NIKON Z 8-24-4-London-Walworth-Road-Facial-Recognition-Software-077.JPG",
+     "p": [
+      -0.9932,
+      0.0019,
+      2.5397
+     ],
+     "f": [
+      0.9614,
+      -0.0229,
+      0.2743
+     ],
+     "vfov": 73.74,
+     "aspect": 0.6665,
+     "sharp": 189.2
+    },
+    {
+     "i": 28,
+     "file": "20241101-170757-NIKON Z 8-24-4-London-Walworth-Road-Facial-Recognition-Software-079.JPG",
+     "p": [
+      -0.988,
+      0.0053,
+      2.5445
+     ],
+     "f": [
+      0.9615,
+      0.0088,
+      0.2748
+     ],
+     "vfov": 73.74,
+     "aspect": 0.6665,
+     "sharp": 209.5
+    },
+    {
+     "i": 29,
+     "file": "20241101-170813-NIKON Z 8-120-4-London-Walworth-Road-Facial-Recognition-Software-081.JPG",
+     "p": [
+      -1.0815,
+      0.0019,
+      2.5358
+     ],
+     "f": [
+      0.9186,
+      -0.0244,
+      0.3945
+     ],
+     "vfov": 17.06,
+     "aspect": 0.6665,
+     "sharp": 113.7
+    },
+    {
+     "i": 30,
+     "file": "20241101-170815-NIKON Z 8-120-4-London-Walworth-Road-Facial-Recognition-Software-083.JPG",
+     "p": [
+      -1.1148,
+      0.0063,
+      2.527
+     ],
+     "f": [
+      0.919,
+      -0.021,
+      0.3937
+     ],
+     "vfov": 17.06,
+     "aspect": 0.6665,
+     "sharp": 66.6
+    },
+    {
+     "i": 31,
+     "file": "20241101-170822-NIKON Z 8-120-4-London-Walworth-Road-Facial-Recognition-Software-085.JPG",
+     "p": [
+      -0.4504,
+      -0.0141,
+      2.6637
+     ],
+     "f": [
+      0.8412,
+      -0.3638,
+      0.3999
+     ],
+     "vfov": 11.42,
+     "aspect": 1.5004,
+     "sharp": 43.6
+    },
+    {
+     "i": 32,
+     "file": "20241101-170824-NIKON Z 8-69-4-London-Walworth-Road-Facial-Recognition-Software-088.JPG",
+     "p": [
+      -0.4485,
+      -0.0102,
+      2.6555
+     ],
+     "f": [
+      0.8646,
+      -0.3434,
+      0.3668
+     ],
+     "vfov": 19.73,
+     "aspect": 1.5004,
+     "sharp": 60.6
+    },
+    {
+     "i": 33,
+     "file": "20241101-170825-NIKON Z 8-62-4-London-Walworth-Road-Facial-Recognition-Software-089.JPG",
+     "p": [
+      -0.4399,
+      -0.0125,
+      2.6543
+     ],
+     "f": [
+      0.8715,
+      -0.3348,
+      0.3583
+     ],
+     "vfov": 21.91,
+     "aspect": 1.5004,
+     "sharp": 109.1
+    },
+    {
+     "i": 34,
+     "file": "20241101-170829-NIKON Z 8-120-4-London-Walworth-Road-Facial-Recognition-Software-091.JPG",
+     "p": [
+      -0.4391,
+      -0.0072,
+      2.6115
+     ],
+     "f": [
+      0.9256,
+      -0.337,
+      0.1722
+     ],
+     "vfov": 11.42,
+     "aspect": 1.5004,
+     "sharp": 48.6
+    },
+    {
+     "i": 35,
+     "file": "20241101-170836-NIKON Z 8-120-4-London-Walworth-Road-Facial-Recognition-Software-093.JPG",
+     "p": [
+      -0.4282,
+      -0.0142,
+      2.6169
+     ],
+     "f": [
+      0.9249,
+      -0.3386,
+      0.1732
+     ],
+     "vfov": 11.42,
+     "aspect": 1.5004,
+     "sharp": 21.0
+    },
+    {
+     "i": 36,
+     "file": "20241101-170839-NIKON Z 8-120-4-London-Walworth-Road-Facial-Recognition-Software-095.JPG",
+     "p": [
+      -0.4219,
+      -0.0111,
+      2.6198
+     ],
+     "f": [
+      0.9279,
+      -0.332,
+      0.1698
+     ],
+     "vfov": 11.42,
+     "aspect": 1.5004,
+     "sharp": 21.8
+    },
+    {
+     "i": 37,
+     "file": "20241101-170842-NIKON Z 8-120-4-London-Walworth-Road-Facial-Recognition-Software-097.JPG",
+     "p": [
+      -0.4189,
+      -0.0112,
+      2.6199
+     ],
+     "f": [
+      0.924,
+      -0.3406,
+      0.1737
+     ],
+     "vfov": 11.42,
+     "aspect": 1.5004,
+     "sharp": 18.6
+    },
+    {
+     "i": 38,
+     "file": "20241101-170843-NIKON Z 8-120-4-London-Walworth-Road-Facial-Recognition-Software-099.JPG",
+     "p": [
+      -0.4229,
+      -0.011,
+      2.6176
+     ],
+     "f": [
+      0.9252,
+      -0.3416,
+      0.1653
+     ],
+     "vfov": 11.42,
+     "aspect": 1.5004,
+     "sharp": 20.2
+    },
+    {
+     "i": 39,
+     "file": "20241101-170901-NIKON Z 8-120-4-London-Walworth-Road-Facial-Recognition-Software-101.JPG",
+     "p": [
+      -0.0768,
+      -0.0524,
+      3.3443
+     ],
+     "f": [
+      0.878,
+      -0.4765,
+      0.0457
+     ],
+     "vfov": 17.06,
+     "aspect": 0.6665,
+     "sharp": 21.1
+    },
+    {
+     "i": 40,
+     "file": "20241101-170905-NIKON Z 8-120-4-London-Walworth-Road-Facial-Recognition-Software-103.JPG",
+     "p": [
+      -0.0706,
+      -0.0514,
+      3.338
+     ],
+     "f": [
+      0.8742,
+      -0.4829,
+      0.0517
+     ],
+     "vfov": 17.06,
+     "aspect": 0.6665,
+     "sharp": 19.3
+    },
+    {
+     "i": 41,
+     "file": "20241101-170912-NIKON Z 8-24-4-London-Walworth-Road-Facial-Recognition-Software-105.JPG",
+     "p": [
+      -0.0768,
+      -0.0117,
+      3.3197
+     ],
+     "f": [
+      0.9989,
+      -0.0201,
+      -0.0427
+     ],
+     "vfov": 73.74,
+     "aspect": 0.6665,
+     "sharp": 178.0
+    },
+    {
+     "i": 42,
+     "file": "20241101-170913-NIKON Z 8-24-4-London-Walworth-Road-Facial-Recognition-Software-107.JPG",
+     "p": [
+      -0.065,
+      -0.0025,
+      3.3165
+     ],
+     "f": [
+      0.9991,
+      -0.0277,
+      -0.0331
+     ],
+     "vfov": 73.74,
+     "aspect": 0.6665,
+     "sharp": 168.8
+    },
+    {
+     "i": 43,
+     "file": "20241101-170917-NIKON Z 8-24-4-London-Walworth-Road-Facial-Recognition-Software-109.JPG",
+     "p": [
+      -0.0646,
+      -0.0017,
+      3.3155
+     ],
+     "f": [
+      0.9992,
+      -0.0178,
+      -0.0364
+     ],
+     "vfov": 73.74,
+     "aspect": 0.6665,
+     "sharp": 147.8
+    },
+    {
+     "i": 44,
+     "file": "20241101-170918-NIKON Z 8-24-4-London-Walworth-Road-Facial-Recognition-Software-111.JPG",
+     "p": [
+      -0.0599,
+      0.0011,
+      3.3141
+     ],
+     "f": [
+      0.9992,
+      -0.027,
+      -0.0309
+     ],
+     "vfov": 73.74,
+     "aspect": 0.6665,
+     "sharp": 158.6
+    },
+    {
+     "i": 45,
+     "file": "20241101-171005-NIKON Z 8-24-4-London-Walworth-Road-Facial-Recognition-Software-113.JPG",
+     "p": [
+      -3.8627,
+      -0.0342,
+      -1.2485
+     ],
+     "f": [
+      0.8054,
+      0.0044,
+      0.5927
+     ],
+     "vfov": 73.74,
+     "aspect": 0.6665,
+     "sharp": 154.0
+    },
+    {
+     "i": 46,
+     "file": "20241101-171009-NIKON Z 8-46-4-London-Walworth-Road-Facial-Recognition-Software-115.JPG",
+     "p": [
+      -3.8614,
+      -0.0321,
+      -1.2505
+     ],
+     "f": [
+      0.7507,
+      -0.0055,
+      0.6606
+     ],
+     "vfov": 42.74,
+     "aspect": 0.6665,
+     "sharp": 164.3
+    },
+    {
+     "i": 47,
+     "file": "20241101-171012-NIKON Z 8-38-4-London-Walworth-Road-Facial-Recognition-Software-117.JPG",
+     "p": [
+      -3.8637,
+      -0.0117,
+      -1.2499
+     ],
+     "f": [
+      0.807,
+      -0.0363,
+      0.5895
+     ],
+     "vfov": 35.05,
+     "aspect": 1.5004,
+     "sharp": 204.9
+    },
+    {
+     "i": 48,
+     "file": "20241101-171023-NIKON Z 8-52-4-London-Walworth-Road-Facial-Recognition-Software-119.JPG",
+     "p": [
+      -3.8775,
+      -0.0045,
+      -1.2663
+     ],
+     "f": [
+      0.7788,
+      -0.0057,
+      0.6273
+     ],
+     "vfov": 25.99,
+     "aspect": 1.5004,
+     "sharp": 237.0
+    },
+    {
+     "i": 49,
+     "file": "20241101-171023-NIKON Z 8-52-4-London-Walworth-Road-Facial-Recognition-Software-121.JPG",
+     "p": [
+      -3.8717,
+      -0.007,
+      -1.2617
+     ],
+     "f": [
+      0.7813,
+      -0.0162,
+      0.6239
+     ],
+     "vfov": 25.99,
+     "aspect": 1.5004,
+     "sharp": 115.3
+    },
+    {
+     "i": 50,
+     "file": "20241101-171032-NIKON Z 8-39-5.6-London-Walworth-Road-Facial-Recognition-Software-125.JPG",
+     "p": [
+      -3.8765,
+      -0.0061,
+      -1.2658
+     ],
+     "f": [
+      0.8,
+      -0.0247,
+      0.5995
+     ],
+     "vfov": 34.21,
+     "aspect": 1.5004,
+     "sharp": 198.5
+    },
+    {
+     "i": 51,
+     "file": "20241101-171039-NIKON Z 8-39-5.6-London-Walworth-Road-Facial-Recognition-Software-127.JPG",
+     "p": [
+      -3.8667,
+      -0.0029,
+      -1.2564
+     ],
+     "f": [
+      0.8185,
+      -0.0233,
+      0.574
+     ],
+     "vfov": 34.21,
+     "aspect": 1.5004,
+     "sharp": 291.9
+    },
+    {
+     "i": 52,
+     "file": "20241101-171040-NIKON Z 8-39-5.6-London-Walworth-Road-Facial-Recognition-Software-129.JPG",
+     "p": [
+      -3.8671,
+      -0.0016,
+      -1.2609
+     ],
+     "f": [
+      0.8198,
+      -0.0136,
+      0.5724
+     ],
+     "vfov": 34.21,
+     "aspect": 1.5004,
+     "sharp": 300.3
+    },
+    {
+     "i": 53,
+     "file": "20241101-171041-NIKON Z 8-39-5.6-London-Walworth-Road-Facial-Recognition-Software-131.JPG",
+     "p": [
+      -3.8755,
+      -0.0004,
+      -1.2645
+     ],
+     "f": [
+      0.8185,
+      -0.0103,
+      0.5744
+     ],
+     "vfov": 34.21,
+     "aspect": 1.5004,
+     "sharp": 345.0
+    },
+    {
+     "i": 54,
+     "file": "20241101-171041-NIKON Z 8-39-5.6-London-Walworth-Road-Facial-Recognition-Software-133.JPG",
+     "p": [
+      -3.8654,
+      -0.0009,
+      -1.2581
+     ],
+     "f": [
+      0.818,
+      -0.0085,
+      0.5751
+     ],
+     "vfov": 34.21,
+     "aspect": 1.5004,
+     "sharp": 373.1
+    },
+    {
+     "i": 55,
+     "file": "20241101-171042-NIKON Z 8-39-5.6-London-Walworth-Road-Facial-Recognition-Software-135.JPG",
+     "p": [
+      -3.8654,
+      -0.0009,
+      -1.2581
+     ],
+     "f": [
+      0.8179,
+      -0.0105,
+      0.5753
+     ],
+     "vfov": 34.21,
+     "aspect": 1.5004,
+     "sharp": 349.9
+    },
+    {
+     "i": 56,
+     "file": "20241101-171043-NIKON Z 8-39-5.6-London-Walworth-Road-Facial-Recognition-Software-137.JPG",
+     "p": [
+      -3.8607,
+      -0.0014,
+      -1.2548
+     ],
+     "f": [
+      0.8185,
+      -0.0126,
+      0.5743
+     ],
+     "vfov": 34.21,
+     "aspect": 1.5004,
+     "sharp": 300.7
+    },
+    {
+     "i": 57,
+     "file": "20241101-171043-NIKON Z 8-39-5.6-London-Walworth-Road-Facial-Recognition-Software-139.JPG",
+     "p": [
+      -3.8678,
+      -0.0012,
+      -1.2598
+     ],
+     "f": [
+      0.8192,
+      -0.0145,
+      0.5733
+     ],
+     "vfov": 34.21,
+     "aspect": 1.5004,
+     "sharp": 262.8
+    },
+    {
+     "i": 58,
+     "file": "20241101-171045-NIKON Z 8-39-5.6-London-Walworth-Road-Facial-Recognition-Software-141.JPG",
+     "p": [
+      -3.8649,
+      -0.0017,
+      -1.2577
+     ],
+     "f": [
+      0.8193,
+      -0.019,
+      0.573
+     ],
+     "vfov": 34.21,
+     "aspect": 1.5004,
+     "sharp": 192.6
+    },
+    {
+     "i": 59,
+     "file": "20241101-171105-NIKON Z 8-39-5.6-London-Walworth-Road-Facial-Recognition-Software-143.JPG",
+     "p": [
+      2.3439,
+      -0.0558,
+      -2.7764
+     ],
+     "f": [
+      -0.0076,
+      -0.0035,
+      1.0
+     ],
+     "vfov": 34.21,
+     "aspect": 1.5004,
+     "sharp": 200.7
+    },
+    {
+     "i": 60,
+     "file": "20241101-171107-NIKON Z 8-54-5.6-London-Walworth-Road-Facial-Recognition-Software-145.JPG",
+     "p": [
+      2.3375,
+      -0.0538,
+      -2.7764
+     ],
+     "f": [
+      -0.0335,
+      0.0012,
+      0.9994
+     ],
+     "vfov": 25.06,
+     "aspect": 1.5004,
+     "sharp": 134.2
+    },
+    {
+     "i": 61,
+     "file": "20241101-171109-NIKON Z 8-54-5.6-London-Walworth-Road-Facial-Recognition-Software-147.JPG",
+     "p": [
+      2.3408,
+      -0.0544,
+      -2.7799
+     ],
+     "f": [
+      -0.0343,
+      0.0019,
+      0.9994
+     ],
+     "vfov": 25.06,
+     "aspect": 1.5004,
+     "sharp": 102.4
+    },
+    {
+     "i": 62,
+     "file": "20241101-171109-NIKON Z 8-54-5.6-London-Walworth-Road-Facial-Recognition-Software-149.JPG",
+     "p": [
+      2.341,
+      -0.054,
+      -2.7831
+     ],
+     "f": [
+      -0.0335,
+      -0.0013,
+      0.9994
+     ],
+     "vfov": 25.06,
+     "aspect": 1.5004,
+     "sharp": 78.3
+    },
+    {
+     "i": 63,
+     "file": "20241101-171111-NIKON Z 8-54-5.6-London-Walworth-Road-Facial-Recognition-Software-151.JPG",
+     "p": [
+      2.3427,
+      -0.0526,
+      -2.7773
+     ],
+     "f": [
+      -0.0342,
+      0.002,
+      0.9994
+     ],
+     "vfov": 25.06,
+     "aspect": 1.5004,
+     "sharp": 119.5
+    },
+    {
+     "i": 64,
+     "file": "20241101-171112-NIKON Z 8-54-5.6-London-Walworth-Road-Facial-Recognition-Software-153.JPG",
+     "p": [
+      2.3428,
+      -0.0529,
+      -2.7769
+     ],
+     "f": [
+      -0.0226,
+      -0.0004,
+      0.9997
+     ],
+     "vfov": 25.06,
+     "aspect": 1.5004,
+     "sharp": 118.2
+    },
+    {
+     "i": 65,
+     "file": "20241101-171114-NIKON Z 8-54-5.6-London-Walworth-Road-Facial-Recognition-Software-155.JPG",
+     "p": [
+      2.3444,
+      -0.0527,
+      -2.7816
+     ],
+     "f": [
+      -0.0173,
+      -0.0017,
+      0.9998
+     ],
+     "vfov": 25.06,
+     "aspect": 1.5004,
+     "sharp": 124.0
+    },
+    {
+     "i": 66,
+     "file": "20241101-171115-NIKON Z 8-54-5.6-London-Walworth-Road-Facial-Recognition-Software-157.JPG",
+     "p": [
+      2.3436,
+      -0.0524,
+      -2.7728
+     ],
+     "f": [
+      -0.0175,
+      -0.0068,
+      0.9998
+     ],
+     "vfov": 25.06,
+     "aspect": 1.5004,
+     "sharp": 131.1
+    },
+    {
+     "i": 67,
+     "file": "20241101-171116-NIKON Z 8-54-5.6-London-Walworth-Road-Facial-Recognition-Software-159.JPG",
+     "p": [
+      2.3423,
+      -0.0527,
+      -2.7726
+     ],
+     "f": [
+      -0.0131,
+      -0.0122,
+      0.9998
+     ],
+     "vfov": 25.06,
+     "aspect": 1.5004,
+     "sharp": 143.6
+    },
+    {
+     "i": 68,
+     "file": "20241101-171121-NIKON Z 8-120-5.6-London-Walworth-Road-Facial-Recognition-Software-161.JPG",
+     "p": [
+      2.3473,
+      -0.0524,
+      -2.7889
+     ],
+     "f": [
+      0.0544,
+      -0.0053,
+      0.9985
+     ],
+     "vfov": 11.42,
+     "aspect": 1.5004,
+     "sharp": 84.6
+    }
+   ],
+   "gallery": [
+    {
+     "view": 0,
+     "file": "20241101-165653-NIKON Z 8-24-4-London-Walworth-Road-Facial-Recognition-Software-001.JPG",
+     "reason": "coverage pick 1 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 241.8, side: right",
+     "alt_side": ", right side"
+    },
+    {
+     "view": 5,
+     "file": "20241101-165711-NIKON Z 8-33.5-4-London-Walworth-Road-Facial-Recognition-Software-014.JPG",
+     "reason": "coverage pick 2 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 381.5, side: right",
+     "alt_side": ", right side"
+    },
+    {
+     "view": 9,
+     "file": "20241101-165719-NIKON Z 8-24-4-London-Walworth-Road-Facial-Recognition-Software-023.JPG",
+     "reason": "coverage pick 3 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 250.5, side: right",
+     "alt_side": ", right side"
+    },
+    {
+     "view": 10,
+     "file": "20241101-165735-NIKON Z 8-24-4-London-Walworth-Road-Facial-Recognition-Software-025.JPG",
+     "reason": "coverage pick 4 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 296.3, side: several",
+     "alt_side": ", several sides"
+    },
+    {
+     "view": 14,
+     "file": "20241101-165812-NIKON Z 8-24-4-London-Walworth-Road-Facial-Recognition-Software-036.JPG",
+     "reason": "coverage pick 5 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 152.1, side: several",
+     "alt_side": ", several sides"
+    },
+    {
+     "view": 15,
+     "file": "20241101-165839-NIKON Z 8-24-4-London-Walworth-Road-Facial-Recognition-Software-040.JPG",
+     "reason": "coverage pick 6 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 140.6, side: several",
+     "alt_side": ", several sides"
+    },
+    {
+     "view": 17,
+     "file": "20241101-165842-NIKON Z 8-24-4-London-Walworth-Road-Facial-Recognition-Software-044.JPG",
+     "reason": "coverage pick 7 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 170.5, side: several",
+     "alt_side": ", several sides"
+    },
+    {
+     "view": 18,
+     "file": "20241101-165844-NIKON Z 8-38-4-London-Walworth-Road-Facial-Recognition-Software-046.JPG",
+     "reason": "coverage pick 8 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 167.1, side: several",
+     "alt_side": ", several sides"
+    },
+    {
+     "view": 20,
+     "file": "20241101-170644-NIKON Z 8-24-4-London-Walworth-Road-Facial-Recognition-Software-054.JPG",
+     "reason": "coverage pick 9 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 86.9, side: front",
+     "alt_side": ", front"
+    },
+    {
+     "view": 21,
+     "file": "20241101-170716-NIKON Z 8-24-4-London-Walworth-Road-Facial-Recognition-Software-064.JPG",
+     "reason": "coverage pick 10 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 218.0, side: back",
+     "alt_side": ", rear"
+    },
+    {
+     "view": 27,
+     "file": "20241101-170752-NIKON Z 8-24-4-London-Walworth-Road-Facial-Recognition-Software-077.JPG",
+     "reason": "coverage pick 11 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 189.2, side: several",
+     "alt_side": ", several sides"
+    },
+    {
+     "view": 28,
+     "file": "20241101-170757-NIKON Z 8-24-4-London-Walworth-Road-Facial-Recognition-Software-079.JPG",
+     "reason": "coverage pick 12 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 209.5, side: several",
+     "alt_side": ", several sides"
+    },
+    {
+     "view": 41,
+     "file": "20241101-170912-NIKON Z 8-24-4-London-Walworth-Road-Facial-Recognition-Software-105.JPG",
+     "reason": "coverage pick 13 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 178.0, side: back",
+     "alt_side": ", rear"
+    },
+    {
+     "view": 44,
+     "file": "20241101-170918-NIKON Z 8-24-4-London-Walworth-Road-Facial-Recognition-Software-111.JPG",
+     "reason": "coverage pick 14 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 158.6, side: back",
+     "alt_side": ", rear"
+    },
+    {
+     "view": 45,
+     "file": "20241101-171005-NIKON Z 8-24-4-London-Walworth-Road-Facial-Recognition-Software-113.JPG",
+     "reason": "coverage pick 15 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 154.0, side: several",
+     "alt_side": ", several sides"
+    },
+    {
+     "view": 46,
+     "file": "20241101-171009-NIKON Z 8-46-4-London-Walworth-Road-Facial-Recognition-Software-115.JPG",
+     "reason": "coverage pick 16 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 164.3, side: several",
+     "alt_side": ", several sides"
+    },
+    {
+     "view": 47,
+     "file": "20241101-171012-NIKON Z 8-38-4-London-Walworth-Road-Facial-Recognition-Software-117.JPG",
+     "reason": "coverage pick 17 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 204.9, side: several",
+     "alt_side": ", several sides"
+    },
+    {
+     "view": 48,
+     "file": "20241101-171023-NIKON Z 8-52-4-London-Walworth-Road-Facial-Recognition-Software-119.JPG",
+     "reason": "coverage pick 18 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 237.0, side: several",
+     "alt_side": ", several sides"
+    },
+    {
+     "view": 59,
+     "file": "20241101-171105-NIKON Z 8-39-5.6-London-Walworth-Road-Facial-Recognition-Software-143.JPG",
+     "reason": "coverage pick 19 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 200.7, side: right",
+     "alt_side": ", right side"
+    },
+    {
+     "view": 63,
+     "file": "20241101-171111-NIKON Z 8-54-5.6-London-Walworth-Road-Facial-Recognition-Software-151.JPG",
+     "reason": "coverage pick 20 of 20 (farthest-point on position+direction among the sharper 65% of frames); sharpness 119.5, side: right",
+     "alt_side": ", right side"
+    }
+   ],
+   "alt_subject": "the facial recognition van and cameras"
+  }
+ ]
+}

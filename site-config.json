@@ -10,16 +10,31 @@
   },
   "selections_path": "E:/Outputs/phd-conference-2026-11-12/selections.json",
   "sections": [
-    {"slug": "index", "label": "Home"},
-    {"slug": "charts", "label": "Charts"},
-    {"slug": "posters", "label": "Posters"},
-    {"slug": "handouts", "label": "Handouts"},
-    {"slug": "documents", "label": "Documents"},
-    {"slug": "news", "label": "News"},
-    {"slug": "slideshow", "label": "Slideshow"}
+    {
+      "slug": "index",
+      "label": "Home"
+    },
+    {
+      "slug": "media",
+      "label": "Media",
+      "noun": "figure"
+    },
+    {
+      "slug": "bibliography",
+      "label": "Bibliography",
+      "noun": "source"
+    },
+    {
+      "slug": "slideshow",
+      "label": "Slideshow",
+      "noun": "slide"
+    }
   ],
   "hidden_pages": [
-    {"slug": "scenes", "label": "3D scenes"}
+    {
+      "slug": "scenes",
+      "label": "3D scenes"
+    }
   ],
   "splat_scenes": [
     {
@@ -34,13 +49,141 @@
     }
   ],
   "chart_gallery_dir": "D:/Dev/tools/dashboard/dataviz-gallery",
-  "poster_png_dir": "E:/Outputs/phd-conference-2026-11-12/_work/posters",
   "licence_map": {},
   "photos_cleared": [],
   "slideshow": {
     "items": [],
-    "dwell_seconds": {"image": 7, "chart": 8, "text_heavy": 11},
+    "dwell_seconds": {
+      "image": 7,
+      "chart": 8,
+      "text_heavy": 11
+    },
     "autoplay_default": true,
     "paused_param": "auto=0"
+  },
+  "redirects": [
+    {
+      "from": "charts",
+      "to": "media.html"
+    },
+    {
+      "from": "posters",
+      "to": "media.html"
+    },
+    {
+      "from": "handouts",
+      "to": "bibliography.html"
+    },
+    {
+      "from": "documents",
+      "to": "bibliography.html"
+    },
+    {
+      "from": "news",
+      "to": "bibliography.html#news"
+    }
+  ],
+  "figures_config": "figures-config.json",
+  "title_overrides": "title-overrides.json",
+  "mla_tools_dir": "D:/Dev/tools/mla-citations",
+  "citations_path": "E:/Outputs/phd-conference-2026-11-12/_work/citations.json",
+  "thumbs_index": "E:/Outputs/phd-conference-2026-11-12/_work/thumbs/index.json",
+  "scene_facts_path": "E:/Outputs/phd-conference-2026-11-12/_work/scene-facts.json",
+  "scene_documents": [
+    {
+      "scene": "stratford",
+      "id": "met-lfr-record-2025",
+      "publisher": "Metropolitan Police Service",
+      "group": "reports"
+    },
+    {
+      "scene": "walworth",
+      "id": "met-lfr-grid-2023-2024",
+      "publisher": "Metropolitan Police Service",
+      "group": "reports"
+    }
+  ],
+  "bibliography": {
+    "groups": [
+      {
+        "id": "reports",
+        "label": "Reports & official documents"
+      },
+      {
+        "id": "research",
+        "label": "Research papers & books"
+      },
+      {
+        "id": "nec",
+        "label": "NEC & industry material"
+      },
+      {
+        "id": "news",
+        "label": "News & press"
+      },
+      {
+        "id": "other",
+        "label": "Other"
+      }
+    ],
+    "rules": [
+      {
+        "group": "news",
+        "source_list": [
+          "news"
+        ]
+      },
+      {
+        "group": "news",
+        "type": [
+          "news_article",
+          "stock_photo"
+        ]
+      },
+      {
+        "group": "nec",
+        "selection_group": [
+          "NEC material"
+        ]
+      },
+      {
+        "group": "research",
+        "type": [
+          "journal_article",
+          "book_chapter"
+        ]
+      },
+      {
+        "group": "reports",
+        "type": [
+          "report_gov",
+          "contract_notice",
+          "foi_response",
+          "press_release"
+        ]
+      },
+      {
+        "group": "reports",
+        "selection_group": [
+          "Core 2016 documents"
+        ]
+      }
+    ],
+    "group_overrides": {
+      "hansard-1998-11-03": "reports",
+      "bc-nhc-2017": "reports"
+    },
+    "type_labels": {
+      "report_gov": "Report",
+      "contract_notice": "Contract notice",
+      "foi_response": "FOI response",
+      "press_release": "Press release",
+      "journal_article": "Journal article",
+      "book_chapter": "Book chapter",
+      "news_article": "News",
+      "stock_photo": "Photo",
+      "web_page": "Web page"
+    },
+    "chart_note": "More charts on their way"
   }
 }

@@ -19,7 +19,8 @@ def render(ctx):
         if s["slug"] == "index":
             continue
         n = _count(ctx, s["slug"])
-        note = count_label(n) if n else EMPTY_TEXT
+        noun = s.get("noun")
+        note = (f"{n} {noun}" + ("" if n == 1 else "s") if noun else count_label(n)) if n else EMPTY_TEXT
         cards.append(
             '<article class="card" data-kind="section">\n'
             f'<h2 class="card-title">{link("page", s["slug"] + ".html", s["label"])}</h2>\n'

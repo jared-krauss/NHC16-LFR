@@ -7,10 +7,22 @@
     "tests/fixtures/assets/photo-cleared.png"
   ],
   "splat_scenes": [
-    {"id": "walworth", "title": "Walworth", "source": "tests/fixtures/assets/scene-walworth.sog"},
-    {"id": "stratford", "title": "Stratford", "source": "tests/fixtures/assets/scene-stratford.sog"}
+    {
+      "id": "walworth",
+      "title": "Walworth",
+      "source": "tests/fixtures/assets/scene-walworth.sog"
+    },
+    {
+      "id": "stratford",
+      "title": "Stratford",
+      "source": "tests/fixtures/assets/scene-stratford.sog"
+    }
   ],
   "slideshow": {
     "items": []
-  }
+  },
+  "figures_config": "",
+  "scene_facts_path": "",
+  "citations_path": "",
+  "thumbs_index": ""
 }

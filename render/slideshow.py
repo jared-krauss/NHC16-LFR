@@ -51,6 +51,17 @@ def _resolve(ctx, it):
             return None
         return dict(kind="chart", badge="Chart", title=img.get("title") or ref,
                     source=img.get("source_line") or "Chart", date="Undated", caption="", img=img)
+    if kind == "figure":
+        from render.media import figures, source_line
+        f = next((x for x in figures(ctx) if str(x["n"]) == str(ref)), None)
+        if not f:
+            print(f"slideshow: skipped Fig. {ref} (not found)")
+            return None
+        from render import bibliography
+        date = bibliography.entry_date(ctx, f["source_id"]) if bibliography.has_entry(ctx, f["source_id"]) else "Undated"
+        img = {"src": f["web"], "thumb": f["thumb"], "width": f["web_w"], "height": f["web_h"], "alt": f["alt"]}
+        return dict(kind="figure", badge="Illustration" if f["kind"] != "chart" else "Chart",
+                    title=f"Fig. {f['n']} - {f['title']}", source=source_line(ctx, f), date=date, caption="", img=img)
     if kind == "poster":
         row = _find(ctx, "posters_a3", ref, it.get("page"))
         img = _call("poster_image", ctx, row) if row else None
@@ -110,7 +121,7 @@ def _srcset(ctx, img):
 def _body(ctx, slide, first):
     img = slide["img"]
     w, h = int(img.get("width") or 1200), int(img.get("height") or 800)
-    alt = esc(slide["title"] or slide["badge"])
+    alt = esc(img.get("alt") or slide["title"] or slide["badge"])
     if slide["kind"] == "video":
         media = (f'<video src="{esc(img["src"])}" muted playsinline preload="metadata" width="{w}" height="{h}" '
                  f'aria-label="{alt}"></video>')
@@ -135,7 +146,7 @@ def render(ctx):
     key, _, val = str(cfg.get("paused_param", "auto=0")).partition("=")
     lis = []
     for n, s in enumerate(slides):
-        c = card(s["kind"] if s["kind"] in ("chart", "poster") else "link", s["title"], s["source"], s["date"],
+        c = card(s["kind"] if s["kind"] in ("chart", "poster", "figure") else "link", s["title"], s["source"], s["date"],
                  s["badge"], _body(ctx, s, n == 0))
         c = c.replace('class="card-title"', 'class="card-title slide-title"', 1)
         lis.append(f'<li class="slide" data-dwell="{_dwell(s, cfg)}">{c}</li>')

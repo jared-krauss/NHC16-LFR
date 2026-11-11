@@ -31,10 +31,10 @@ Live address (once approved): `https://jared-krauss.github.io/NHC16-LFR/` (GitHu
 Readers must tolerate extra keys (the print-pack session may add e.g. `outlet`, `date`, `pages` to `whole_files`) and missing keys. `whole_files` has no date by default: show a date only if a `date` key exists, else "Undated". `photos[].caption` and `posters_a3[].why` are Jared's words: shown verbatim, or nothing. Source for a `whole_files` card = the host of `source_url` (e.g. "met.police.uk"), else "Printed copy".
 
 ### Where each data kind really comes from
-- **Licence lookup** (posters, handouts, documents): an item may be hosted if (a) it has its own non-empty `licence_note`, or (b) its source path matches a `whole_files` row whose `licence_note` is non-empty, or (c) its source path is a key in `site-config.json` `licence_map` (owner: orchestrator; facts only). Otherwise link/"Printed copy at the talk".
+- **Licence lookup** (hosted documents): an item may be hosted if (a) it has its own non-empty `licence_note`, or (b) its source path matches a `whole_files` row whose `licence_note` is non-empty, or (c) its source path is a key in `site-config.json` `licence_map` (owner: orchestrator; facts only). Otherwise link/"Printed copy at the talk".
 - **Posters:** `posters_a3[]` = `{title, source_path, page, why}`. Page images already rendered by the print-pack session exist as PNGs in `E:\Outputs\phd-conference-2026-11-12\_work\posters\` and final A3 PDFs in `...\print-ready\posters-a3\`. Use an existing PNG if one matches (`candidates.json` there maps them); otherwise render the page with `pypdf`+Playwright or skip with "Printed copy at the talk". `fitz` is NOT installed; do not add it. `why` is NEVER displayed (orchestrator decision 11 Nov: it records why he picked it and held internal notes).
 - **Charts:** `charts_ready[]`/`charts_tweak[]` = `{id, url[, tweaks]}`. Resolve `id` (e.g. `dv-038`) against `D:\Dev\tools\dashboard\dataviz-gallery\` (`dv-NNN.html`, `thumbs\`, shared `alhfrs-data.js` 1.9 MB + `alhfrs-chartkit.js`). Prior art for a self-contained public chart page: `D:\Dev\_analysis\gallery-embed-2026-11\` (`SPIKE-2-standalone.md`, `DECISION.md`, `standalone-test\dv-003.inline.standalone.html`, `libs\plotly-2.35.2.min.js`). Title and data source line come from the chart file itself (facts), never written by the builder.
-- **Slideshow list:** `site-config.json` `slideshow.items` (owner: orchestrator; Jared's choices, ordered list of `{kind: chart|poster|photo|news_image|video, ref}`). If empty, derive: `charts_ready` + licensed `posters_a3` + cleared `photos` + `splats` entries that are video files. Video slides are optional (none exist yet).
+- **Slideshow list:** `site-config.json` `slideshow.items` (owner: orchestrator; Jared's choices, ordered list of `{kind: chart|poster|photo|news_image|video, ref}`). If empty, derive: figures + unnumbered `charts_ready` + cleared `photos` + `splats` entries that are video files. Video slides are optional (none exist yet).
 
 ## Architecture (the interface; agreed before building)
 
@@ -64,10 +64,9 @@ NHC16-LFR/
 | slug | nav label | data from selections.json | shows |
 |---|---|---|---|
 | index | Home | all | talk title, date, venue; a card per section with item count or "On its way"; QR + URL ("Share this site") |
-| charts | Charts | `charts_ready` (shown), `charts_tweak` (shown as "On its way" with title) | static image per chart, tap -> interactive chart page on-site |
-| posters | Posters | `posters_a3` | page image (if licensed) -> full-size, pinch-zoomable; else "Printed copy at the talk" |
-| handouts | Handouts | `whole_files` with `use=print` | hosted PDF link with "PDF, x.x MB" if licensed, else source link / "Printed copy at the talk" |
-| documents | Documents | `whole_files` with `use=host` or `use=link` | hosted PDF (licensed) or external link |
+| media | Media | `figures-config.json` (numbered figures; owner: Jared's picks via the figures tool), `charts_ready`, `charts_tweak` | per figure: "Fig. N" + title, webp image -> full-size PNG in a dark zoomable viewer (`assets/media.js`), "Source: <document title>, p. N" linking to the Bibliography anchor, external link to the document; charts only numbered if in the figures file; unfinished charts as one "More charts on their way" note. Print-only PDFs are never linked |
+| bibliography | Bibliography | `whole_files` (use host or link), `news`, MLA records (`tools/mla-citations`, config `citations_path`), thumbnails index, `scene-facts.json` documents | one skimmable entry per source: thumbnail or initials tile, title (links to hosted copy or original), author / publication / date, MLA citation, "p. N" and Fig. cross-links; grouped and date-sorted; one title per document (`title-overrides.json`). `use=print` items are never published |
+| slideshow | Slideshow | figures (in number order), unnumbered ready charts, cleared photos, video splats | carousel, captions "Fig. N - title" |
 | news | News | `news` | title, outlet, date, kind (news/commentary); external link |
 | slideshow | Slideshow | `site-config.json` `slideshow.items`, else derived (see below) | auto-advancing presentation mode |
 | scenes | (not in nav) | config `splat_scenes` + `selections.splats` | easter egg: two 3D splat scenes, load on tap |
@@ -136,3 +135,7 @@ Viewport matrix: 320x568, 375x667, 414x896, 768x1024, 1024x768, 812x375 (landsca
 
 ## Ownership of tests
 `tests/fixtures/` and `checks/` belong to the checks-writer. Builders read them, never edit them. Fixtures: `selections-empty.json` (`{}`), `selections-half.json`, `selections-full.json` (includes: an item missing `licence_note`, an item missing a date, all three `use` values, a `charts_tweak` row, a news item of each kind, a photo NOT in `photos_cleared`), plus tiny sample assets they reference (under `tests/fixtures/assets/`). A matching `tests/fixtures/site-config.test.json` overlay may set `photos_cleared`/`licence_map` for fixture items.
+
+
+## Restructure, 11 Nov 2026
+Sections are Home, Media, Bibliography, Slideshow. Retired pages (charts, posters, handouts, documents, news) are meta-refresh stubs (`redirects` in `site-config.json`). Handouts and `posters_a3` are not published; print files live on the private Command Centre. Figure numbers and titles come only from `figures-config.json`. The hidden 3D scenes page (`scenes.html`, footer egg) is configured in `scenes-config.json` and checked by `checks/check_scenes.py`; `run_checks.py` B20 defers to it. Check rows B18 (Media) and B19 (figure viewer) run on `--fixture real`.

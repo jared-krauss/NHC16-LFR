@@ -353,14 +353,16 @@ def sel_items(ctx, key):
 
 
 def slideshow_items(ctx):
-    """Slideshow entries: config slideshow.items, else derived from charts, licensed posters, cleared photos, video splats."""
+    """Slideshow entries: config slideshow.items, else the figures in number order, charts not already figures, cleared photos, video splats."""
     cfg = (ctx["config"].get("slideshow") or {}).get("items") or []
     if cfg:
         return [{"kind": text(i, "kind") or "item", "ref": text(i, "ref"), "label": text(i, "ref")} for i in cfg if isinstance(i, dict)]
-    out = [{"kind": "chart", "ref": text(c, "id"), "label": text(c, "id")} for c in sel_items(ctx, "charts_ready")]
-    for p in sel_items(ctx, "posters_a3"):
-        if licence_for(ctx, item_path(p)):
-            out.append({"kind": "poster", "ref": item_path(p), "page": p.get("page"), "label": text(p, "title")})
+    from render.media import figures
+    figs = figures(ctx)
+    out = [{"kind": "figure", "ref": str(f["n"]), "label": f["title"]} for f in figs]
+    numbered = {f["id"] for f in figs if f["kind"] == "chart"}
+    out += [{"kind": "chart", "ref": text(c, "id"), "label": text(c, "id")} for c in sel_items(ctx, "charts_ready")
+            if text(c, "id") not in numbered]
     for ph in sel_items(ctx, "photos"):
         if photo_cleared(ctx, item_path(ph)):
             out.append({"kind": "photo", "ref": item_path(ph), "label": text(ph, "caption") or text(ph, "title") or "Photo"})
@@ -372,16 +374,6 @@ def slideshow_items(ctx):
 
 def count_for(ctx, slug):
     """Default item count shown on the Home card for a section (a module may expose count(ctx) instead)."""
-    if slug == "charts":
-        return len(sel_items(ctx, "charts_ready"))
-    if slug == "posters":
-        return len(sel_items(ctx, "posters_a3"))
-    if slug == "handouts":
-        return len(whole_file_rows(ctx, "handouts"))
-    if slug == "documents":
-        return len(whole_file_rows(ctx, "documents"))
-    if slug == "news":
-        return len(sel_items(ctx, "news"))
     if slug == "slideshow":
         return len(slideshow_items(ctx))
     return 0

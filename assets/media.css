@@ -1,0 +1,25 @@
+.fig-jump, .bib-jump { list-style: none; margin: 0 0 1rem; padding: 0; display: flex; flex-wrap: wrap; gap: 0 0.5rem; }
+.fig-jump a, .bib-jump a { padding: 0 0.5rem; }
+.fig-grid { display: grid; gap: var(--gap); grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr)); align-items: start; }
+.fig-card { scroll-margin-top: 1rem; }
+.fig-card .card-title { display: flex; flex-direction: column; gap: 0.1rem; font-weight: 700; }
+.fig-label { font-size: var(--fs-xl); line-height: 1.15; }
+.fig-title { font-size: var(--fs-l); line-height: 1.3; }
+main .fig-card a.fig-image { display: block; min-height: 44px; margin: 0.25rem 0 0.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: 4px; }
+main .fig-card a.fig-image::before, main .fig-card a.fig-image::after { content: none; }
+main .fig-card .card-meta .source a { display: inline-block; min-height: 44px; padding: 0.65rem 0; }
+.fig-image img { display: block; width: 100%; height: auto; object-fit: contain; }
+.media-note { margin: 1.5rem 0; padding: 0.5rem 0.75rem; border: 1px dashed var(--border-strong); border-radius: 6px; color: var(--muted); max-width: 36rem; }
+
+html.viewer-open, html.viewer-open body { overflow: hidden; }
+.viewer { position: fixed; inset: 0; z-index: 100; background: rgba(0, 0, 0, 0.96); color: #f2f2f2; display: flex; flex-direction: column; }
+.viewer[hidden] { display: none; }
+.viewer-bar { flex: none; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.25rem 1rem; padding: 0.5rem var(--gutter); }
+.viewer-label { margin: 0; font-weight: 700; max-width: 100%; flex: 1 1 14rem; }
+.viewer-tools { display: flex; flex-wrap: wrap; gap: 0.25rem; }
+.viewer-btn { min-width: 44px; min-height: 44px; padding: 0 0.75rem; font: inherit; color: #f2f2f2; background: #2a2a2a; border: 1px solid #8d8d8d; border-radius: 4px; cursor: pointer; }
+.viewer-btn:disabled { opacity: 0.4; cursor: default; }
+.viewer-btn:focus-visible { outline: 3px solid #8dbbf0; outline-offset: 2px; }
+.viewer-stage { position: relative; flex: 1 1 auto; min-height: 0; overflow: hidden; touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none; }
+.viewer-box { position: absolute; transform-origin: 50% 50%; will-change: transform; }
+.viewer-img { display: block; width: 100%; height: 100%; object-fit: contain; max-width: none; image-rendering: auto; pointer-events: none; }

@@ -5,7 +5,8 @@ Audience site for the talk "Live Facial Recognition at Notting Hill Carnival: Th
 (the path is case-sensitive).
 
 - `SPEC.md`: rules, architecture, the hand-off schema and the acceptance bar (B1-B33).
-- `site-config.json`: sections, splat scenes, slideshow timings, photo and licence gates.
+- `site-config.json`: sections (Home, Media, Bibliography, Slideshow), redirects from retired pages, splat scenes, slideshow timings, photo and licence gates, bibliography groups.
+- `figures-config.json`: the numbered figures (Fig. N) shown on Media and in the Slideshow; `title-overrides.json`: one display title per document (file name or URL -> title).
 - `schema/selections.schema.json`: the hand-off file's field names.
 
 ## Rebuild and publish

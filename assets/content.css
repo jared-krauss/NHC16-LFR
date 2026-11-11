@@ -25,3 +25,36 @@
 .card-licence { font-size: var(--fs-s); color: var(--muted); margin: 0.25rem 0 0; overflow-wrap: anywhere; }
 .card-group { margin: 0 0 2rem; }
 .group-title { margin: 1.5rem 0 0.75rem; }
+
+.bib-group { margin: 0 0 2rem; scroll-margin-top: 1rem; }
+.bib-list { display: grid; gap: var(--gap); grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 64rem) { .bib-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 100rem) { .bib-list { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.bib-entry { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); column-gap: 0.75rem; align-items: start; scroll-margin-top: 1rem; padding: 1rem; }
+@media (min-width: 40rem) { .bib-entry { column-gap: 1rem; } }
+.bib-thumb { display: block; width: 100%; aspect-ratio: 3 / 4; overflow: hidden; border: 1px solid var(--border); border-radius: 3px; background: var(--bg); text-decoration: none; }
+main .bib-entry a.bib-thumb { min-height: 0; display: block; }
+main .bib-entry a.bib-thumb::before, main .bib-entry a.bib-thumb::after { content: none; }
+.bib-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.bib-tile {
+  display: flex; align-items: center; justify-content: center; width: 100%; height: 100%;
+  font-size: var(--fs-l); font-weight: 700; letter-spacing: 0.02em;
+  background: hsl(var(--hue) 35% 90%); color: hsl(var(--hue) 55% 22%);
+}
+@media (prefers-color-scheme: dark) { .bib-tile { background: hsl(var(--hue) 22% 22%); color: hsl(var(--hue) 50% 88%); } }
+.bib-body { min-width: 0; }
+.bib-title { margin-bottom: 0.35rem; }
+.bib-title a { display: inline; min-height: 0; }
+main .bib-title a[data-link]::before, main .bib-title a[data-link]::after { content: none; }
+.bib-entry .card-meta { display: flex; flex-wrap: wrap; align-items: baseline; margin-bottom: 0.5rem; }
+.bib-entry .card-meta .source { display: contents; }
+.bib-entry .bib-author { flex: 0 0 100%; font-size: var(--fs-m); font-weight: 700; color: var(--text); }
+.bib-entry .bib-pub { font-style: normal; }
+.bib-entry .bib-pub + .date::before, .bib-entry .date::before { content: "\00b7"; margin: 0 0.5em; }
+.bib-entry .bib-author + .date::before { content: none; }
+.bib-entry .bib-author + .date { margin-right: 0; }
+.bib-cite { font-size: var(--fs-s); color: var(--muted); margin: 0 0 0.5rem; overflow-wrap: anywhere; }
+.bib-cite a { color: var(--muted); }
+.bib-pages { font-size: var(--fs-s); color: var(--muted); margin: 0 0 0.5rem; }
+.bib-cite small, .bib-pages small { font-size: inherit; }
+.bib-entry .card-licence { font-size: var(--fs-m); }

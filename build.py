@@ -137,13 +137,21 @@ def copy_tree(src, dst, skip_ext=(".mjs",)):
             shutil.copy2(f, t)
 
 
+def _unlock_and_retry(func, path, exc):
+    """rmtree error handler: clear a read-only flag copied from a source file and retry once."""
+    import os
+    import stat
+    os.chmod(path, stat.S_IWRITE)
+    func(path)
+
+
 def wipe(out):
     """Remove the output folder's contents, refusing to touch the project root or its parents."""
     out = out.resolve()
     if out == ROOT or out in ROOT.parents or len(out.parts) < 3:
         raise SystemExit(f"refusing to wipe {out}")
     if out.exists():
-        shutil.rmtree(out)
+        shutil.rmtree(out, onexc=_unlock_and_retry)
     out.mkdir(parents=True)
 
 
@@ -180,6 +188,19 @@ def wrap(page, config, template):
             "body": page.body_html, "footer_links": footer_html(config), "egg_label": esc(egg),
             "scripts_extra": page.scripts_extra}
     return re.sub(r"\{\{(\w+)\}\}", lambda m: subs.get(m.group(1), ""), template)
+
+
+def write_redirects(config, out):
+    """Write a small meta-refresh page at each retired page URL (config redirects: from slug -> to url)."""
+    for r in config.get("redirects", []):
+        to = r["to"]
+        html = ('<!doctype html>\n<html lang="%s">\n<head>\n<meta charset="utf-8">\n'
+                '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
+                '<meta name="robots" content="noindex">\n<title>Moved | %s</title>\n'
+                '<meta http-equiv="refresh" content="0; url=%s">\n<link rel="canonical" href="%s">\n</head>\n<body>\n'
+                '<p>This page has moved. <a href="%s">Continue to the new page</a>.</p>\n</body>\n</html>\n'
+                % (esc(config["site"].get("lang", "en")), esc(short_name(config)), esc(to), esc(to), esc(to)))
+        (out / f"{r['from']}.html").write_text(html, encoding="utf-8", newline="\n")
 
 
 def scan_leaks(out):
@@ -236,6 +257,7 @@ def main():
             page = Page(slug, lab, lab, empty_state(lab))
         (out / f"{slug}.html").write_text(wrap(page, config, template), encoding="utf-8", newline="\n")
 
+    write_redirects(config, out)
     for f in list(out.rglob("*.mjs")):
         f.unlink()
         log(f"{f.name}: .mjs removed from output")

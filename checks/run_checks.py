@@ -223,6 +223,11 @@ def verdict(c, cid, fails, ok_msg):
     c.rec(cid, "FAIL" if fails else "PASS", short(fails) if fails else ok_msg)
 
 
+def origin(c):
+    """The first section after Home: the page the slideshow-exit and Back tests start from."""
+    return next((x for x in c.nav if x != "index"), "index")
+
+
 def counter(pg):
     t = pg.locator("#slideshow .slide-counter").first.inner_text().strip()
     m = re.match(r"^(\d+)\s*/\s*(\d+)$", t)
@@ -312,7 +317,7 @@ def b3(c):
                 fails.append(f"pushState in {r}")
             if re.search(r"(before)?unload", txt):
                 fails.append(f"unload/beforeunload in {r}")
-    hops = [s for s in ("charts", "posters", "handouts") if c.exists(s)]
+    hops = [s for s in c.nav if s != "index" and c.exists(s)][:3]
     if c.exists("index") and len(hops) == 3:
         with c.page("index") as (pg, _, _):
             chain = [pg.url]
@@ -327,9 +332,9 @@ def b3(c):
             if back != [chain[2], chain[1], chain[0]]:
                 fails.append(f"Back order wrong: {back} vs {chain[::-1][1:]}")
     elif c.exists("index"):
-        fails.append("cannot run hop test: charts/posters/handouts missing")
-    if c.exists("charts") and c.exists("slideshow"):
-        with c.page("charts") as (pg, _, _):
+        fails.append("cannot run hop test: fewer than 3 section pages built")
+    if c.exists(origin(c)) and c.exists("slideshow"):
+        with c.page(origin(c)) as (pg, _, _):
             start = pg.url
             pg.click('nav a[href$="slideshow.html"]')
             pg.wait_for_load_state("load")
@@ -525,7 +530,7 @@ def b12(c):
         with c.page(s) as (pg, _, _):
             for k in pg.evaluate(JS_CARDS):
                 tag = f"{s}/{k['title'][:24] or '?'}"
-                if k["kind"] not in ("chart", "poster", "pdf", "link", "news", "section", "empty"):
+                if k["kind"] not in ("chart", "poster", "pdf", "link", "news", "section", "empty", "figure"):
                     fails.append(f"{tag}: bad data-kind '{k['kind']}'")
                 if not k["title"]:
                     fails.append(f"{tag}: empty title")
@@ -539,14 +544,14 @@ def b12(c):
                     fails.append(f"{tag}: no .card-kind")
                 if not k["order"]:
                     fails.append(f"{tag}: title/source/date/kind order wrong")
-    if c.fx == "full" and c.exists("news"):
-        with c.page("news") as (pg, _, _):
+    if c.fx == "full" and c.exists("bibliography"):
+        with c.page("bibliography") as (pg, _, _):
             cards = pg.evaluate(JS_CARDS)
             if not any(k["date"] == "Undated" for k in cards):
-                fails.append("news: undated fixture item did not show 'Undated'")
+                fails.append("bibliography: undated fixture news item did not show 'Undated'")
             kinds = {k["badge"].lower() for k in cards if not k["empty"]}
             if not (any("news" in x for x in kinds) and any("commentary" in x for x in kinds)):
-                fails.append(f"news: card-kind badges {sorted(kinds)} lack both news and commentary")
+                fails.append(f"bibliography: card-kind badges {sorted(kinds)} lack both news and commentary")
     verdict(c, "B12", fails, "every card: title, source, date format/'Undated', type badge, same order")
 
 
@@ -754,8 +759,8 @@ def b17(c):
         if not fs:
             fails.append("fullscreen button neither enters Fullscreen API nor a 100dvh fixed overlay")
     for key in ("exit",) + ("Escape",) * 5:
-        if c.exists("charts"):
-            with c.page("charts") as (pg, _, _):
+        if c.exists(origin(c)):
+            with c.page(origin(c)) as (pg, _, _):
                 start = pg.url
                 pg.click('nav a[href$="slideshow.html"]')
                 pg.wait_for_load_state("load")
@@ -848,36 +853,45 @@ def b17(c):
 
 def b18(c):
     fails = []
-    if not c.exists("charts"):
-        return c.rec("B18", "FAIL", "charts.html not built")
+    if not c.exists("media"):
+        return c.rec("B18", "FAIL", "media.html not built")
     link = None
-    with c.page("charts", wait="load") as (pg, reqs, _):
+    with c.page("media", wait="load") as (pg, reqs, _):
         pg.wait_for_load_state("networkidle")
         if any(re.search(r"plotly[^/]*\.js", u, re.I) for u in reqs):
-            fails.append("charts page requested Plotly")
-        cards = [k for k in pg.evaluate(JS_CARDS) if k["kind"] == "chart" and not k["empty"]]
-        ready = [x for x in c.sel.get("charts_ready", []) if (Path(c.cfg["chart_gallery_dir"]) / (x.get("id", "") + ".html")).is_file()]
-        if len(cards) < len(ready):
-            fails.append(f"{len(cards)} chart cards for {len(ready)} resolvable charts_ready")
-        for k in cards:
+            fails.append("media page requested Plotly")
+        cards = [k for k in pg.evaluate(JS_CARDS) if not k["empty"]]
+        figs = [k for k in cards if k["kind"] == "figure"]
+        for k in figs:
+            if not re.match(r"^Fig\. \d+\b", k["title"]):
+                fails.append(f"figure card title '{k['title'][:30]}' lacks 'Fig. N'")
             if not k["imgs"] or any(not a.strip() for a in k["imgAlts"]):
-                fails.append(f"chart card '{k['title']}' image/alt missing")
-            page_links = [x for x in k["links"] if x["kind"] == "page"]
-            if not page_links:
-                fails.append(f"chart card '{k['title']}' has no on-site interactive link")
-            elif link is None:
-                link = page_links[0]["href"]
-        if c.fx == "full" and not any(k["empty"] for k in pg.evaluate(JS_CARDS)):
-            fails.append("charts_tweak row should show an 'On its way' card")
+                fails.append(f"'{k['title'][:24]}' image/alt missing")
+            if not any(x["kind"] == "file" and re.search(r"\.(png|webp|jpe?g)$", x["href"]) for x in k["links"]):
+                fails.append(f"'{k['title'][:24]}' has no link to the full-size image")
+            if not re.search(r"Source: .+", k["source"]):
+                fails.append(f"'{k['title'][:24]}' has no 'Source: ...' line")
+            if c.fx == "real" and not any(x["kind"] == "page" and "bibliography.html#" in x["href"] for x in k["links"]):
+                fails.append(f"'{k['title'][:24]}' source does not link to a Bibliography anchor")
+        ids = pg.evaluate("() => [...document.querySelectorAll('article.fig-card')].map(a => a.id)")
+        if any(not re.fullmatch(r"fig-\d+", i) for i in ids) or len(set(ids)) != len(ids):
+            fails.append(f"figure anchors wrong: {ids}")
+        for k in cards:
+            if k["kind"] == "chart":
+                if not k["imgs"] or any(not a.strip() for a in k["imgAlts"]):
+                    fails.append(f"chart card '{k['title']}' image/alt missing")
+                page_links = [x for x in k["links"] if x["kind"] == "page"]
+                if not page_links:
+                    fails.append(f"chart card '{k['title']}' has no on-site interactive link")
+                elif link is None:
+                    link = page_links[0]["href"]
     if link:
-        with c.page("charts", size=(375, 500), path=urlparse(urljoin(c.url("charts"), link)).path.lstrip("/")) as (pg, reqs, _):
+        with c.page("media", size=(375, 500), path=urlparse(urljoin(c.url("media"), link)).path.lstrip("/")) as (pg, reqs, _):
             pg.wait_for_selector(".js-plotly-plot", timeout=20000)
             r = pg.evaluate("""() => { const g = document.querySelector('.js-plotly-plot'), c = g._context || {}, l = g._fullLayout || {};
               const axes = Object.keys(l).filter(k => /^[xy]axis/.test(k)); const src = document.querySelector('.chart-source');
               return {scrollZoom: c.scrollZoom, bar: c.displayModeBar, resp: c.responsive, dm: l.dragmode,
-                fixed: axes.length > 0 && axes.every(k => l[k].fixedrange), src: src ? src.textContent.trim() : '',
-                tall: document.documentElement.scrollHeight > innerHeight + 20,
-                box: (() => { const b = g.getBoundingClientRect(); return [b.x + b.width / 2, Math.min(b.y + b.height / 2, innerHeight - 20)]; })()}; }""")
+                fixed: axes.length > 0 && axes.every(k => l[k].fixedrange), src: src ? src.textContent.trim() : ''}; }""")
             if r["scrollZoom"]:
                 fails.append("scrollZoom is on")
             if r["bar"] is not False:
@@ -888,125 +902,54 @@ def b18(c):
                 fails.append(f"dragmode {r['dm']} and axes not fixedrange")
             if not r["src"]:
                 fails.append("no .chart-source line")
-            if r["tall"]:
-                pg.mouse.move(*r["box"])
-                pg.mouse.wheel(0, 300)
-                pg.wait_for_timeout(400)
-                if pg.evaluate("() => scrollY") <= 0:
-                    fails.append("wheel over chart did not scroll the page")
-            else:
-                fails.append("interactive chart page not taller than a 500px viewport; scroll-over-chart not testable")
-    else:
-        fails.append("no chart card to follow to the interactive page")
-    verdict(c, "B18", fails, "charts page Plotly-free, alts present; interactive page scrollZoom off, no mode bar, responsive, scrolls over chart, source line")
+    verdict(c, "B18", fails, "media page Plotly-free; figure cards numbered with alt, full-size link, source line to the Bibliography; any chart page locked down")
 
 
 def b19(c):
     fails = []
-    if not c.exists("posters"):
-        return c.rec("B19", "FAIL", "posters.html not built")
-    with c.page("posters") as (pg, _, _):
-        cards = {k["title"]: k for k in pg.evaluate(JS_CARDS)}
-        for k in cards.values():
-            if k["empty"]:
-                continue
-            if k["imgs"]:
-                if any(not a.strip() for a in k["imgAlts"]):
-                    fails.append(f"'{k['title']}' image has empty alt")
-                if not (re.search(r"A3 poster|page \d+|\bp\.\s?\d+", k["text"], re.I) and SIZE_RE.search(k["text"])):
-                    fails.append(f"'{k['title']}' lacks 'A3 poster'/page number and file size")
-                full = [x for x in k["links"] if x["kind"] in ("file", "page")]
-                if not full:
-                    fails.append(f"'{k['title']}' thumbnail has no link to full size")
-    if c.fx == "full":
-        a, b = cards.get("Fixture poster A"), cards.get("Fixture poster B (no licence)")
-        if not a or not a["imgs"]:
-            fails.append("licensed poster A should be hosted with an image")
-        elif "Fixture why-text" in a["text"]:
-            fails.append("poster A 'why' text is displayed (must never be shown)")
-        if not b:
-            fails.append("poster B card missing")
-        elif b["imgs"] or "Printed copy at the talk" not in b["text"]:
-            fails.append("unlicensed poster B must be 'Printed copy at the talk' with no image")
-    verdict(c, "B19", fails, "poster cards: alt, 'A3 poster'/page + size, link to full size; licence rule applied (pinch zoom: MANUAL)")
+    if not c.exists("media"):
+        return c.rec("B19", "FAIL", "media.html not built")
+    with c.page("media", size=MOBILE, touch=True) as (pg, _, _):
+        links = pg.locator("a.fig-image")
+        if not links.count():
+            if c.fx == "real":
+                fails.append("no figure image links on the real build")
+            return c.rec("B19", "FAIL" if fails else "PASS", short(fails) if fails else "no figures in this fixture; viewer not applicable")
+        pg.wait_for_load_state("networkidle")
+        links.first.click()
+        pg.wait_for_selector(".viewer:not([hidden])", timeout=5000)
+        try:
+            pg.wait_for_function("() => document.querySelector('.viewer-img').naturalWidth >= 1600", timeout=8000)
+        except Exception:
+            pass
+        r = pg.evaluate(r"""() => { const v = document.querySelector('.viewer'), st = v.querySelector('.viewer-stage').getBoundingClientRect(),
+          b = v.querySelector('.viewer-box').getBoundingClientRect(), i = v.querySelector('.viewer-img'), s = getComputedStyle(v);
+          return {bg: s.backgroundColor, fit: b.width <= st.width + 1 && b.height <= st.height + 1, nat: i.naturalWidth, role: v.getAttribute('role'),
+                  btns: [...v.querySelectorAll('button')].map(x => { const q = x.getBoundingClientRect(); return [q.width, q.height]; }), w0: b.width}; }""")
+        m = re.findall(r"\d+", r["bg"])
+        if not m or max(int(x) for x in m[:3]) > 40:
+            fails.append(f"viewer backdrop not dark: {r['bg']}")
+        if not r["fit"]:
+            fails.append("viewer image not fitted to the screen")
+        if r["role"] != "dialog":
+            fails.append("viewer lacks role=dialog")
+        if any(w < 44 or h < 44 for w, h in r["btns"]):
+            fails.append("viewer button under 44px")
+        if r["nat"] < 1600:
+            fails.append(f"viewer image natural width {r['nat']}px (full-size file not loaded)")
+        pg.click(".viewer [aria-label='Zoom in']")
+        pg.wait_for_timeout(200)
+        w1 = pg.evaluate("() => document.querySelector('.viewer-box').getBoundingClientRect().width")
+        if w1 <= r["w0"] * 1.2:
+            fails.append("Zoom in did not enlarge the image")
+        pg.keyboard.press("Escape")
+        if pg.evaluate("() => !document.querySelector('.viewer').hidden"):
+            fails.append("Esc did not close the viewer")
+    verdict(c, "B19", fails, "figure opens a dark, fitted, zoomable viewer with the full-size PNG; Esc closes (pinch: MANUAL)")
 
 
 def b20(c):
-    fails = []
-    if not c.exists("scenes"):
-        return c.rec("B20", "FAIL", "scenes.html not built")
-    with c.page("scenes", wait="load") as (pg, reqs, resps):
-        pg.wait_for_load_state("networkidle")
-        if any(u.split("?")[0].endswith(".sog") for u in reqs):
-            fails.append(".sog fetched before any tap")
-        scenes = pg.locator("[data-scene]")
-        if scenes.count() < 2:
-            fails.append(f"{scenes.count()} [data-scene] blocks, expected 2")
-        for i in range(scenes.count()):
-            b = scenes.nth(i).locator("button[data-action=load]")
-            if not b.count() or "MB" not in b.first.inner_text():
-                fails.append(f"scene {i}: load button missing or lacks size in MB")
-        if not pg.evaluate(r"() => [...document.querySelectorAll('a[href]')].some(a => /^(\.\/|\.\/index\.html|index\.html)$/.test(a.getAttribute('href').split('#')[0]))"):
-            fails.append("no plain link back to Home")
-        tgt = pg.locator('[data-scene="stratford"] button[data-action=load]')
-        if tgt.count():
-            pg.evaluate("""() => { window.__prog = false; const sel = '[data-scene="stratford"] progress, [data-scene="stratford"] [role=progressbar], [data-scene="stratford"] .scene-progress';
-              const chk = () => { if (document.querySelector(sel)) window.__prog = true; }; new MutationObserver(chk).observe(document.body, {subtree: true, childList: true, attributes: true}); setInterval(chk, 25); }""")
-            before = len(reqs)
-            rbefore = len(resps)
-            btn_txt = tgt.first.inner_text()
-            tgt.first.click()
-            deadline = time.time() + 12
-            while time.time() < deadline and not any(u.split("?")[0].endswith(".sog") for u in reqs[before:]):
-                pg.wait_for_timeout(200)
-            if not any(u.split("?")[0].endswith(".sog") for u in reqs[before:]):
-                fails.append("clicking Load did not request a .sog")
-            pg.wait_for_timeout(1000)
-            try:
-                pg.wait_for_load_state("networkidle", timeout=15000)
-            except Exception:
-                pass
-            mbm = re.search(r"(\d+(?:\.\d+)?)\s*MB", btn_txt)
-            if mbm:
-                shown = float(mbm.group(1))
-                uniq = {}
-                for r in resps[rbefore:]:
-                    if not r.url.startswith(("blob:", "data:")):
-                        uniq[r.url] = max(uniq.get(r.url, 0), total_bytes([r]))
-                got = sum(uniq.values()) / 1048576
-                if abs(got - shown) > max(0.10 * shown, 0.05):
-                    fails.append(f"Stratford first-load transfer {got:.2f} MB vs button '{shown} MB' (>10% apart)")
-            if not pg.evaluate("() => window.__prog"):
-                fails.append("no progress element appeared during load")
-            cv = pg.locator("[data-scene] canvas")
-            if cv.count():
-                lab = cv.first.evaluate("e => (e.getAttribute('aria-label') || e.getAttribute('aria-labelledby') || e.getAttribute('title') || '')")
-                role = cv.first.get_attribute("role")
-                if not lab or (role and role != "img"):
-                    fails.append("canvas lacks accessible name / role=img")
-                h = cv.first.bounding_box()["height"]
-                if h > MOBILE[1] * 0.7 + 1:
-                    fails.append(f"canvas height {h:.0f} > 70% of viewport")
-                rs = pg.locator("[data-scene] [data-action=reset]").first
-                if rs.count() and rs.is_visible():
-                    bb = rs.bounding_box()
-                    if bb["width"] < 44 or bb["height"] < 44:
-                        fails.append(f"reset button {bb['width']:.0f}x{bb['height']:.0f} <44")
-                else:
-                    fails.append("no visible Reset view button after load")
-            else:
-                fails.append("no canvas created after load (WebGL may be absent; cannot judge a11y name)")
-            w = pg.locator('[data-scene="walworth"] button[data-action=load]')
-            if w.count():
-                w.first.click()
-                pg.wait_for_timeout(1500)
-                if pg.locator("[data-scene] canvas").count() > 1:
-                    fails.append("two scenes loaded at once")
-        else:
-            fails.append("no Stratford load button")
-        if not pg.locator("[data-scene] [data-action=reset]").count():
-            fails.append("no [data-action=reset]")
-    verdict(c, "B20", fails, "no .sog before tap; sized Load button; progress; canvas name/<=70vh; reset >=44; one scene; Home link (gesture hint/fallback: MANUAL)")
+    c.rec("B20", "MANUAL", "scenes page and viewer are checked by checks/check_scenes.py (run: python checks/check_scenes.py --docs docs)")
 
 
 def b21(c):
@@ -1106,12 +1049,12 @@ def total_bytes(resps):
 def b23(c):
     fails, notes = [], []
     interactive = set()
-    if c.exists("charts"):
-        with c.page("charts") as (pg, _, _):
+    if c.exists("media"):
+        with c.page("media") as (pg, _, _):
             for k in pg.evaluate(JS_CARDS):
                 for lk in k["links"]:
-                    if lk["kind"] == "page":
-                        interactive.add(slug_of(lk["href"], c.url("charts")))
+                    if lk["kind"] == "page" and lk["href"].startswith("charts/"):
+                        interactive.add(slug_of(lk["href"], c.url("media")))
     allowed = set(interactive) | {"scenes"}
     for s in c.present():
         with c.page(s) as (pg, reqs, resps):
@@ -1267,38 +1210,29 @@ def data_routing(c):
     def cards(slug):
         with c.page(slug) as (pg, _, _):
             return {k["title"]: k for k in pg.evaluate(JS_CARDS)}
-    h = cards("handouts") if c.exists("handouts") else {}
-    d = cards("documents") if c.exists("documents") else {}
-    a = h.get("Fixture document A")
+    d = cards("bibliography") if c.exists("bibliography") else {}
+    a = d.get("Fixture document A")
     if not a or not any(l["kind"] == "file" for l in a["links"]):
-        fails.append("handouts: licensed print item A should be a hosted PDF link")
-    e = h.get("Fixture print item without URL or licence")
-    if not e or "Printed copy at the talk" not in e["text"] or e["links"]:
-        fails.append("handouts: unlicensed print item with no URL must say 'Printed copy at the talk' with no link")
-    if "Fixture document B (no licence)" in h or "Fixture document A" in d:
-        fails.append("use=print/host routed to the wrong page")
+        fails.append("bibliography: licensed item A should be a hosted PDF link")
+    if "Fixture print item without URL or licence" in d and any(l["kind"] == "file" for l in d["Fixture print item without URL or licence"]["links"]):
+        fails.append("bibliography: unlicensed item must not be hosted")
     b = d.get("Fixture document B (no licence)")
     if not b or any(l["kind"] == "file" for l in b["links"]) or not any(l["kind"] == "external" for l in b["links"]):
-        fails.append("documents: B (no licence) must be an external link only, not hosted")
+        fails.append("bibliography: B (no licence) must be an external link only, not hosted")
     cc = d.get("Fixture document C (licence by map)")
     if not cc or not any(l["kind"] == "file" for l in cc["links"]):
-        fails.append("documents: C (licence_map) should be hosted")
+        fails.append("bibliography: C (licence_map) should be hosted")
     dd = d.get("Fixture link document (no date)")
     if not dd or dd["date"] != "Undated" or not any(l["kind"] == "external" for l in dd["links"]):
-        fails.append("documents: use=link item should be external with 'Undated'")
-    if b and b["source"] != "example.org":
-        fails.append(f"documents: B source is '{b['source']}', expected host 'example.org'")
+        fails.append("bibliography: use=link item should be external with 'Undated'")
     if a and a["date"] != "29 Aug 2016":
-        fails.append(f"handouts: A has a date key, expected '29 Aug 2016', got '{a['date']}'")
-    if e and e["source"] != "Printed copy":
-        fails.append(f"handouts: print item without URL: source '{e['source']}', expected 'Printed copy'")
-    if b and b["date"] != "Undated":
-        fails.append("documents: B has no date key, must show 'Undated'")
-    nw = cards("news") if c.exists("news") else {}
+        fails.append(f"bibliography: A has a date key, expected '29 Aug 2016', got '{a['date']}'")
     for t in ("Fixture news article", "Fixture commentary piece", "Fixture undated news item"):
-        if t not in nw or not any(l["kind"] == "external" for l in nw[t]["links"]):
-            fails.append(f"news: '{t}' missing or not an external link")
-    c.rec("DATA", "FAIL" if fails else "PASS", short(fails) if fails else "full fixture routes whole_files/posters/news per the licence and use rules")
+        if t not in d or not any(l["kind"] == "external" for l in d[t]["links"]):
+            fails.append(f"bibliography: '{t}' missing or not an external link")
+    if c.exists("handouts") and "http-equiv" not in (c.out / "handouts.html").read_text(encoding="utf-8"):
+        fails.append("handouts page must not exist as content (redirect stub only)")
+    c.rec("DATA", "FAIL" if fails else "PASS", short(fails) if fails else "full fixture routes whole_files/news into the Bibliography per the licence and use rules")
 
 
 def prose_guard(c):
@@ -1464,7 +1398,7 @@ def b30(c):
         fs = pg.evaluate("() => parseFloat(getComputedStyle(document.body).fontSize)")
         if fs < 16:
             fails.append(f"body font-size {fs}px at 320 <16")
-    for s in (c.present() if c.fx == "full" else c.present(["index", "news"])):
+    for s in (c.present() if c.fx == "full" else c.present(["index", "bibliography"])):
         with c.page(s, (1280, 800)) as (pg, _, _):
             pg.evaluate("() => { document.documentElement.style.fontSize = '200%'; }")
             pg.wait_for_timeout(200)
@@ -1478,7 +1412,7 @@ def b31(c):
     fails = []
     js = r"""() => { const l = [...document.querySelectorAll('nav a')].filter(a => a.getBoundingClientRect().width > 0);
       const tops = new Set(l.map(a => Math.round(a.getBoundingClientRect().top))); return {n: l.length, rows: tops.size}; }"""
-    for s in c.present(["index", "charts"]):
+    for s in c.present(["index", "media"]):
         for size, want in (((1280, 800), 1), ((1920, 1080), 1), ((360, 740), 3)):
             with c.page(s, size) as (pg, _, _):
                 r = pg.evaluate(js)
@@ -1503,7 +1437,7 @@ def b32(c):
                     fails.append(f"{s}: img {i['src']} srcset needs sizes without %")
                 if i["css"] > 0 and i["nat"] > 3 * i["css"] * 1.001:
                     fails.append(f"{s}: img {i['src']} natural {i['nat']}px > 3x css {i['css']:.0f}px")
-    for s in c.present(["charts", "posters", "slideshow"]):
+    for s in c.present(["media", "bibliography", "slideshow"]):
         for size in (MOBILE, (1280, 800)):
             ctx = c.browser.new_context(viewport={"width": size[0], "height": size[1]})
             pg = ctx.new_page()
@@ -1517,7 +1451,7 @@ def b32(c):
                     fails.append(f"{s}@{size[0]}: CLS {cls:.3f} >0.1")
             finally:
                 ctx.close()
-    verdict(c, "B32", fails, "imgs sized, srcset has sizes (no %), natural <=3x css width at 375, CLS <=0.1 on charts/posters/slideshow")
+    verdict(c, "B32", fails, "imgs sized, srcset has sizes (no %), natural <=3x css width at 375, CLS <=0.1 on media/bibliography/slideshow")
 
 
 def b33(c):
@@ -1600,7 +1534,7 @@ CHECKS = [("B1", b1), ("B2", b2), ("B3", b3), ("B4", b4), ("B5", b5), ("B6", b6)
           ("B17", b17), ("B18", b18), ("B19", b19), ("B20", b20), ("B21", b21), ("B22", b22), ("B23", b23),
           ("B24", b24), ("B25", b25), ("B26", b26), ("DATA", data_routing), ("R1", prose_guard), ("SCHEMA", schema_check), ("B27", b27), ("B28", b28), ("B29", b29), ("B30", b30),
           ("B31", b31), ("B32", b32), ("B33", b33)]
-SINGLE_FIXTURE_ONLY = {"B17": {"full"}, "B18": {"full", "half"}, "B19": {"full", "half"}}
+SINGLE_FIXTURE_ONLY = {"B17": {"full"}, "B18": {"real"}, "B19": {"real"}}
 
 
 # ---------------------------------------------------------------- driver
