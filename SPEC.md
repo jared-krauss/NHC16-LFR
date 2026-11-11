@@ -1,7 +1,7 @@
 # NHC16-LFR audience site: spec and bar
 
 Audience site for a 20-minute talk, School of Architecture Research Conference, Thu 12 Nov 2026:
-"Live Facial Recognition at Notting Hill Carnival: The Met's First London Deployment, 2016".
+"The London Met's First Live Facial Recognition Deployment: The Trial at Notting Hill Carnival, 2016".
 Live address (once approved): `https://jared-krauss.github.io/NHC16-LFR/` (GitHub Pages, serving `docs/` on `main`).
 
 ## Hard rules (every unit)
@@ -138,4 +138,4 @@ Viewport matrix: 320x568, 375x667, 414x896, 768x1024, 1024x768, 812x375 (landsca
 
 
 ## Restructure, 11 Nov 2026
-Sections are Home, Media, Bibliography, Slideshow. Retired pages (charts, posters, handouts, documents, news) are meta-refresh stubs (`redirects` in `site-config.json`). Handouts and `posters_a3` are not published; print files live on the private Command Centre. Figure numbers and titles come only from `figures-config.json`. The hidden 3D scenes page (`scenes.html`, footer egg) is configured in `scenes-config.json` and checked by `checks/check_scenes.py`; `run_checks.py` B20 defers to it. Check rows B18 (Media) and B19 (figure viewer) run on `--fixture real`.
+Sections are Home, Paper, Media, Bibliography, Slideshow. The Paper page (`render/paper.py`, source `paper/paper.md`, checked by `checks/check_paper.py`) is Jared's own text; "Fig. N" references open the shared viewer (`assets/viewer.js`, also used by Media). Retired pages (charts, posters, handouts, documents, news) are meta-refresh stubs (`redirects` in `site-config.json`). Handouts and `posters_a3` are not published; print files live on the private Command Centre. Figure numbers and titles come only from `figures-config.json`. The hidden 3D scenes page (`scenes.html`, footer egg) is configured in `scenes-config.json` and checked by `checks/check_scenes.py`; `run_checks.py` B20 defers to it. Check rows B18 (Media) and B19 (figure viewer) run on `--fixture real`.

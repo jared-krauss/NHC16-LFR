@@ -99,6 +99,7 @@ html.sv-open, html.sv-open body { overflow: hidden; }
 .sv-bottom nav { flex: 0 1 auto; }
 .sv-nav { display: flex; flex-wrap: wrap; margin: 0; padding: 0; list-style: none; gap: 0 0.1rem; }
 .sv-nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 0.42rem; font-size: 0.82rem; font-weight: 600; color: var(--sv-text); text-decoration: none; border-radius: 6px; }
+@media (max-width: 30rem) { .sv-nav { gap: 0; } .sv-nav a { padding: 0 0.28rem; font-size: 0.78rem; } }
 .sv-nav a:hover { background: rgba(255, 255, 255, 0.14); text-decoration: underline; }
 .sv-nav a.sv-other { color: var(--sv-green); }
 .sv a:focus-visible, .sv button:focus-visible { outline: 3px solid var(--sv-link); outline-offset: 1px; }

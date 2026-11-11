@@ -79,3 +79,4 @@ Order inside a card is fixed: `.card-title`, then `.card-meta` with `.source`, `
 - Fixture notes: whole_files document A carries extra keys (`outlet`, `date`, `pages`) to prove they are tolerated; selections-half.json holds deliberately invalid items that the build must report ("invalid"/"skipped") and not crash on. No date key means "Undated"; whole_files source = host of `source_url` ("example.org"), else "Printed copy".
 - Relative paths resolve against the project root. Path comparison with `licence_map` / `photos_cleared` is after normalising slashes and case.
 - Config overlay: dicts deep-merge, lists (e.g. `splat_scenes`, `photos_cleared`) are replaced. The test overlay replaces `splat_scenes` with tiny fixture `.sog` files.
+- Sections marked `"prose": true` in site-config.json (the Paper page) are free text, not card pages: B12 and B14 skip their card requirements; their own checks are in `checks/check_paper.py`.

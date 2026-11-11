@@ -13,8 +13,9 @@ from render.common import (actions, card, empty_card, empty_state, esc, file_siz
                            safe_external, text)
 from render.sources import chart_record, chart_title
 
-HEAD = ('<link rel="stylesheet" href="assets/content.css">\n<link rel="stylesheet" href="assets/media.css">')
-SCRIPTS = '<script src="assets/media.js" defer></script>'
+HEAD = ('<link rel="stylesheet" href="assets/content.css">\n<link rel="stylesheet" href="assets/media.css">\n'
+        '<link rel="stylesheet" href="assets/viewer.css">')
+SCRIPTS = '<script src="assets/viewer.js" defer></script>\n<script src="assets/media.js" defer></script>'
 
 
 def size_mb(n):

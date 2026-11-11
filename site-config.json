@@ -1,6 +1,6 @@
 {
   "site": {
-    "talk_title": "Live Facial Recognition at Notting Hill Carnival: The Met's First London Deployment, 2016",
+    "talk_title": "The London Met's First Live Facial Recognition Deployment: The Trial at Notting Hill Carnival, 2016",
     "speaker": "Jared Krauss",
     "event": "School of Architecture Research Conference",
     "date": "12 Nov 2026",
@@ -13,6 +13,11 @@
     {
       "slug": "index",
       "label": "Home"
+    },
+    {
+      "slug": "paper",
+      "label": "Paper",
+      "prose": true
     },
     {
       "slug": "media",
@@ -84,6 +89,7 @@
     }
   ],
   "figures_config": "figures-config.json",
+  "paper_source": "paper/paper.md",
   "title_overrides": "title-overrides.json",
   "mla_tools_dir": "D:/Dev/tools/mla-citations",
   "citations_path": "E:/Outputs/phd-conference-2026-11-12/_work/citations.json",

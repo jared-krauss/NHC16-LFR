@@ -163,6 +163,7 @@ class Ctx:
         self.nav = [s["slug"] for s in cfg["sections"]]
         self.labels = {s["slug"]: s["label"] for s in cfg["sections"] + cfg.get("hidden_pages", [])}
         self.hidden = [s["slug"] for s in cfg.get("hidden_pages", [])]
+        self.prose = [s["slug"] for s in cfg["sections"] if s.get("prose")]
         self.all_slugs = self.nav + self.hidden
         self._axe = {}
 
@@ -526,7 +527,7 @@ def b11(c):
 
 def b12(c):
     fails = []
-    for s in c.present():
+    for s in c.present([x for x in c.all_slugs if x not in c.prose]):
         with c.page(s) as (pg, _, _):
             for k in pg.evaluate(JS_CARDS):
                 tag = f"{s}/{k['title'][:24] or '?'}"
@@ -626,7 +627,7 @@ def b14(c):
     fails += bad
     empty_fx = c.fx in ("empty", "missing")
     secs = [s for s in c.nav if s != "index"]
-    for s in c.present(secs):
+    for s in c.present([x for x in secs if x not in c.prose]):
         with c.page(s) as (pg, _, _):
             cards = pg.evaluate(JS_CARDS)
             if not cards:
