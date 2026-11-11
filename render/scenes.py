@@ -40,7 +40,7 @@ def scene_body(sog_bytes):
 <button type="button" class="scene-btn" data-action="load" data-sog-label="{esc(later)}">{esc(first)}</button>
 <button type="button" class="scene-btn" data-action="close" hidden>Close 3D scene</button>
 <button type="button" class="scene-btn" data-action="retry" hidden>Retry</button>
-<button type="button" class="scene-btn" data-action="reset" disabled>Reset view</button>
+<button type="button" class="scene-btn" data-action="reset" hidden disabled>Reset view</button>
 </div>
 <p class="scene-hint" data-role="hint" hidden></p>
 <p class="scene-msg" data-role="msg" role="status" aria-live="polite"></p>

@@ -1,7 +1,7 @@
 """Slideshow page: one list of contract cards that works without JS; assets/slideshow.js turns it into a carousel."""
 from render import Page
 from render.common import (card, empty_state, esc, fmt_date, host_file, item_path, label, licence_for, norm_path,
-                           photo_cleared, project_path, sel_items, slideshow_items, text)
+                           photo_cleared, poster_facts, project_path, sel_items, slideshow_items, text)
 
 try:
     from render import sources
@@ -23,10 +23,11 @@ def _call(name, ctx, arg):
         return None
 
 
-def _find(ctx, key, ref):
+def _find(ctx, key, ref, page=None):
+    """The selections row with this source path (and, when given, this page number)."""
     want = norm_path(ref)
     for it in sel_items(ctx, key):
-        if norm_path(item_path(it)) == want:
+        if norm_path(item_path(it)) == want and (page in (None, "") or it.get("page") == page):
             return it
     return None
 
@@ -51,15 +52,14 @@ def _resolve(ctx, it):
         return dict(kind="chart", badge="Chart", title=img.get("title") or ref,
                     source=img.get("source_line") or "Chart", date="Undated", caption="", img=img)
     if kind == "poster":
-        row = _find(ctx, "posters_a3", ref)
+        row = _find(ctx, "posters_a3", ref, it.get("page"))
         img = _call("poster_image", ctx, row) if row else None
         if not img:
             print(f"slideshow: skipped poster {ref} (no image)")
             return None
-        page = row.get("page")
-        src = "A3 poster" + (f", page {page}" if page else "")
+        src, date, lic = poster_facts(ctx, row)
         return dict(kind="poster", badge="Poster", title=img.get("title") or text(row, "title"), source=src,
-                    date="Undated", caption="", img=img)
+                    date=date, caption="", img=img, licence=lic)
     if kind == "photo":
         row = _find(ctx, "photos", ref)
         if not row or not photo_cleared(ctx, ref):
@@ -120,6 +120,7 @@ def _body(ctx, slide, first):
     body = f'<div class="slide-media">{media}</div>\n'
     if slide["caption"]:
         body += f'<p class="slide-caption">{esc(slide["caption"])}</p>\n'
+    body += slide.get("licence", "")
     return body
 
 

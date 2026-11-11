@@ -22,3 +22,6 @@
 .chart-page .js-plotly-plot .nsewdrag, .chart-page .js-plotly-plot .drag { touch-action: pan-y !important; }
 .chart-page svg { max-width: 100%; touch-action: pan-y; }
 .card-actions a[data-link] { max-width: 100%; overflow-wrap: anywhere; word-break: break-word; }
+.card-licence { font-size: var(--fs-s); color: var(--muted); margin: 0.25rem 0 0; overflow-wrap: anywhere; }
+.card-group { margin: 0 0 2rem; }
+.group-title { margin: 1.5rem 0 0.75rem; }

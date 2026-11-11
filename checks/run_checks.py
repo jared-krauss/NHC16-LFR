@@ -30,7 +30,7 @@ ALL_FIXTURES = FIXTURES + ["real"]
 MOBILE = (375, 812)
 NARROW = (320, 640)
 MONTHS = "Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec"
-DATE_RE = re.compile(r"^\d{1,2} (%s) \d{4}$" % MONTHS)
+DATE_RE = re.compile(r"^((\d{1,2} )?(%s) )?\d{4}$" % MONTHS)
 SIZE_RE = re.compile(r"\d+(\.\d+)?\s*(KB|MB|kB|KiB|MiB)")
 VENDOR_RE = re.compile(r"(^|/)(vendor|libs)/|\.min\.js$|plotly|playcanvas", re.I)
 

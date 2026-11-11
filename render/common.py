@@ -40,6 +40,109 @@ def fmt_date(value):
     return "Undated"
 
 
+_FULL_DATE = re.compile(r"\b(\d{1,2}) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]* (\d{4})\b")
+_ISO_DATE = re.compile(r"\b(\d{4})-(\d{2})-(\d{2})\b")
+_MONTH_YEAR = re.compile(r"^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]* (\d{4})\b")
+_YEAR_LEAD = re.compile(r"^(?:[A-Za-z]+ )?(\d{4})\b")
+
+
+def date_from_facts(value):
+    """A date taken from a free-text fact string such as '23 August 2017' -> '23 Aug 2017'; '' when none is stated."""
+    v = value.strip() if isinstance(value, str) else ""
+    if not v or re.match(r"(not printed|PDF created|latest press item)", v, re.I):
+        return ""
+    m = _ISO_DATE.search(v)
+    if m:
+        return fmt_date(m.group(0))
+    m = _FULL_DATE.search(v)
+    if m:
+        return f"{int(m.group(1))} {m.group(2)} {m.group(3)}"
+    m = _MONTH_YEAR.match(v)
+    if m:
+        return f"{m.group(1)} {m.group(2)}"
+    m = _YEAR_LEAD.match(v)
+    return m.group(1) if m else ""
+
+
+def item_date(item):
+    """Date label for a card: top-level date, else the date in mla_facts, else 'Undated'."""
+    d = fmt_date(item.get("date")) if isinstance(item, dict) else "Undated"
+    if d != "Undated":
+        return d
+    facts = item.get("mla_facts") if isinstance(item, dict) else None
+    if isinstance(facts, dict):
+        facts = facts.get("date")
+    return date_from_facts(facts) or "Undated"
+
+
+def licence_line(*notes):
+    """The real licence named in a licence_note (starts with 'CC' or 'Open Government'), up to the first full stop; else ''."""
+    for n in notes:
+        n = (n or "").strip()
+        if re.match(r"(CC\b|Open Government)", n):
+            m = re.search(r"\.(?:\s|$)| \(", n)
+            return (n[:m.start()] if m else n).strip()
+    return ""
+
+
+def licence_html(*notes):
+    line = licence_line(*notes)
+    return f'<p class="card-licence">{esc(line)}</p>\n' if line else ""
+
+
+def whole_file_for(ctx, path):
+    """The whole_files row with the same source path, or None."""
+    key = norm_path(path)
+    if not key:
+        return None
+    for row in ctx["sel"].get("whole_files", []):
+        if isinstance(row, dict) and norm_path(item_path(row)) == key:
+            return row
+    return None
+
+
+def poster_facts(ctx, p):
+    """(source, date, licence html) for a poster, from its own fields and the whole_files row of the same PDF."""
+    row = whole_file_for(ctx, item_path(p)) or {}
+    source = (text(row, "title") or host_of(safe_external(text(p, "source_url")))
+              or host_of(safe_external(text(row, "source_url"))) or "Printed copy")
+    d = item_date(p)
+    if d == "Undated" and row:
+        d = item_date(row)
+    return source, d, licence_html(text(p, "licence_note"), text(row, "licence_note"))
+
+
+def in_group_sections(ctx, rows, make_card):
+    """Card html for rows, in <section> blocks under an h2 per `group` (first-seen order), ungrouped rows last without a heading."""
+    groups, order, loose = {}, [], []
+    for r in rows:
+        g = text(r, "group")
+        if g:
+            if g not in groups:
+                groups[g] = []
+                order.append(g)
+            groups[g].append(r)
+        else:
+            loose.append(r)
+    if not order:
+        return cards_wrap([make_card(r, 2) for r in rows])
+    out = []
+    for n, g in enumerate(order):
+        out.append(f'<section class="card-group" aria-labelledby="group-{n}">\n<h2 id="group-{n}" class="group-title">{esc(g)}</h2>\n'
+                   + cards_wrap([make_card(r, 3) for r in groups[g]]) + "\n</section>")
+    if loose:
+        out.append(cards_wrap([make_card(r, 2) for r in loose]))
+    return "\n".join(out)
+
+
+def whole_file_rows(ctx, slug):
+    """whole_files rows for the Documents (use host/link) or Handouts (use print, or 'print' in also) page."""
+    rows = [w for w in ctx["sel"].get("whole_files", []) if isinstance(w, dict)]
+    if slug == "handouts":
+        return [w for w in rows if text(w, "use") == "print" or "print" in (w.get("also") or [])]
+    return [w for w in rows if text(w, "use") in ("host", "link")]
+
+
 def file_size_label(path):
     """'15.4 KB' or '1.2 MB' for a file on disk."""
     size = Path(path).stat().st_size
@@ -231,7 +334,7 @@ def whole_file_card(ctx, item, level=2):
     url = safe_external(text(item, "source_url"))
     use = text(item, "use")
     src = text(item, "outlet") or host_of(url) or "Printed copy"
-    date = fmt_date(item.get("date"))
+    date = item_date(item)
     kind = "pdf" if path.lower().endswith(".pdf") else "link"
     badge = "PDF" if kind == "pdf" else "Link"
     links = []
@@ -257,7 +360,7 @@ def slideshow_items(ctx):
     out = [{"kind": "chart", "ref": text(c, "id"), "label": text(c, "id")} for c in sel_items(ctx, "charts_ready")]
     for p in sel_items(ctx, "posters_a3"):
         if licence_for(ctx, item_path(p)):
-            out.append({"kind": "poster", "ref": item_path(p), "label": text(p, "title")})
+            out.append({"kind": "poster", "ref": item_path(p), "page": p.get("page"), "label": text(p, "title")})
     for ph in sel_items(ctx, "photos"):
         if photo_cleared(ctx, item_path(ph)):
             out.append({"kind": "photo", "ref": item_path(ph), "label": text(ph, "caption") or text(ph, "title") or "Photo"})
@@ -274,9 +377,9 @@ def count_for(ctx, slug):
     if slug == "posters":
         return len(sel_items(ctx, "posters_a3"))
     if slug == "handouts":
-        return sum(1 for w in sel_items(ctx, "whole_files") if text(w, "use") == "print")
+        return len(whole_file_rows(ctx, "handouts"))
     if slug == "documents":
-        return sum(1 for w in sel_items(ctx, "whole_files") if text(w, "use") in ("host", "link"))
+        return len(whole_file_rows(ctx, "documents"))
     if slug == "news":
         return len(sel_items(ctx, "news"))
     if slug == "slideshow":
@@ -301,3 +404,12 @@ def simple_page(ctx, slug, cards):
     from render import Page
     lab = label(ctx, slug)
     return Page(slug, lab, lab, cards_wrap(cards) if cards else empty_state(lab))
+
+
+
+def rows_page(ctx, slug, make_card):
+    """Page for a whole_files-backed section: grouped cards, or the empty state."""
+    from render import Page
+    lab = label(ctx, slug)
+    rows = whole_file_rows(ctx, slug)
+    return Page(slug, lab, lab, in_group_sections(ctx, rows, make_card) if rows else empty_state(lab))

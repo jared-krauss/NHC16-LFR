@@ -255,6 +255,7 @@ async function loadScene(card) {
   closeBtn.hidden = false;
   closeBtn.focus();
   card.querySelector('[data-action=reset]').disabled = false;
+  document.querySelectorAll('[data-action=reset]').forEach((b) => { b.hidden = false; });
   stage.hidden = false;
   const canvas = document.createElement('canvas');
   canvas.setAttribute('role', 'img');

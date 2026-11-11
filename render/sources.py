@@ -431,8 +431,8 @@ def doc_card(ctx, item, level=2):
     An external link whose address is a PDF also states 'PDF' and the size of the local copy of that document.
     """
     from urllib.parse import urlparse
-    from render.common import (actions, card, external_link, file_link, file_size_label, fmt_date, host_file, host_of,
-                               link, printed_note, safe_external)
+    from render.common import (actions, card, external_link, file_link, file_size_label, host_file, host_of, item_date,
+                               licence_html, link, printed_note, safe_external)
     title = text(item, "title")
     path = item_path(item)
     url = safe_external(text(item, "source_url"))
@@ -455,4 +455,5 @@ def doc_card(ctx, item, level=2):
         else:
             links.append(link("external", url, f"Opens {where}", f"Opens {where}: {title}"))
     body = actions(*links) if links else printed_note()
-    return card("pdf" if is_pdf else "link", title, src, fmt_date(item.get("date")), "PDF" if is_pdf else "Link", body, level)
+    body += licence_html(text(item, "licence_note"))
+    return card("pdf" if is_pdf else "link", title, src, item_date(item), "PDF" if is_pdf else "Link", body, level)
