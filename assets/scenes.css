@@ -148,3 +148,7 @@ html.sv-open, html.sv-open body { overflow: hidden; }
 }
 
 .sv-sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.sv-essay {
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden;
+  padding: 0.35em 0 0.55em; min-height: 44px; font-size: 0.8em; line-height: 1.3; color: var(--sv-link); text-decoration: underline; text-underline-offset: 2px;
+}

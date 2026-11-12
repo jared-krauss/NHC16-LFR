@@ -158,6 +158,15 @@ def figure_data(figs):
                                 "w": f["web_w"], "h": f["web_h"]} for n, f in figs.items()}, ensure_ascii=False)
 
 
+def other_writing_html(ctx):
+    """The closing line linking each other-writing essay: label, linked title, date (all from config)."""
+    from render.other_writing import entries
+    lead = ctx["config"].get("paper_other_writing_label", "")
+    rows = "".join(f'<p class="paper-other">{esc(lead)} <a href="{esc(e["slug"])}.html">{esc(e["title"])}</a>, {esc(e["date"])}</p>'
+                   for e in entries(ctx["config"]))
+    return rows + "\n" if rows else ""
+
+
 def render(ctx):
     from render.media import figures
     lab = label(ctx, "paper")
@@ -178,6 +187,6 @@ def render(ctx):
         print(f"WARNING paper: Fig. {n} is not in figures-config.json; left as plain text", flush=True)
     if not body:
         body = f'<p class="paper-empty">{EMPTY_LINE}</p>'
-    page = (f'<article class="paper" id="paper-text">\n{body}\n</article>\n' + menu_html(figs, heads, ctx["config"].get("paper_menu_egg"))
+    page = (f'<article class="paper" id="paper-text">\n{body}\n</article>\n' + other_writing_html(ctx) + menu_html(figs, heads, ctx["config"].get("paper_menu_egg"))
             + f'\n<script type="application/json" id="paper-figures">{figure_data(figs).replace("</", "<\\/")}</script>')
     return Page("paper", lab, re.sub(r"\*+", "", h1), page, head_extra=HEAD, scripts_extra=SCRIPTS)

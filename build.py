@@ -257,6 +257,17 @@ def main():
             page = Page(slug, lab, lab, empty_state(lab))
         (out / f"{slug}.html").write_text(external_links_new_tab(wrap(page, config, template), host_of(config["site"]["public_url"])), encoding="utf-8", newline="\n")
 
+    from render.other_writing import entries as essay_entries, render_entry
+    for entry in essay_entries(config):
+        try:
+            page = render_entry(ctx, entry)
+        except Exception as e:
+            traceback.print_exc()
+            print(f"skip: other writing {entry.get('slug')} failed ({type(e).__name__}: {e})", flush=True)
+            continue
+        slugs.append(entry["slug"])
+        (out / f"{entry['slug']}.html").write_text(external_links_new_tab(wrap(page, config, template), host_of(config["site"]["public_url"])), encoding="utf-8", newline="\n")
+
     write_redirects(config, out)
     for f in list(out.rglob("*.mjs")):
         f.unlink()

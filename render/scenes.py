@@ -138,6 +138,10 @@ def viewer_html(ctx, scene, other, gallery, start_rel, start_size=(0, 0)):
         source = link("external", src_url, SOURCE_PREFIX + src_text)
         source = source.replace("<a ", '<a class="sv-source" ', 1).replace(
             "</a>", f'<span class="sv-sr"> (opens {esc(host)}{kind})</span></a>')
+    from render.other_writing import entry_for_scene, link_text
+    essay = entry_for_scene(ctx["config"], sid)
+    if essay:
+        source += f'\n<a class="sv-essay" data-link="page" href="{esc(essay["slug"])}.html">{esc(link_text(essay))}</a>'
     thumbs = "".join(
         f'<li><button type="button" class="sv-thumb" data-gi="{i}" data-src="{esc(g["thumb"])}" data-w="{g["tw"]}" data-h="{g["th"]}" data-alt="{esc(g["alt"])}" aria-label="{esc(g["alt"])}">'
         f'</button></li>' for i, g in enumerate(gallery))

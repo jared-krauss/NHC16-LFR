@@ -338,5 +338,20 @@
   "paper_menu_egg": {
     "label": "capture · match · assess · react",
     "href": "scenes.html#stratford"
-  }
+  },
+  "other_writing": [
+    {
+      "slug": "walworth-essay",
+      "title": "A London History of Facial Recognition Surveillance: Walworth Road & East Street Market, November 2024",
+      "byline": "Jared Krauss",
+      "date": "26 September 2026",
+      "source": "D:/Dev/Art/PhD/PhD Research & Writing/Fall 2026/2 x 1000 + words, writing exercise assignment/_page-build/flow.json",
+      "source_key": "version.text",
+      "drop_header_lines": 6,
+      "works_cited_heading": "Works Cited",
+      "link_label": "Essay: {title}",
+      "scene": "walworth"
+    }
+  ],
+  "paper_other_writing_label": "Other writing about FRS:"
 }
