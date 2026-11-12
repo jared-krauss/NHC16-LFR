@@ -211,7 +211,11 @@
       "adm-2017-10-27",
       "nist-ir-8173-2017",
       "bbc-2016-08-28",
-      "nhcarnival-history"
+      "nhcarnival-history",
+      "met-foi-afr-2018",
+      "sun-2016-08-28",
+      "axis-q1635-support",
+      "axis-q1635-datasheet"
     ],
     "exclude": [
       "bbw-letter-2017-08-16",
