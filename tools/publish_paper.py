@@ -18,6 +18,7 @@ ROOT = Path(__file__).resolve().parent.parent
 STATE = Path(r"D:\Dev\tools\dashboard\page-state\phd-conference-paper.json")
 FIGS_COPY = Path(r"D:\Dev\tools\dashboard\phd-conference-paper-figures.json")
 PAPER = ROOT / "paper" / "paper.md"
+REQUIRED_PAGES = {"index.html", "paper.html", "bibliography.html"}
 TITLE = "The London Met's First Live Facial Recognition Deployment: The Trial at Notting Hill Carnival, 2016"
 
 
@@ -60,15 +61,22 @@ def main():
     if new == old:
         print("Nothing to publish: the page text matches paper.md already.")
         return 0
+    before_pages = {p.name for p in (ROOT / "docs").glob("*.html")}
     PAPER.write_text(new, encoding="utf-8", newline="\n")
     sync_figures()
     b = run([sys.executable, "build.py"])
     if b.returncode:
         print(b.stdout[-1500:] + b.stderr[-1500:])
-        print("FAILED: the build stopped, so nothing was published. paper.md was updated; fix the problem above and run again.")
+        PAPER.write_text(old, encoding="utf-8", newline="\n")
+        print("FAILED: the build stopped, so nothing was published. paper.md was put back as it was; fix the problem above and run again.")
         return 1
     if b.stdout.strip():
         print(b.stdout.strip())
+    missing = [n for n in sorted(before_pages | REQUIRED_PAGES) if not (ROOT / "docs" / n).is_file() or (ROOT / "docs" / n).stat().st_size < 1000]
+    if missing:
+        PAPER.write_text(old, encoding="utf-8", newline="\n")
+        print("FAILED: docs/ is incomplete after the build (missing or empty: %s), so nothing was published. paper.md was put back as it was." % ", ".join(missing))
+        return 1
     run(["git", "add", "paper", "docs"])
     c = run(["git", "commit", "-m", "Paper text update"])
     if c.returncode:
