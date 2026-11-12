@@ -181,7 +181,8 @@
     ],
     "group_overrides": {
       "hansard-1998-11-03": "reports",
-      "bc-nhc-2017": "reports"
+      "bc-nhc-2017": "reports",
+      "bbw-face-off-2018": "reports"
     },
     "type_labels": {
       "report_gov": "Report",
@@ -199,7 +200,36 @@
       "npl-met-lfr-trials-2020",
       "sato-2005",
       "imaoka-2021",
-      "hansard-1998-11-03"
+      "hansard-1998-11-03",
+      "fussey-murray-2019",
+      "bbw-face-off-2018",
+      "which-50-2017-10-26"
+    ],
+    "exclude": [
+      "bbw-letter-2017-08-16",
+      "bowyer-2004"
+    ],
+    "extra_sources": [
+      {
+        "id": "bbw-face-off-2018",
+        "title": "Face Off: The Lawless Growth of Facial Recognition in UK Policing",
+        "url": "https://bigbrotherwatch.org.uk/campaigns/stop-facial-recognition/report/",
+        "outlet": "Big Brother Watch",
+        "use": "link"
+      }
+    ],
+    "overrides": {
+      "gates-2004": {
+        "use": "host",
+        "licence_note": "Hosted on Jared's decision, 12 Nov 2026, for the conference audience (personal research use)."
+      },
+      "which-50-2017-10-26": {
+        "url": "https://webarchive.nla.gov.au/awa/20200427214833/http://pandora.nla.gov.au/pan/161836/20200426-0045/which-50.com/facial-recognition-real-life-real-life-difficult-says-nec/index.html"
+      }
+    },
+    "shared_ids": [
+      "bbw-face-off-2018"
     ]
-  }
+  },
+  "citations_shared_path": "D:/Dev/tools/mla-citations/citations.json"
 }

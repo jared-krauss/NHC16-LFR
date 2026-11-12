@@ -22,7 +22,7 @@ from PIL import Image
 from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parent.parent
-VIEWPORTS = [("390", 390, 844), ("1440", 1440, 900)]
+VIEWPORTS = [("320", 320, 568), ("390", 390, 844), ("1440", 1440, 900)]
 BIG = [("1920", 1920, 1080), ("3840", 3840, 2160)]
 LABELS = ["Faces Scanned", "Arrests", "False Alerts"]
 MENU_ITEMS = ["Reset view", "Previous view", "Next view", "Gallery"]
@@ -114,14 +114,17 @@ def check_scene(page, base, scene, vp, shots, wait_ready):
     hit = page.evaluate("""sv => { const a = document.querySelector(sv + ' .sv-nav a'); const r = a.getBoundingClientRect();
       const at = (dy) => document.elementFromPoint(r.left + r.width / 2, dy); return [r.height, true, at(r.bottom - 2) === a]; }""", sv)
     ok(hit[0] + 0.5 >= 44 and hit[1] and hit[2], f"{tag} nav tap area >= 44px ({hit[0]:.0f}px link + hit padding)")
+    if vp[1] <= 480:
+        fit = page.evaluate("sv => { const u = document.querySelector(sv + ' .sv-nav'); const o = document.querySelector(sv + ' .sv-other'); return [u.scrollWidth, u.clientWidth, o.getBoundingClientRect().right]; }", sv)
+        ok(fit[0] <= fit[1] + 1 and fit[2] <= vp[1], f"{tag} nav fits without swiping ({fit[0]} <= {fit[1]})")
     other = page.query_selector(f"{sv} .sv-other")
-    ok(other is not None and other.inner_text().strip().startswith("Change to: ") and other.get_attribute("href").startswith("scenes.html#"), f"{tag} 'Change to: <scene>' link present")
+    ok(other is not None and (other.get_attribute("aria-label") or "").startswith("Change to: ") and other.get_attribute("href").startswith("scenes.html#"), f"{tag} 'Change to: <scene>' link present")
     order = page.evaluate("sv => [document.querySelector(sv + ' .sv-navbar').getBoundingClientRect().bottom, document.querySelector(sv + ' .sv-place').getBoundingClientRect().top, document.querySelector(sv + ' .sv-navbar').getBoundingClientRect().top]", sv)
     ok(order[2] <= 1 and order[0] <= order[1], f"{tag} nav bar is at the very top, above the title block")
     top_h, bot_h = page.evaluate("[document.querySelector('%s .sv-top').offsetHeight, document.querySelector('%s .sv-bottom').offsetHeight]" % (sv, sv))
     if vp[1] == 390:
         ok(top_h <= 104, f"{tag} nav + title block {top_h}px <= 104px (old title block alone was 104px)")
-    ok(top_h < vp[2] * 0.2, f"{tag} top overlay {top_h}px is under 20% of the viewport height")
+    ok(top_h < vp[2] * (0.22 if vp[2] < 700 else 0.2), f"{tag} top overlay {top_h}px is a modest share of the viewport height")
     ok(bot_h <= top_h + 2, f"{tag} bottom band not taller than top ({bot_h} vs {top_h})")
     burger = page.query_selector(f"{sv} .sv-burger")
     bb = burger.bounding_box()

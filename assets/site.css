@@ -175,3 +175,4 @@ main a[data-link="file"]::before { content: "\2193"; }
 @media (min-width: 1600px) {
   body:has(.talk-facts) main .wrap { grid-template-columns: minmax(18rem, 20rem) minmax(0, 1fr); column-gap: 2rem; }
 }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }

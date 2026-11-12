@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT))
 
 from render import Page, load  # noqa: E402
-from render.common import empty_state, esc, make_copy_asset, label  # noqa: E402
+from render.common import empty_state, esc, external_links_new_tab, host_of, make_copy_asset, label  # noqa: E402
 
 LIST_KEYS = ["whole_files", "posters_a3", "charts_ready", "charts_tweak", "news", "photos", "splats"]
 REQUIRED = {"whole_files": ("title",), "posters_a3": ("title",), "charts_ready": ("id",), "charts_tweak": ("id",),
@@ -255,7 +255,7 @@ def main():
             print(f"skip: page {slug} failed ({type(e).__name__}: {e}); wrote an empty page", flush=True)
             lab = label(ctx, slug)
             page = Page(slug, lab, lab, empty_state(lab))
-        (out / f"{slug}.html").write_text(wrap(page, config, template), encoding="utf-8", newline="\n")
+        (out / f"{slug}.html").write_text(external_links_new_tab(wrap(page, config, template), host_of(config["site"]["public_url"])), encoding="utf-8", newline="\n")
 
     write_redirects(config, out)
     for f in list(out.rglob("*.mjs")):

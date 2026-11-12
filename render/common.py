@@ -402,3 +402,30 @@ def rows_page(ctx, slug, make_card):
     lab = label(ctx, slug)
     rows = whole_file_rows(ctx, slug)
     return Page(slug, lab, lab, in_group_sections(ctx, rows, make_card) if rows else empty_state(lab))
+
+
+NEW_TAB_TEXT = "(opens in new tab)"
+_ANCHOR = re.compile(r'(<a\b[^>]*?\bhref="(https?://[^"]+)"[^>]*>)(.*?)(</a>)', re.S | re.I)
+
+
+def external_links_new_tab(page_html, own_host):
+    """Build-time pass over a finished page: every http(s) link to another host gets target=_blank and rel noopener noreferrer.
+
+    A visually hidden '(opens in new tab)' is added unless the link text or aria-label already says it opens.
+    """
+    def fix(m):
+        tag, url, inner, close = m.groups()
+        if host_of(url) == own_host:
+            return m.group(0)
+        tag = re.sub(r'\s(?:target|rel)="[^"]*"', "", tag)
+        tag = tag[:-1] + ' target="_blank" rel="noopener noreferrer">'
+        aria = re.search(r'aria-label="([^"]*)"', tag)
+        plain = re.sub(r"<[^>]+>", "", inner)
+        says = re.search(r"\bopens?\b|new tab", (aria.group(1) if aria else "") + " " + plain, re.I)
+        if says:
+            return tag + inner + close
+        if aria:
+            tag = tag.replace(aria.group(0), 'aria-label="%s %s"' % (aria.group(1), NEW_TAB_TEXT), 1)
+            return tag + inner + close
+        return tag + inner + ' <span class="sr-only">' + NEW_TAB_TEXT + "</span>" + close
+    return _ANCHOR.sub(fix, page_html)

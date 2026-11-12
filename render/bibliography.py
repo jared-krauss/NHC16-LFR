@@ -264,6 +264,10 @@ def _load(ctx):
     cp = ctx["config"].get("citations_path")
     cits = _read(cp) if cp and Path(cp).is_file() else None
     cits = cits if isinstance(cits, list) else []
+    sp = ctx["config"].get("citations_shared_path")
+    shared = _read(sp) if sp and Path(sp).is_file() else None
+    have = {c.get("id") for c in cits}
+    cits = cits + [c for c in (shared or []) if isinstance(c, dict) and c.get("id") in set(ctx["config"].get("bibliography", {}).get("shared_ids", [])) and c.get("id") not in have]
     idx = stc.ExistingIndex(cits, stc.read_json(stc.DEFAULT_CONFIG)) if (stc and cits) else None
     ov = _overrides(ctx)
     by_id, order = {}, []
@@ -271,6 +275,7 @@ def _load(ctx):
     def add(base, cit):
         eid = (cit or {}).get("id") or base["id"]
         base["id"] = eid
+        base.update((cfg.get("overrides") or {}).get(eid, {}))
         if eid in by_id:
             by_id[eid]["source_lists"] |= base["source_lists"]
             return
@@ -304,6 +309,13 @@ def _load(ctx):
                 "type": "web_page" if text(n, "kind").lower() == "commentary" else "news_article"}
         add(base, match(url, text(n, "title")))
 
+    for xs in cfg.get("extra_sources", []):
+        base = {"title": xs["title"], "path": xs.get("path", ""), "url": _live(ctx, safe_external(xs.get("url", ""))),
+                "outlet": xs.get("outlet", ""), "iso_date": "", "source_lists": {"extra"}, "selection_group": "",
+                "use": xs.get("use", "link"), "licence_note": xs.get("licence_note", ""), "thumb_keys": [xs["path"]] if xs.get("path") else [],
+                "id": xs["id"]}
+        add(base, next((c for c in cits if c.get("id") == xs["id"]), None))
+
     facts = _read(ctx["config"].get("scene_facts_path") or "") if ctx["config"].get("scene_facts_path") else None
     for sd in ctx["config"].get("scene_documents", []):
         f = (facts or {}).get(sd["scene"]) if isinstance(facts, dict) else None
@@ -321,7 +333,9 @@ def _load(ctx):
         by_id[eid] = e
         order.append(eid)
 
-    entries = _mla_html(ctx, [by_id[i] for i in order])
+    for gone in cfg.get("exclude") or []:
+        by_id.pop(gone, None)
+    entries = _mla_html(ctx, [by_id[i] for i in order if i in by_id])
     cited = set(cfg.get("works_cited") or [])
     for want in cited - set(by_id):
         ctx["log"](f"bibliography: works_cited id {want} has no entry")

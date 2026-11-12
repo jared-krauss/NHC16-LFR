@@ -19,6 +19,7 @@ from render.common import ROOT, card, empty_card, esc, host_of, label, link, pro
 CONFIG_NAME = "scenes-config.json"
 FULL_SIDE, THUMB_SIDE = 1600, 400
 SOURCE_PREFIX = "Source: "
+SHORT_LABELS = {"index": "Home", "paper": "Paper", "media": "Media", "bibliography": "Sources", "slideshow": "Slides"}
 HEAD_GUARD = (
     "<style>html.sv-pending body{visibility:hidden;background:#0b0d0f}"
     "@media(prefers-reduced-motion:reduce){html.sv-pending body{visibility:visible}}</style>\n"
@@ -121,10 +122,14 @@ def viewer_html(ctx, scene, other, gallery, start_rel, start_size=(0, 0)):
     """The static markup of one full-screen viewer (hidden until opened)."""
     sid, facts = scene["id"], scene.get("facts", {})
     title = facts.get("place") or sid.title()
-    nav = "".join(f'<li><a data-link="page" href="{esc(s["slug"])}.html">{esc(s["label"])}</a></li>'
-                  for s in ctx["config"].get("sections", []))
-    switch = (f'<a class="sv-other" href="scenes.html#{esc(other["id"])}" data-scene-link="{esc(other["id"])}">'
-              f'Change to: {esc(other["title"])}</a>') if other else ""
+    nav = "".join(
+        f'<li><a data-link="page" href="{esc(s["slug"])}.html" aria-label="{esc(s["label"])}">'
+        f'<span class="sv-full">{esc(s["label"])}</span><span class="sv-short" aria-hidden="true">'
+        f'{esc(SHORT_LABELS.get(s["slug"], s["label"]))}</span></a></li>'
+        for s in ctx["config"].get("sections", []))
+    switch = (f'<a class="sv-other" href="scenes.html#{esc(other["id"])}" data-scene-link="{esc(other["id"])}" aria-label="Change to: {esc(other["title"])}">'
+              f'<span class="sv-full">Change to: {esc(other["title"])}</span>'
+              f'<span class="sv-short" aria-hidden="true">To: {esc(other["title"])}</span></a>') if other else ""
     src_text, src_url = facts.get("source_entry_text", ""), facts.get("source_url", "")
     source = ""
     if src_text and src_url:

@@ -54,6 +54,13 @@ html.sv-open, html.sv-open body { overflow: hidden; }
   font-size: 0.9em; font-weight: 600; color: var(--sv-text); text-decoration: none;
 }
 .sv-nav a::before, .sv-other::before { content: ""; position: absolute; left: 0; right: 0; top: 0; bottom: 0; }
+.sv-short { display: none; }
+@media (max-width: 30rem) {
+  .sv-full { display: none; }
+  .sv-short { display: inline; }
+  .sv-nav { padding-left: 0.2em; }
+  .sv-nav a, .sv-other { padding: 0 0.45em; font-size: 0.86em; }
+}
 .sv-nav a:hover, .sv-other:hover { background: rgba(255, 255, 255, 0.14); text-decoration: underline; }
 .sv-other { flex: none; color: #8ff0b4; font-weight: 700; border-left: 1px solid rgba(255, 255, 255, 0.28); background: rgba(95, 211, 138, 0.12); }
 .sv-block {

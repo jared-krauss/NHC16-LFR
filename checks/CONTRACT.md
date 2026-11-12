@@ -86,3 +86,6 @@ Order inside a card is fixed: `.card-title`, then `.card-meta` with `.source`, `
 ## B11 prose exception
 
 The Paper article body (`.paper`) is long-form reading at 18px on a short measure and uses line-height 1.7 (verifier ruling, 2026-11-11). B11 skips `.paper` for the 1.4-1.6 line-height test only; every other B11 limit still applies to it, and all other pages keep 1.4-1.6.
+
+## External links
+- Applied at build time (`render/common.py` `external_links_new_tab`, called from `build.py` on every built page): every http(s) link to another host carries `target=_blank` and `rel="noopener noreferrer"`, plus a visually hidden `(opens in new tab)` (or the aria-label is extended) unless the text already says it opens. Links created by page JavaScript are not covered.
