@@ -32,6 +32,21 @@
     fit: function () { st.s = 1; st.x = 0; st.y = 0; apply(); }
   };
 
+  function eggLink() {
+    var node = document.getElementById("viewer-egg"), cfg = null;
+    try { cfg = node ? JSON.parse(node.textContent) : null; } catch (e) { cfg = null; }
+    if (!cfg || !cfg.label) return null;
+    var a = el("a", "pm-egg viewer-egg");
+    a.href = cfg.href || "scenes.html#stratford";
+    a.setAttribute("data-egg-menu", "");
+    a.appendChild(el("span", "egg-glyph", cfg.label));
+    var tag = el("span", "egg-label", cfg.tag || "");
+    tag.setAttribute("aria-hidden", "true");
+    a.appendChild(tag);
+    if (window.NHCEgg) window.NHCEgg.wire(a);
+    return a;
+  }
+
   function build() {
     root = el("div", "viewer");
     root.setAttribute("role", "dialog");
@@ -44,8 +59,10 @@
     tools.appendChild(button("zout", "−", "Zoom out"));
     tools.appendChild(button("zin", "+", "Zoom in"));
     tools.appendChild(button("fit", "Fit", "Fit to screen"));
-    tools.appendChild(button("close", "Close", "Close viewer"));
+    tools.appendChild(button("close", "Exit", "Exit viewer"));
     bar.appendChild(label);
+    var egg = eggLink();
+    if (egg) bar.appendChild(egg);
     bar.appendChild(tools);
     stage = el("div", "viewer-stage");
     box = el("div", "viewer-box");
@@ -180,7 +197,7 @@
     else if (ev.key === "-") actions.zout();
     else if (ev.key === "0") actions.fit();
     else if (ev.key === "Tab") {
-      var list = Array.prototype.filter.call(root.querySelectorAll("button"), function (b) { return !b.disabled; });
+      var list = Array.prototype.filter.call(root.querySelectorAll("button, a[href]"), function (b) { return !b.disabled; });
       var first = list[0], last = list[list.length - 1];
       if (ev.shiftKey && document.activeElement === first) { ev.preventDefault(); last.focus(); }
       else if (!ev.shiftKey && document.activeElement === last) { ev.preventDefault(); first.focus(); }
@@ -235,7 +252,7 @@
     var wasPushed = pushed;
     pushed = false;
     hide();
-    if (wasPushed) history.back();
+    if (wasPushed && location.hash === "#viewer") history.back();
   }
 
   function hide() {

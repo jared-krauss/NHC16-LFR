@@ -1,14 +1,16 @@
 /**
- * Footer easter egg: a quiet glyph that, on hover, focus or tap, gets a face-detection bracket and a "MATCH 0.64" tag
+ * Easter egg (the footer link, and the Paper page menu link marked data-egg-menu): a quiet glyph that, on hover, focus or tap, gets a face-detection bracket and a "MATCH 0.64" tag
  * (0.64 is the Met's live facial recognition alert threshold). A click locks the bracket, then a dark iris grows out of
  * the glyph and the browser goes to the 3D scene named in data-egg (assets/scenes.js opens it with an iris of its own).
  * Modified clicks, keyboard activation and reduced-motion preferences all still reach the link target.
  */
 (function () {
   var FLAG = 'nhcEgg';
-  var egg = document.querySelector('[data-egg]');
-  if (!egg) return;
+  var eggs = document.querySelectorAll('[data-egg], [data-egg-menu]');
+  Array.prototype.forEach.call(eggs, wire);
+  window.NHCEgg = { wire: wire };
 
+  function wire(egg) {
   function go() {
     window.location.href = egg.href;
   }
@@ -40,4 +42,5 @@
     egg.classList.remove('is-lock');
     document.querySelectorAll('.egg-iris').forEach(function (n) { n.remove(); });
   });
+  }
 })();

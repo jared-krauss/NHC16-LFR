@@ -49,7 +49,7 @@ h3.paper-h { font-size: var(--fs-m); }
 @media (min-width: 1600px) {
   .paper-menu { width: 30rem; }
 }
-.pm-foot a.pm-egg { font-weight: 400; color: var(--muted); letter-spacing: 0.08em; font-variant-caps: all-small-caps; text-decoration: none; }
+.pm-foot a.pm-egg { position: relative; display: inline-flex; justify-content: flex-start; margin: 0.9rem 0 0.4rem; padding: 0 0.6rem; border-bottom: 0; background: transparent; color: var(--muted); opacity: 0.8; text-decoration: none; transition: opacity 0.15s ease; }
 .paper-other { max-width: 65ch; margin: 0 0 4rem; padding-top: 1.25rem; border-top: 1px solid var(--border); color: var(--muted); }
 .essay-meta { margin: 0 0 1.5rem; color: var(--muted); }
 .essay-by { font-weight: 600; color: var(--text); margin-right: 0.75rem; }

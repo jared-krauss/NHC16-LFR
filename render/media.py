@@ -224,4 +224,7 @@ def render(ctx):
     if pending:
         note = (ctx["config"].get("bibliography") or {}).get("chart_note", "More charts on their way")
         parts.append(f'<p class="media-note">{esc(note)}</p>')
+    egg = ctx["config"].get("paper_menu_egg")
+    if egg and egg.get("label"):
+        parts.append('<script type="application/json" id="viewer-egg">' + json.dumps(egg, ensure_ascii=False).replace("</", "<\\/") + "</script>")
     return Page("media", lab, lab, "\n".join(parts), head_extra=HEAD, scripts_extra=SCRIPTS)

@@ -147,7 +147,9 @@ def menu_html(figs, heads, egg=None):
         parts.append(f'<h2 class="pm-h">Sections</h2><ul class="pm-list">{items}</ul>')
     foot = '<li><a data-link="page" href="media.html">All figures</a></li>'
     if egg.get("label"):
-        foot += f'<li><a class="pm-egg" href="{esc(egg.get("href", "scenes.html#stratford"))}">{esc(egg["label"])}</a></li>'
+        foot += (f'<li><a class="pm-egg" data-egg-menu href="{esc(egg.get("href", "scenes.html#stratford"))}">'
+                 f'<span class="egg-glyph">{esc(egg["label"])}</span>'
+                 f'<span class="egg-label" aria-hidden="true">{esc(egg.get("tag", ""))}</span></a></li>')
     parts.append(f'<ul class="pm-list pm-foot">{foot}</ul></div>')
     return "\n".join(parts)
 

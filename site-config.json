@@ -485,7 +485,8 @@
   "citations_shared_path": "D:/Dev/tools/mla-citations/citations.json",
   "paper_menu_egg": {
     "label": "capture · match · assess · react",
-    "href": "scenes.html#stratford"
+    "href": "scenes.html#stratford",
+    "tag": "MATCH 0.64"
   },
   "other_writing": [
     {

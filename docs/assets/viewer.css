@@ -11,3 +11,5 @@ html.viewer-open, html.viewer-open body { overflow: hidden; }
 .viewer-box { position: absolute; transform-origin: 50% 50%; will-change: transform; }
 .viewer-img { display: block; width: 100%; height: 100%; object-fit: contain; max-width: none; image-rendering: auto; pointer-events: none; }
 html.viewer-open .site-header { position: fixed; top: 0; left: 0; right: 0; z-index: 101; }
+.viewer-egg { position: relative; display: inline-flex; align-items: center; min-height: 44px; padding: 0 0.6rem; color: #d6d6d6; opacity: 0.8; text-decoration: none; transition: opacity 0.15s ease; }
+.viewer-egg:focus-visible { outline: 3px solid #8dbbf0; outline-offset: 2px; }
