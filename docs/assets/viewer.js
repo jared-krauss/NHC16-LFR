@@ -66,7 +66,13 @@
     document.addEventListener("keydown", keys);
   }
 
+  function seatBelowHeader() {
+    var hd = document.querySelector(".site-header");
+    root.style.top = (hd ? hd.offsetHeight : 0) + "px";
+  }
+
   function layout(keep) {
+    seatBelowHeader();
     var r = stage.getBoundingClientRect();
     st.sw = r.width; st.sh = r.height;
     var w = Math.min(r.width, r.height * st.ar), h = w / st.ar;

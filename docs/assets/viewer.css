@@ -10,3 +10,4 @@ html.viewer-open, html.viewer-open body { overflow: hidden; }
 .viewer-stage { position: relative; flex: 1 1 auto; min-height: 0; overflow: hidden; touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none; }
 .viewer-box { position: absolute; transform-origin: 50% 50%; will-change: transform; }
 .viewer-img { display: block; width: 100%; height: 100%; object-fit: contain; max-width: none; image-rendering: auto; pointer-events: none; }
+html.viewer-open .site-header { position: fixed; top: 0; left: 0; right: 0; z-index: 101; }
