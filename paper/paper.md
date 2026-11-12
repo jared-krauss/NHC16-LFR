@@ -24,4 +24,6 @@ Contrary to what I believed before I started my research,  this was in fact not 
 
 I now begin, in earnest, my research into the deeper history of facial recognition surveillance in London, beginning in the 1990s, in Newham, to see what we can learn about the present day use of live facial recognition surveillance from the first attempt at it in London, undertaken by the Borough of Newham. How will the surveillance of space through automated facial recognition systems change the way people flow through it, and how will spaces be changed to facilitate the flow of people in a way advantageous to their surveillance? We shall see. 
 
-Thank you for your time today.
+I've not touched today on the contemporary historical, architectural, sociological, cultural, or ethnographic research methods I intend to make use of, nor theoretical lens of my research, nor on my artistic practice. There is an Easter egg on this site, where you can find some of the 3D documentary scenes I've made. And some of the current texts I intend to engage with are listed in the Bibliography. Nonetheless, I'd welcome any suggestions on methodologies, theories, ideas or questions you might have. 
+
+Thank you for your time todya.
