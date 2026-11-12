@@ -259,6 +259,27 @@
         "url": "https://nhcarnival.org/experience/history",
         "outlet": "Notting Hill Carnival",
         "use": "link"
+      },
+      {
+        "id": "sun-2016-08-28",
+        "title": "Rain fails to stop Notting Hill Carnival kicking off in style with colourful street party",
+        "url": "https://www.thesun.co.uk/news/1686893/rain-fails-to-stop-notting-hill-carnival-kicking-off-in-style-with-colourful-street-party/",
+        "outlet": "The Sun",
+        "use": "link"
+      },
+      {
+        "id": "axis-q1635-support",
+        "title": "AXIS Q1635 Network Camera - Product Support",
+        "url": "https://www.axis.com/products/axis-q1635/support",
+        "outlet": "Axis Communications",
+        "use": "link"
+      },
+      {
+        "id": "axis-q1635-datasheet",
+        "title": "AXIS Q1635 Network Camera: For Details of Fast Moving Objects in Difficult Lights",
+        "url": "https://www.axis.com/dam/public/6a/e8/2f/datasheet-axis-q1635-network-camera-en-US-272085.pdf",
+        "outlet": "Axis Communications",
+        "use": "link"
       }
     ],
     "overrides": {
@@ -282,7 +303,10 @@
       "adm-2017-10-27",
       "nist-ir-8173-2017",
       "bbc-2016-08-28",
-      "nhcarnival-history"
+      "nhcarnival-history",
+      "sun-2016-08-28",
+      "axis-q1635-support",
+      "axis-q1635-datasheet"
     ],
     "tile_labels": {
       "BBC News": "BBC",
