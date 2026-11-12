@@ -234,7 +234,8 @@
       "met-foi-afr-2018",
       "sun-2016-08-28",
       "axis-q1635-support",
-      "axis-q1635-datasheet"
+      "axis-q1635-datasheet",
+      "register-2017-08-17"
     ],
     "exclude": [
       "bbw-letter-2017-08-16",
@@ -404,6 +405,13 @@
         "url": "",
         "outlet": "October",
         "use": "link"
+      },
+      {
+        "id": "register-2017-08-17",
+        "title": "London cops urged to scrap use of 'biased' facial recognition at Notting Hill Carnival",
+        "url": "https://www.theregister.com/offbeat/2017/08/17/london-cops-urged-to-scrap-use-of-biased-facial-recognition-at-notting-hill-carnival/1029714",
+        "outlet": "The Register",
+        "use": "link"
       }
     ],
     "overrides": {
@@ -445,7 +453,8 @@
       "groat-wang-2013-architectural-research-methods",
       "lefebvre-1991-production-of-space",
       "azoulay-2008-civil-contract",
-      "sekula-1986-body-archive"
+      "sekula-1986-body-archive",
+      "register-2017-08-17"
     ],
     "tile_labels": {
       "BBC News": "BBC",
