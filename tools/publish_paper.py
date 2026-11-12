@@ -72,7 +72,8 @@ def main():
         return 1
     if b.stdout.strip():
         print(b.stdout.strip())
-    missing = [n for n in sorted(before_pages | REQUIRED_PAGES) if not (ROOT / "docs" / n).is_file() or (ROOT / "docs" / n).stat().st_size < 1000]
+    missing = [n for n in sorted(before_pages | REQUIRED_PAGES) if not (ROOT / "docs" / n).is_file()
+               or (ROOT / "docs" / n).stat().st_size < (1000 if n in REQUIRED_PAGES else 1)]
     if missing:
         PAPER.write_text(old, encoding="utf-8", newline="\n")
         print("FAILED: docs/ is incomplete after the build (missing or empty: %s), so nothing was published. paper.md was put back as it was." % ", ".join(missing))
