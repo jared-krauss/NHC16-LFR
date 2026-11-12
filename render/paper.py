@@ -98,7 +98,7 @@ def inline(text, figs, missing):
 
     def ref(n, shown):
         if n in figs:
-            return f'<a class="fig-ref" href="media.html#fig-{n}" data-fig="{n}">{shown}</a>'
+            return f'<a class="fig-ref" data-link="page" href="media.html#fig-{n}" data-fig="{n}">{shown}</a>'
         missing.add(n)
         return shown
 
@@ -138,13 +138,13 @@ def menu_html(figs, heads):
              '<div class="paper-menu-head"><p class="paper-menu-title">Menu</p>'
              '<button type="button" class="paper-menu-close" aria-label="Close menu">Close</button></div>']
     if figs:
-        items = "".join(f'<li><a href="media.html#fig-{f["n"]}" data-fig="{f["n"]}"><span class="pm-num">Fig. {f["n"]}</span>'
+        items = "".join(f'<li><a data-link="page" href="media.html#fig-{f["n"]}" data-fig="{f["n"]}"><span class="pm-num">Fig. {f["n"]}</span>'
                         f'<span class="pm-name">{esc(f["title"])}</span></a></li>' for f in figs.values())
         parts.append(f'<h2 class="pm-h">Figures</h2><ul class="pm-list">{items}</ul>')
     if heads:
         items = "".join(f'<li class="pm-l{lv}"><a href="#{sid}" data-jump>{esc(t)}</a></li>' for lv, sid, t in heads)
         parts.append(f'<h2 class="pm-h">Sections</h2><ul class="pm-list">{items}</ul>')
-    parts.append('<ul class="pm-list pm-foot"><li><a href="media.html">All figures</a></li></ul></div>')
+    parts.append('<ul class="pm-list pm-foot"><li><a data-link="page" href="media.html">All figures</a></li></ul></div>')
     return "\n".join(parts)
 
 

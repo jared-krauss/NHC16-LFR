@@ -570,12 +570,12 @@ def b13(c):
             for a in pg.evaluate(JS_ANCHORS):
                 if not a["inMain"] or a["skip"] or a["egg"]:
                     continue
-                if a["kind"] not in ("page", "external", "file"):
+                if a["kind"] not in ("page", "external", "file", "anchor"):
                     fails.append(f"{s}: main link {a['href'][:40]} has data-link='{a['kind']}'")
                     continue
                 absolute = bool(urlparse(a["href"]).netloc)
-                is_file = bool(re.search(r"\.(pdf|png|jpe?g|webp|svg|zip)$", a["href"].split("?")[0], re.I))
-                want = "external" if absolute else ("file" if is_file else "page")
+                is_file = bool(re.search(r"\.(pdf|png|jpe?g|webp|svg|zip)$", a["href"].split("?")[0].split("#")[0], re.I))
+                want = "external" if absolute else ("anchor" if a["href"].startswith("#") else ("file" if is_file else "page"))
                 if a["kind"] != want:
                     fails.append(f"{s}: link {a['href'][:40]} marked {a['kind']}, looks like {want}")
                 cue = (a["before"], a["after"], a["svg"] > 0, a["deco"], a["bstyle"],

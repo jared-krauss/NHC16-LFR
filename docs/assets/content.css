@@ -54,16 +54,16 @@ html[data-bib-view="works"] .bib-entry:not([data-cited]) { display: none; }
 .bib-entry:target { background: var(--surface); }
 .bib-line { margin: 0 0 0.25rem; padding-left: 2em; text-indent: -2em; max-width: none; overflow-wrap: break-word; }
 main .bib-entry p { max-width: none; }
-.bib-thumb { float: right; display: block; width: 2.75rem; height: 3.5rem; margin: 0.15rem 0 0.25rem 0.75rem; text-indent: 0; text-decoration: none; overflow: hidden; border: 1px solid var(--border); border-radius: 2px; background: var(--bg); }
-@media (min-width: 48rem) { .bib-thumb { width: 3.25rem; height: 4.25rem; } }
+.bib-thumb { float: right; display: block; width: 4.25rem; height: 4.25rem; margin: 0.15rem 0 0.25rem 0.75rem; text-indent: 0; text-decoration: none; overflow: hidden; border: 1px solid var(--border); border-radius: 2px; background: var(--bg); }
+@media (min-width: 48rem) { .bib-thumb { width: 4.5rem; height: 4.75rem; } }
 main .bib-entry a.bib-thumb { min-height: 0; display: block; }
 main .bib-entry a.bib-thumb::before, main .bib-entry a.bib-thumb::after { content: none; }
 .bib-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
 .bib-tile {
-  display: flex; align-items: center; justify-content: center; width: 100%; height: 100%;
-  font-size: var(--fs-m); font-weight: 700;
+  display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; padding: 0 2px; text-align: center;
   background: hsl(var(--hue) 35% 90%); color: hsl(var(--hue) 55% 22%);
 }
+.bib-tile small { font-size: var(--fs-s); font-weight: 700; line-height: 1.15; overflow-wrap: normal; hyphens: none; }
 @media (prefers-color-scheme: dark) { .bib-tile { background: hsl(var(--hue) 22% 22%); color: hsl(var(--hue) 50% 88%); } }
 .bib-links { margin: 0; padding-left: 2em; display: flex; flex-wrap: wrap; align-items: center; column-gap: 1rem; color: var(--muted); }
 .bib-links small { display: flex; flex-wrap: wrap; align-items: center; column-gap: 1rem; font-size: var(--fs-s); }

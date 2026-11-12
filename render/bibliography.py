@@ -138,6 +138,18 @@ def _initials(name):
     return s or "?"
 
 
+def _tile_label(cfg, e):
+    """The publication's real short name from config tile_labels (matched on publication, author or outlet), else the name itself when short, else initials."""
+    labels = {k.lower(): v for k, v in (cfg.get("tile_labels") or {}).items()}
+    for cand in (e.get("pub"), e.get("author"), e.get("outlet")):
+        if cand and cand.lower() in labels:
+            return labels[cand.lower()]
+    for cand in (e.get("pub"), e.get("author"), e.get("outlet")):
+        if cand and len(cand) <= 8:
+            return cand
+    return _initials(e.get("pub") or e.get("author") or e.get("outlet"))
+
+
 def _hue(name):
     return int(hashlib.sha1((name or "").encode("utf-8")).hexdigest()[:4], 16) % 360
 
@@ -342,6 +354,7 @@ def _load(ctx):
     for e in entries:
         e["group"] = e.pop("group_forced", None) or _group_for(cfg, e)
         e["cited"] = e["id"] in cited
+        e["tile"] = _tile_label(cfg, e)
         e["hosted"] = None
         if e["use"] == "host" and e["path"] and project_path(e["path"]).is_file() and \
                 licence_for(ctx, e["path"], e.get("licence_note", "")):
@@ -360,6 +373,12 @@ def entry_title(ctx, source_id, fallback=""):
 def entry_date(ctx, source_id):
     e = _load(ctx)["by_id"].get(source_id)
     return e["date_disp"] if e else ""
+
+
+def entry_hosted(ctx, source_id):
+    """The site-relative hosted file of a source, or ''."""
+    e = _load(ctx)["by_id"].get(source_id)
+    return (e or {}).get("hosted") or ""
 
 
 def has_entry(ctx, source_id):
@@ -384,7 +403,7 @@ def _thumb_html(e, href, aria, kind):
         inner = f'<img src="{esc(rel)}" width="{w}" height="{h}" alt="" loading="lazy">'
     else:
         name = e["pub"] or e["author"]
-        inner = f'<span class="bib-tile" style="--hue:{_hue(name)}" aria-hidden="true">{esc(_initials(name))}</span>'
+        inner = f'<span class="bib-tile" style="--hue:{_hue(name)}" aria-hidden="true"><small>{esc(e["tile"])}</small></span>'
     if not href:
         return f'<span class="bib-thumb">{inner}</span>'
     ext = ' rel="noopener"' if kind == "external" else ""

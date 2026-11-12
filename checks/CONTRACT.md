@@ -13,6 +13,7 @@ Change 2026-11-11 (Media/Bibliography restructure, edited by the site builder as
 - Every `<img>` has `width`, `height` and (except the very first slide image) `loading="lazy"`.
 
 ## Link kinds (inside `main`; every `main a[href]` carries one)
+- Also `a[data-link=anchor]` for links whose href starts with `#` (jump rows, Bibliography tabs and filters); B13 expects exactly that kind for such hrefs.
 - `a[data-link=page]` on-site page; `a[data-link=file]` a hosted file/download (text states "PDF" and size, e.g. "PDF, 0.2 MB" / "15.4 KB");
   `a[data-link=external]` another host: `rel` contains `noopener`, text or `aria-label` contains "opens" or "external", e.g. "Opens Fixture Gazette".
 - The three kinds must have visibly different non-colour cues (icon/svg, `::before`/`::after` content, or distinct text marker).

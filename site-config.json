@@ -184,7 +184,9 @@
       "bc-nhc-2017": "reports",
       "bbw-face-off-2018": "reports",
       "nist-ir-8173-2017": "reports",
-      "adm-2017-10-27": "news"
+      "adm-2017-10-27": "news",
+      "bbc-2016-08-28": "news",
+      "nhcarnival-history": "other"
     },
     "type_labels": {
       "report_gov": "Report",
@@ -207,11 +209,14 @@
       "bbw-face-off-2018",
       "which-50-2017-10-26",
       "adm-2017-10-27",
-      "nist-ir-8173-2017"
+      "nist-ir-8173-2017",
+      "bbc-2016-08-28",
+      "nhcarnival-history"
     ],
     "exclude": [
       "bbw-letter-2017-08-16",
-      "bowyer-2004"
+      "bowyer-2004",
+      "bedroq-bedroq-seek-next-generation"
     ],
     "extra_sources": [
       {
@@ -236,6 +241,20 @@
         "use": "host",
         "path": "E:/Outputs/phd-conference-2026-11-12/_work/sources/nist-ir-8173-five-2017.pdf",
         "licence_note": "Public domain, US Government work (NIST). Hosted on Jared's decision, 12 Nov 2026, for the conference audience."
+      },
+      {
+        "id": "bbc-2016-08-28",
+        "title": "In pictures: Fifty years of the Notting Hill Carnival",
+        "url": "https://www.bbc.co.uk/news/uk-england-london-37024463",
+        "outlet": "BBC News",
+        "use": "link"
+      },
+      {
+        "id": "nhcarnival-history",
+        "title": "History",
+        "url": "https://nhcarnival.org/experience/history",
+        "outlet": "Notting Hill Carnival",
+        "use": "link"
       }
     ],
     "overrides": {
@@ -250,8 +269,35 @@
     "shared_ids": [
       "bbw-face-off-2018",
       "adm-2017-10-27",
-      "nist-ir-8173-2017"
-    ]
+      "nist-ir-8173-2017",
+      "bbc-2016-08-28",
+      "nhcarnival-history"
+    ],
+    "tile_labels": {
+      "BBC News": "BBC",
+      "ITV News": "ITV News",
+      "The Guardian": "Guardian",
+      "The Register": "Register",
+      "London Evening Standard": "Evening Standard",
+      "My London": "My London",
+      "Alamy": "Alamy",
+      "Identity Week": "Identity Week",
+      "E&T (IET)": "E&T",
+      "Big Brother Watch": "BBW",
+      "World Socialist Web Site": "WSWS",
+      "Business Solutions": "Business Solutions",
+      "NEC": "NEC",
+      "Which-50": "Which-50",
+      "Asian Scientist Magazine": "Asian Scientist",
+      "CMO Australia": "CMO",
+      "Government Commercial Agency": "GCA",
+      "Australian Defence Magazine": "ADM",
+      "UK Parliament": "Parliament",
+      "Metropolitan Police Service": "Met Police",
+      "Notting Hill Carnival": "NH Carnival",
+      "Historic Hansard": "Hansard",
+      "National Institute of Standards and Technology": "NIST"
+    }
   },
   "citations_shared_path": "D:/Dev/tools/mla-citations/citations.json"
 }

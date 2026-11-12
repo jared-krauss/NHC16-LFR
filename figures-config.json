@@ -35,22 +35,6 @@
     },
     {
       "n": 3,
-      "id": "romford-sheet",
-      "title": "Example of data collected per deployment (Romford)",
-      "kind": "illustration",
-      "image": "E:/Outputs/phd-conference-2026-11-12/figures/fig-03.png",
-      "web": "E:/Outputs/phd-conference-2026-11-12/figures/fig-03.webp",
-      "thumb": "E:/Outputs/phd-conference-2026-11-12/figures/fig-03-thumb.webp",
-      "alt": "Deployment sheet for Romford: crowd and watchlist ethnicity pie charts, outcome counts, a street layout with camera field of view, and example footage with faces blanked.",
-      "source_id": "npl-met-lfr-trials-2020",
-      "source_title": "Metropolitan Police Service Live Facial Recognition Trials (NPL report, Feb 2020)",
-      "printed_page": "13",
-      "pdf_page": 16,
-      "source_url": "https://www.met.police.uk/syssiteassets/media/downloads/central/services/accessing-information/facial-recognition/met-evaluation-report.pdf#page=16",
-      "print_pdf": "E:/Outputs/phd-conference-2026-11-12/print-ready/figures-a3/fig-03-A3.pdf"
-    },
-    {
-      "n": 4,
       "id": "carnival-2016-sheet",
       "title": "Notting Hill Carnival, 28-29 August 2016: deployment sheet",
       "kind": "illustration",
@@ -63,10 +47,10 @@
       "printed_page": "30",
       "pdf_page": 33,
       "source_url": "https://www.met.police.uk/syssiteassets/media/downloads/central/services/accessing-information/facial-recognition/met-evaluation-report.pdf#page=33",
-      "print_pdf": "E:/Outputs/phd-conference-2026-11-12/print-ready/figures-a3/fig-04-A3.pdf"
+      "print_pdf": "E:/Outputs/phd-conference-2026-11-12/print-ready/figures-a3/fig-03-A3.pdf"
     },
     {
-      "n": 5,
+      "n": 4,
       "id": "carnival-2017-sheet",
       "title": "Notting Hill Carnival, 27-28 August 2017: deployment sheet",
       "kind": "illustration",
@@ -79,8 +63,16 @@
       "printed_page": "31",
       "pdf_page": 34,
       "source_url": "https://www.met.police.uk/syssiteassets/media/downloads/central/services/accessing-information/facial-recognition/met-evaluation-report.pdf#page=34",
-      "print_pdf": "E:/Outputs/phd-conference-2026-11-12/print-ready/figures-a3/fig-05-A3.pdf"
+      "print_pdf": "E:/Outputs/phd-conference-2026-11-12/print-ready/figures-a3/fig-04-A3.pdf"
     }
   ],
-  "next_n": 6
+  "next_n": 5,
+  "removed": [
+    {
+      "id": "romford-sheet",
+      "was_n": 3,
+      "date": "2026-11-12",
+      "why": "Jared: screenshot only taken for the end of the previous page text"
+    }
+  ]
 }

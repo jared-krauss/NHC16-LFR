@@ -123,7 +123,7 @@ def figures(ctx):
         td = _dims(ctx["out"] / thumb_rel) if thumb_rel else None
         out.append({"n": n, "id": text(r, "id"), "title": text(r, "title"), "kind": text(r, "kind") or "illustration",
                     "alt": text(r, "alt") or text(r, "title"), "source_id": text(r, "source_id"),
-                    "source_title": text(r, "source_title"), "printed_page": text(r, "printed_page"),
+                    "source_title": text(r, "source_title"), "printed_page": text(r, "printed_page"), "pdf_page": r.get("pdf_page") if isinstance(r.get("pdf_page"), int) else None,
                     "source_url": safe_external(text(r, "source_url")), "web": web_rel, "web_w": wd[0], "web_h": wd[1],
                     "thumb": thumb_rel or web_rel, "thumb_w": td[0] if td else wd[0], "thumb_h": td[1] if td else wd[1],
                     "full": full_rel, "full_ext": Path(full_rel).suffix.lstrip(".").upper(),
@@ -148,11 +148,18 @@ def _figure_card(ctx, f):
     from render import bibliography
     title = bibliography.entry_title(ctx, f["source_id"], f["source_title"])
     date = bibliography.entry_date(ctx, f["source_id"]) if bibliography.has_entry(ctx, f["source_id"]) else ""
-    named = f"{title}, p. {f['printed_page']}" if f["printed_page"] else title
     if bibliography.has_entry(ctx, f["source_id"]):
-        src_name = link("page", f"bibliography.html#{f['source_id']}", named)
+        src_name = link("page", f"bibliography.html#{f['source_id']}", title)
     else:
-        src_name = esc(named)
+        src_name = esc(title)
+    if f["printed_page"]:
+        hosted = bibliography.entry_hosted(ctx, f["source_id"])
+        if hosted and f["pdf_page"]:
+            size = file_size_label(ctx["out"] / hosted)
+            src_name += (f', <a data-link="file" href="{esc(hosted)}#page={f["pdf_page"]}" target="_blank" rel="noopener" '
+                         f'aria-label="{esc("Open page " + f["printed_page"] + " of the PDF (PDF, " + size + ")")}">p. {esc(f["printed_page"])}</a>')
+        else:
+            src_name += f", p. {esc(f['printed_page'])}"
     badge = "Chart" if f["kind"] == "chart" else "Illustration"
     srcset = f'{esc(f["thumb"])} {f["thumb_w"]}w, {esc(f["web"])} {f["web_w"]}w' if f["thumb"] != f["web"] else ""
     srcattr = f' srcset="{srcset}" sizes="(min-width: 60rem) 30vw, (min-width: 40rem) 45vw, 100vw"' if srcset else ""

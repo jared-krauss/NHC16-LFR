@@ -29,6 +29,7 @@ OUT = ROOT / "checks" / "_out" / "paper" / "site"
 OLD_TITLE = "Live Facial Recognition at Notting Hill Carnival: The Met"
 VIEWPORTS = [("390", 390, 844), ("1440", 1440, 900)]
 FAILS = []
+NFIG = len(json.loads((ROOT / "figures-config.json").read_text(encoding="utf-8"))["figures"])
 
 
 def ok(cond, msg):
@@ -60,13 +61,15 @@ def build_fixture():
 def static_checks(log):
     """Checks that need no browser."""
     html = (OUT / "paper.html").read_text(encoding="utf-8")
-    refs = [int(n) for n in re.findall(r'class="fig-ref" href="media\.html#fig-(\d+)" data-fig="\d+"', html)]
-    ok(refs == [1, 3, 2, 3, 4, 5], f"fixture references linked in order (got {refs})")
+    nfig = len(json.loads((ROOT / "figures-config.json").read_text(encoding="utf-8"))["figures"])
+    refs = [int(n) for n in re.findall(r'class="fig-ref"[^>]*href="media\.html#fig-(\d+)"[^>]*data-fig="\d+"', html)]
+    want = [n for n in (1, 3, 2, 3, 4, 5) if n <= nfig]
+    ok(refs == want, f"fixture references linked in order, existing figures only (want {want}, got {refs})")
     ok("Fig. 9" in html and 'data-fig="9"' not in html, "Fig. 9 left as plain text")
     ok("Fig. 9 is not in figures-config.json" in log, "build warns about Fig. 9")
     media = (OUT / "media.html").read_text(encoding="utf-8")
     ok(all(f'id="fig-{n}"' in media for n in set(refs)), "every linked figure has an anchor on media.html")
-    ok(html.count('class="pm-num"') == 5, "menu lists 5 figures (static)")
+    ok(html.count('class="pm-num"') == nfig, f"menu lists {nfig} figures (static)")
     hits = [f.name for f in OUT.rglob("*") if f.suffix in (".html", ".js", ".json", ".css")
             and OLD_TITLE in f.read_text(encoding="utf-8", errors="ignore")]
     ok(not hits, f"old talk title absent from the build ({hits})")
@@ -114,7 +117,7 @@ def run_view(p, base, tag, w, h, shots):
     btn.click()
     pg.wait_for_selector("#paper-menu:not([hidden])")
     figs = pg.locator("#paper-menu .pm-list a[data-fig]")
-    ok(figs.count() == 5, f"{tag}: menu lists 5 figures (got {figs.count()})")
+    ok(figs.count() == NFIG, f"{tag}: menu lists {NFIG} figures (got {figs.count()})")
     ok(pg.locator("#paper-menu a[data-jump]").count() == 3, "%s: menu lists 3 section headings" % tag)
     ok(pg.locator('#paper-menu a[href="media.html"]').count() == 1, f"{tag}: menu has All figures link")
     small = pg.evaluate("""() => [...document.querySelectorAll('#paper-menu a, #paper-menu button')]
