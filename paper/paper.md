@@ -14,7 +14,7 @@ The watchlist size was 266, while the number of faces scanned over a twelve-hour
 
 Now, this was the first official deployment by the MPS of NEC's NeoFace software, and certainly underwhelming from an operational perspective, yet for the MPS it was a proof of concept (National Physical Laboratory and Metropolitan Police Service 17). 
 
-By 2017, the second deployment of NeoFace, the MPS had already iterated on their deployment tactics, from a technical perspective, but were met with much greater public backlash, meaning further deployments to Notting Hill did not occur again until 2025 (National Physical Laboratory and Metropolitan Police Service 22-23; MPS LFR Deployments 2025).
+By 2017, the second deployment of NeoFace, the MPS had already iterated on their deployment tactics, from a technical perspective, but were met with much greater public backlash, meaning further deployments to Notting Hill did not occur again until 2025 (National Physical Laboratory and Metropolitan Police Service 22-23; Hill; MPS LFR Deployments 2025).
 
 During these trial periods, and in the intervening years, the MPS has prioritised mobile deployments of their facial recognition systems, but beginning in 2025 and continuing in 2026, more trials were undertaken to test the installation of permanent, officer-initiated facial recognition surveillance. It stands to reason then, that more permanent installations of cameras capable of facial recognition will be installed.
 
