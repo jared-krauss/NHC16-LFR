@@ -64,9 +64,24 @@
       "pdf_page": 34,
       "source_url": "https://www.met.police.uk/syssiteassets/media/downloads/central/services/accessing-information/facial-recognition/met-evaluation-report.pdf#page=34",
       "print_pdf": "E:/Outputs/phd-conference-2026-11-12/print-ready/figures-a3/fig-04-A3.pdf"
+    },
+    {
+      "n": 5,
+      "id": "axis-q1635-datasheet",
+      "title": "AXIS Q1635 Network Camera datasheet, page 1",
+      "kind": "illustration",
+      "image": "E:/Outputs/phd-conference-2026-11-12/figures/fig-06.png",
+      "web": "E:/Outputs/phd-conference-2026-11-12/figures/fig-06.webp",
+      "thumb": "E:/Outputs/phd-conference-2026-11-12/figures/fig-06-thumb.webp",
+      "alt": "First page of the Axis Q1635 network camera datasheet: product name, a short description, five feature bullets and a photograph of the box camera on a wall bracket.",
+      "source_id": "axis-q1635-datasheet",
+      "source_title": "AXIS Q1635 Network Camera datasheet (Axis Communications, 2019)",
+      "printed_page": "1",
+      "pdf_page": 1,
+      "source_url": "https://www.axis.com/dam/public/6a/e8/2f/datasheet-axis-q1635-network-camera-en-US-272085.pdf#page=1"
     }
   ],
-  "next_n": 5,
+  "next_n": 6,
   "removed": [
     {
       "id": "romford-sheet",
