@@ -182,7 +182,9 @@
     "group_overrides": {
       "hansard-1998-11-03": "reports",
       "bc-nhc-2017": "reports",
-      "bbw-face-off-2018": "reports"
+      "bbw-face-off-2018": "reports",
+      "nist-ir-8173-2017": "reports",
+      "adm-2017-10-27": "news"
     },
     "type_labels": {
       "report_gov": "Report",
@@ -203,7 +205,9 @@
       "hansard-1998-11-03",
       "fussey-murray-2019",
       "bbw-face-off-2018",
-      "which-50-2017-10-26"
+      "which-50-2017-10-26",
+      "adm-2017-10-27",
+      "nist-ir-8173-2017"
     ],
     "exclude": [
       "bbw-letter-2017-08-16",
@@ -216,6 +220,22 @@
         "url": "https://bigbrotherwatch.org.uk/campaigns/stop-facial-recognition/report/",
         "outlet": "Big Brother Watch",
         "use": "link"
+      },
+      {
+        "id": "adm-2017-10-27",
+        "title": "Real time crowd scans still a challenge for Face Recognition tech",
+        "url": "https://www.australiandefence.com.au/defence/cyber-space/real-time-crowd-scans-still-a-challenge-for-face-recognition-tech",
+        "outlet": "Australian Defence Magazine",
+        "use": "link"
+      },
+      {
+        "id": "nist-ir-8173-2017",
+        "title": "Face In Video Evaluation (FIVE): Face Recognition of Non-Cooperative Subjects",
+        "url": "https://nvlpubs.nist.gov/nistpubs/ir/2017/nist.ir.8173.pdf",
+        "outlet": "National Institute of Standards and Technology",
+        "use": "host",
+        "path": "E:/Outputs/phd-conference-2026-11-12/_work/sources/nist-ir-8173-five-2017.pdf",
+        "licence_note": "Public domain, US Government work (NIST). Hosted on Jared's decision, 12 Nov 2026, for the conference audience."
       }
     ],
     "overrides": {
@@ -228,7 +248,9 @@
       }
     },
     "shared_ids": [
-      "bbw-face-off-2018"
+      "bbw-face-off-2018",
+      "adm-2017-10-27",
+      "nist-ir-8173-2017"
     ]
   },
   "citations_shared_path": "D:/Dev/tools/mla-citations/citations.json"

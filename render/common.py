@@ -80,7 +80,7 @@ def licence_line(*notes):
     """The real licence named in a licence_note (starts with 'CC' or 'Open Government'), up to the first full stop; else ''."""
     for n in notes:
         n = (n or "").strip()
-        if re.match(r"(CC\b|Open Government)", n):
+        if re.match(r"(CC\b|Open Government|Public domain)", n):
             m = re.search(r"\.(?:\s|$)| \(", n)
             return (n[:m.start()] if m else n).strip()
     return ""
