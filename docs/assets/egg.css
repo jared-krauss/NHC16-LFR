@@ -1,0 +1,30 @@
+.egg {
+  position: relative; display: inline-flex; align-items: center; justify-content: center;
+  min-width: 44px; min-height: 44px; color: inherit; opacity: 0.5; text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+.egg-glyph { position: relative; display: block; width: 14px; height: 14px; }
+.egg-glyph svg { display: block; width: 14px; height: 14px; }
+.egg-glyph::before {
+  --b: #0a8f5a;
+  content: ""; position: absolute; inset: -14px; opacity: 0; pointer-events: none;
+  background:
+    linear-gradient(var(--b), var(--b)) 0 0 / 7px 2px, linear-gradient(var(--b), var(--b)) 0 0 / 2px 7px,
+    linear-gradient(var(--b), var(--b)) 100% 0 / 7px 2px, linear-gradient(var(--b), var(--b)) 100% 0 / 2px 7px,
+    linear-gradient(var(--b), var(--b)) 0 100% / 7px 2px, linear-gradient(var(--b), var(--b)) 0 100% / 2px 7px,
+    linear-gradient(var(--b), var(--b)) 100% 100% / 7px 2px, linear-gradient(var(--b), var(--b)) 100% 100% / 2px 7px;
+  background-repeat: no-repeat;
+  transition: inset 0.16s cubic-bezier(0.2, 1.5, 0.4, 1), opacity 0.1s ease;
+}
+.egg-label {
+  position: absolute; right: 0; bottom: calc(100% - 6px);
+  font: inherit; font-size: var(--fs-s); font-weight: 700; line-height: 1; letter-spacing: 0.04em; white-space: nowrap;
+  color: #0a7a4d; opacity: 0; pointer-events: none; transition: opacity 0.12s ease 0.08s;
+}
+.egg:hover, .egg:focus-visible, .egg.is-lock { opacity: 1; outline: none; }
+.egg:hover .egg-glyph::before, .egg:focus-visible .egg-glyph::before, .egg.is-lock .egg-glyph::before { inset: -6px; opacity: 1; }
+.egg:hover .egg-label, .egg:focus-visible .egg-label, .egg.is-lock .egg-label { opacity: 1; }
+.egg-iris { position: fixed; inset: 0; z-index: 99999; background: #0b0d0f; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) {
+  .egg, .egg-glyph::before, .egg-label { transition: none; }
+}
