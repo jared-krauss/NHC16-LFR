@@ -134,6 +134,10 @@
       {
         "id": "other",
         "label": "Other"
+      },
+      {
+        "id": "further",
+        "label": "Further reading"
       }
     ],
     "rules": [
@@ -186,7 +190,22 @@
       "nist-ir-8173-2017": "reports",
       "adm-2017-10-27": "news",
       "bbc-2016-08-28": "news",
-      "nhcarnival-history": "other"
+      "nhcarnival-history": "other",
+      "lorey-2015-state-of-insecurity": "further",
+      "ranciere-2004-politics-aesthetics": "further",
+      "ranciere-2009-emancipated-spectator": "further",
+      "foucault-1977-discipline-punish": "further",
+      "foucault-2007-security-territory-population": "further",
+      "burchell-1991-foucault-effect": "further",
+      "collier-1986-visual-anthropology": "further",
+      "haggerty-ericson-2000-surveillant-assemblage": "further",
+      "browne-2015-dark-matters": "further",
+      "introna-wood-2004-picturing-algorithmic-surveillance": "further",
+      "weizman-2017-forensic-architecture": "further",
+      "groat-wang-2013-architectural-research-methods": "further",
+      "lefebvre-1991-production-of-space": "further",
+      "azoulay-2008-civil-contract": "further",
+      "sekula-1986-body-archive": "further"
     },
     "type_labels": {
       "report_gov": "Report",
@@ -262,7 +281,7 @@
       },
       {
         "id": "sun-2016-08-28",
-        "title": "Rain fails to stop Notting Hill Carnival kicking off in style with colourful street party",
+        "title": "CARNIVAL TIME! Rain fails to stop Notting Hill Carnival kicking off in style with colourful street party",
         "url": "https://www.thesun.co.uk/news/1686893/rain-fails-to-stop-notting-hill-carnival-kicking-off-in-style-with-colourful-street-party/",
         "outlet": "The Sun",
         "use": "link"
@@ -279,6 +298,111 @@
         "title": "AXIS Q1635 Network Camera: For Details of Fast Moving Objects in Difficult Lights",
         "url": "https://www.axis.com/dam/public/6a/e8/2f/datasheet-axis-q1635-network-camera-en-US-272085.pdf",
         "outlet": "Axis Communications",
+        "use": "link"
+      },
+      {
+        "id": "lorey-2015-state-of-insecurity",
+        "title": "State of Insecurity: Government of the Precarious",
+        "url": "https://openlibrary.org/isbn/9781781685952",
+        "outlet": "Verso",
+        "use": "link"
+      },
+      {
+        "id": "ranciere-2004-politics-aesthetics",
+        "title": "The Politics of Aesthetics: The Distribution of the Sensible",
+        "url": "https://openlibrary.org/isbn/9780826470676",
+        "outlet": "Continuum",
+        "use": "link"
+      },
+      {
+        "id": "ranciere-2009-emancipated-spectator",
+        "title": "The Emancipated Spectator",
+        "url": "https://openlibrary.org/isbn/9781844677610",
+        "outlet": "Verso",
+        "use": "link"
+      },
+      {
+        "id": "foucault-1977-discipline-punish",
+        "title": "Discipline and Punish: The Birth of the Prison",
+        "url": "https://openlibrary.org/isbn/9780679752554",
+        "outlet": "Pantheon",
+        "use": "link"
+      },
+      {
+        "id": "foucault-2007-security-territory-population",
+        "title": "Security, Territory, Population: Lectures at the College de France, 1977-78",
+        "url": "https://openlibrary.org/isbn/9781403986528",
+        "outlet": "Palgrave Macmillan",
+        "use": "link"
+      },
+      {
+        "id": "burchell-1991-foucault-effect",
+        "title": "The Foucault Effect: Studies in Governmentality",
+        "url": "https://openlibrary.org/isbn/9780226080451",
+        "outlet": "University of Chicago Press",
+        "use": "link"
+      },
+      {
+        "id": "collier-1986-visual-anthropology",
+        "title": "Visual Anthropology: Photography as a Research Method",
+        "url": "https://openlibrary.org/isbn/9780826308993",
+        "outlet": "University of New Mexico Press",
+        "use": "link"
+      },
+      {
+        "id": "haggerty-ericson-2000-surveillant-assemblage",
+        "title": "The Surveillant Assemblage",
+        "url": "",
+        "outlet": "The British Journal of Sociology",
+        "use": "link"
+      },
+      {
+        "id": "browne-2015-dark-matters",
+        "title": "Dark Matters: On the Surveillance of Blackness",
+        "url": "https://openlibrary.org/isbn/9780822359197",
+        "outlet": "Duke University Press",
+        "use": "link"
+      },
+      {
+        "id": "introna-wood-2004-picturing-algorithmic-surveillance",
+        "title": "Picturing Algorithmic Surveillance: The Politics of Facial Recognition Systems",
+        "url": "",
+        "outlet": "Surveillance & Society",
+        "use": "link"
+      },
+      {
+        "id": "weizman-2017-forensic-architecture",
+        "title": "Forensic Architecture: Violence at the Threshold of Detectability",
+        "url": "https://openlibrary.org/isbn/9781935408178",
+        "outlet": "Zone Books",
+        "use": "link"
+      },
+      {
+        "id": "groat-wang-2013-architectural-research-methods",
+        "title": "Architectural Research Methods",
+        "url": "https://openlibrary.org/isbn/9780470908556",
+        "outlet": "Wiley",
+        "use": "link"
+      },
+      {
+        "id": "lefebvre-1991-production-of-space",
+        "title": "The Production of Space",
+        "url": "https://openlibrary.org/isbn/9780631140481",
+        "outlet": "Blackwell",
+        "use": "link"
+      },
+      {
+        "id": "azoulay-2008-civil-contract",
+        "title": "The Civil Contract of Photography",
+        "url": "https://openlibrary.org/isbn/9781890951894",
+        "outlet": "Zone Books",
+        "use": "link"
+      },
+      {
+        "id": "sekula-1986-body-archive",
+        "title": "The Body and the Archive",
+        "url": "",
+        "outlet": "October",
         "use": "link"
       }
     ],
@@ -306,7 +430,22 @@
       "nhcarnival-history",
       "sun-2016-08-28",
       "axis-q1635-support",
-      "axis-q1635-datasheet"
+      "axis-q1635-datasheet",
+      "lorey-2015-state-of-insecurity",
+      "ranciere-2004-politics-aesthetics",
+      "ranciere-2009-emancipated-spectator",
+      "foucault-1977-discipline-punish",
+      "foucault-2007-security-territory-population",
+      "burchell-1991-foucault-effect",
+      "collier-1986-visual-anthropology",
+      "haggerty-ericson-2000-surveillant-assemblage",
+      "browne-2015-dark-matters",
+      "introna-wood-2004-picturing-algorithmic-surveillance",
+      "weizman-2017-forensic-architecture",
+      "groat-wang-2013-architectural-research-methods",
+      "lefebvre-1991-production-of-space",
+      "azoulay-2008-civil-contract",
+      "sekula-1986-body-archive"
     ],
     "tile_labels": {
       "BBC News": "BBC",
