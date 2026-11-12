@@ -128,8 +128,9 @@ def render_body(blocks, figs, missing):
     return "\n".join(out), heads
 
 
-def menu_html(figs, heads):
-    """The sticky menu button and its panel; hidden until paper.js enables it."""
+def menu_html(figs, heads, egg=None):
+    """The sticky menu button and its panel; hidden until paper.js enables it. `egg` is the paper_menu_egg config."""
+    egg = egg or {}
     parts = ['<button type="button" class="paper-menu-btn" id="paper-menu-btn" aria-expanded="false" '
              'aria-controls="paper-menu" aria-label="Menu: figures and sections" hidden>'
              '<span class="paper-menu-icon" aria-hidden="true"><i></i><i></i><i></i></span>'
@@ -144,7 +145,10 @@ def menu_html(figs, heads):
     if heads:
         items = "".join(f'<li class="pm-l{lv}"><a href="#{sid}" data-jump>{esc(t)}</a></li>' for lv, sid, t in heads)
         parts.append(f'<h2 class="pm-h">Sections</h2><ul class="pm-list">{items}</ul>')
-    parts.append('<ul class="pm-list pm-foot"><li><a data-link="page" href="media.html">All figures</a></li></ul></div>')
+    foot = '<li><a data-link="page" href="media.html">All figures</a></li>'
+    if egg.get("label"):
+        foot += f'<li><a class="pm-egg" href="{esc(egg.get("href", "scenes.html#stratford"))}">{esc(egg["label"])}</a></li>'
+    parts.append(f'<ul class="pm-list pm-foot">{foot}</ul></div>')
     return "\n".join(parts)
 
 
@@ -174,6 +178,6 @@ def render(ctx):
         print(f"WARNING paper: Fig. {n} is not in figures-config.json; left as plain text", flush=True)
     if not body:
         body = f'<p class="paper-empty">{EMPTY_LINE}</p>'
-    page = (f'<article class="paper" id="paper-text">\n{body}\n</article>\n' + menu_html(figs, heads)
+    page = (f'<article class="paper" id="paper-text">\n{body}\n</article>\n' + menu_html(figs, heads, ctx["config"].get("paper_menu_egg"))
             + f'\n<script type="application/json" id="paper-figures">{figure_data(figs).replace("</", "<\\/")}</script>')
     return Page("paper", lab, re.sub(r"\*+", "", h1), page, head_extra=HEAD, scripts_extra=SCRIPTS)

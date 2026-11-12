@@ -49,3 +49,4 @@ h3.paper-h { font-size: var(--fs-m); }
 @media (min-width: 1600px) {
   .paper-menu { width: 30rem; }
 }
+.pm-foot a.pm-egg { font-weight: 400; color: var(--muted); letter-spacing: 0.08em; font-variant-caps: all-small-caps; text-decoration: none; }
